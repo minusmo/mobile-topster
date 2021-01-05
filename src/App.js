@@ -516,6 +516,7 @@ function App() {
 	  	      <input type="text" className="text" name="term" id="term" onChange={(e) => {
               setTerm(e.target.value);
               }}/>
+              <br></br>
 	  	      <select name="country" id="country" onChange={(e) => setCountry(e.target.value)}>
                   <option value="us">United States of America</option>
                   <option value="gb">United Kingdom</option>
@@ -675,6 +676,7 @@ function App() {
                   <option value="ye">Yemen</option>
                   <option value="zw">Zimbabwe</option>
 	  	      </select>
+            <br></br>
 	  	      <input type="submit" className="submit" value="Search"/>
 	        </form>
         </div>
