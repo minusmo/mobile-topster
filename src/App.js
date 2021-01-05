@@ -4,12 +4,14 @@ import * as _ from "lodash";
 import { saveAs } from 'file-saver';
 import * as htmlToImage from 'html-to-image';
 import './App.css';
+import smallblank from './smallblank.png';
+import cross from "./cross.png";
 
 let initAlbums = {
   'row1': {
     isShow: false,
     cols: new Array(6).fill({
-      src: "/smallblank.png",
+      src: smallblank,
       alt: "",
       showCol: false,
   }),
@@ -17,7 +19,7 @@ let initAlbums = {
   'row2': {
     isShow: false,
     cols: new Array(6).fill({
-      src: "/smallblank.png",
+      src: smallblank,
       alt: "",
       showCol: false,
   }),
@@ -25,7 +27,7 @@ let initAlbums = {
   'row3': {
     isShow: false,
     cols: new Array(6).fill({
-      src: "/smallblank.png",
+      src: smallblank,
       alt: "",
       showCol: false,
   }),
@@ -33,7 +35,7 @@ let initAlbums = {
   'row4': {
     isShow: false,
     cols: new Array(6).fill({
-      src: "/smallblank.png",
+      src: smallblank,
       alt: "",
       showCol: false,
   }),
@@ -41,7 +43,7 @@ let initAlbums = {
   'row5': {
     isShow: false,
     cols: new Array(6).fill({
-      src: "/smallblank.png",
+      src: smallblank,
       alt: "",
       showCol: false,
   }),
@@ -49,7 +51,7 @@ let initAlbums = {
   'row6': {
     isShow: true,
     cols: new Array(6).fill({
-      src: "/smallblank.png",
+      src: smallblank,
       alt: "",
       showCol: false,
   }),
@@ -58,37 +60,37 @@ let initAlbums = {
 
 // console.log(initAlbums['row1']['cols'])
 initAlbums['row1']['cols'].splice(5,1,{
-  src: "/smallblank.png",
+  src: smallblank,
   alt: "",
   showCol: true,
 });
 initAlbums['row2']['cols'].splice(5,1,{
-  src: "/smallblank.png",
+  src: smallblank,
   alt: "",
   showCol: true,
 });
 initAlbums['row3']['cols'].splice(5,1,{
-  src: "/smallblank.png",
+  src: smallblank,
   alt: "",
   showCol: true,
 });
 initAlbums['row4']['cols'].splice(5,1,{
-  src: "/smallblank.png",
+  src: smallblank,
   alt: "",
   showCol: true,
 });
 initAlbums['row5']['cols'].splice(5,1,{
-  src: "/smallblank.png",
+  src: smallblank,
   alt: "",
   showCol: true,
 });
 initAlbums['row6']['cols'].splice(5,1,{
-  src: "/smallblank.png",
+  src: smallblank,
   alt: "",
   showCol: true,
 });
 
-console.log(initAlbums);
+// console.log(initAlbums);
 
 const initTitles = {
   row1: new Array(6).fill(""),
@@ -120,22 +122,22 @@ function App() {
     if (showSearch === 'none') {
       setShowSearch('');
       setSelected(e.target.id);
-      console.log(e.target.id);
+      // console.log(e.target.id);
     }
     
   }
 
   const handleClickAlbum = (e) => {
-    console.log('handle click album');
+    // console.log('handle click album');
 
     const selectedRow = selected.slice(0, 4);
     const selectedCol = Number.parseInt(selected.slice(5));
     const newAlbums = _.assign({}, albums);
     
-    console.log(selectedRow);
-    console.log(selectedCol);
-    console.log(newAlbums[selectedRow].cols[selectedCol])
-    newAlbums[selectedRow].cols.splice(selectedCol, 1, { src: e.target.src, alt: e.target.alt });
+    // console.log(selectedRow);
+    // console.log(selectedCol);
+    // console.log(newAlbums[selectedRow].cols[selectedCol]);
+    newAlbums[selectedRow].cols.splice(selectedCol, 1, { src: e.target.src, alt: e.target.alt, showCol: false });
 
     setAlbums(newAlbums);
 
@@ -172,9 +174,15 @@ function App() {
       },
       method: 'GET',
       success: function(data){
-        console.log(data);
+        // console.log(data);
         const { results } = data;
-        setSearchResult(results);
+        const arr = [{
+          collectionId: '000000',
+          collectionName: '',
+          artistName: '',
+          artworkUrl100: smallblank,
+        }, ...results]
+        setSearchResult(arr);
       }
     })
   }
@@ -269,7 +277,7 @@ function App() {
   }
 
   const handleSetGrid = (curRows, curColumns) => {
-    console.log('handling set grid');
+    // console.log('handling set grid');
     
     let newAlbums = { ...albums };
     const showingColumns = newAlbums.row1.cols.filter(album => album.showCol === false);
@@ -277,11 +285,11 @@ function App() {
     const hideCol = (row, differ) => {
       const theRow = newAlbums[row];
       const toUpdate = _.takeRight(theRow.cols, differ);
-      console.log(toUpdate);
+      // console.log(toUpdate);
      
       const updated = _.map(toUpdate, each => ({ ...each, showCol: true}));
       const dropped = _.dropRight(theRow.cols, differ);
-      console.log(dropped);
+      // console.log(dropped);
       const merged = _.concat(dropped, updated);
       newAlbums[row].cols = merged;
 
@@ -379,6 +387,12 @@ function App() {
     else {
       setShowOptions('');
     }
+  }
+
+  const handleDoubleClick = (e) => {
+    const img = e.target;
+    img.src = smallblank;
+    img.alt = "";
   }
 
   return (
@@ -496,7 +510,7 @@ function App() {
       </div>
          {/* 검색창  */}
       <div id="framecontainer" style={{ display: showSearch, position: 'fixed', width: '100%', top: '20px', backgroundColor: 'transparent', overflow: 'auto'}}>
-        <img src='/cross.png' alt="cross" onClick={() => setShowSearch('none')}/>
+        <img src={cross} alt="cross" onClick={() => setShowSearch('none')}/>
         <div id="formcontainer">
           <form action="" method="get" acceptCharset="utf-8" id="iTunesSearchForm" onSubmit={handleSubmit}>
 	  	      <input type="text" className="text" name="term" id="term" onChange={(e) => {
@@ -666,7 +680,7 @@ function App() {
         </div>
         { 
           searchResult.length !== 0 ?
-          searchResult.map(collection => <img key={collection.collectionId} src={collection.artworkUrl60} alt={collection.collectionName + '-' + collection.artistName} onClick={handleClickAlbum}/>)
+          searchResult.map(collection => <img key={collection.collectionId} width={60} height={60} src={collection.artworkUrl100} alt={collection.collectionName + '-' + collection.artistName} onClick={handleClickAlbum}/>)
           :
           <></>
         }
