@@ -2,37 +2,66 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.topCon {
+  background-color: black;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 100vw;
+  display: block;
+  /* gap: 1px; */
+  /* align-items: center;
+  justify-items: center; */
+  /* grid-template-rows: repeat(3, "auto"); */
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.row {
+  /* display: block; */
+  /* gap: 5px; */
+  /* align-items: center;
+  justify-items: center; */
+  /* grid-template-columns: repeat(5, 18vw);
+  grid-template-rows: 1fr; */
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+#row6 {
+  display: 'none';
+}
+
+.row-6 {
+  display: grid;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-items: center;
+  grid-template-columns: repeat(6, 15vw);
+  grid-template-rows: 1fr 1fr;
+}
+
+.row-10 {
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-columns: repeat(10, 10vw);
+  grid-template-rows: 1fr 1fr;
+}
+
+.topCon div img {
+  width: 18vw;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+
+.figure {
+  display: inline;
+  /* background-color: wheat; */
+  box-sizing: border-box;
+  margin: 0;
+}
+
+figcaption {
+  display: inline;
+}
+
+ul {
+  list-style: none;
   color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  font-size: 10px;
 }

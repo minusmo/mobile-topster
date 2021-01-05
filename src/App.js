@@ -1,23 +1,795 @@
-import logo from './logo.svg';
+import React, { useState, useRef, useEffect } from 'react';
+import $ from 'jquery';
+import * as _ from "lodash";
+import { saveAs } from 'file-saver';
+import * as htmlToImage from 'html-to-image';
 import './App.css';
 
+let initAlbums = {
+  'row1': {
+    isShow: false,
+    cols: new Array(6).fill({
+      src: "/smallblank.png",
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row2': {
+    isShow: false,
+    cols: new Array(6).fill({
+      src: "/smallblank.png",
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row3': {
+    isShow: false,
+    cols: new Array(6).fill({
+      src: "/smallblank.png",
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row4': {
+    isShow: false,
+    cols: new Array(6).fill({
+      src: "/smallblank.png",
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row5': {
+    isShow: false,
+    cols: new Array(6).fill({
+      src: "/smallblank.png",
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row6': {
+    isShow: true,
+    cols: new Array(6).fill({
+      src: "/smallblank.png",
+      alt: "",
+      showCol: false,
+  }),
+},
+}
+
+// console.log(initAlbums['row1']['cols'])
+initAlbums['row1']['cols'].splice(5,1,{
+  src: "/smallblank.png",
+  alt: "",
+  showCol: true,
+});
+initAlbums['row2']['cols'].splice(5,1,{
+  src: "/smallblank.png",
+  alt: "",
+  showCol: true,
+});
+initAlbums['row3']['cols'].splice(5,1,{
+  src: "/smallblank.png",
+  alt: "",
+  showCol: true,
+});
+initAlbums['row4']['cols'].splice(5,1,{
+  src: "/smallblank.png",
+  alt: "",
+  showCol: true,
+});
+initAlbums['row5']['cols'].splice(5,1,{
+  src: "/smallblank.png",
+  alt: "",
+  showCol: true,
+});
+initAlbums['row6']['cols'].splice(5,1,{
+  src: "/smallblank.png",
+  alt: "",
+  showCol: true,
+});
+
+console.log(initAlbums);
+
+const initTitles = {
+  row1: new Array(6).fill(""),
+  row2: new Array(6).fill(""),
+  row3: new Array(6).fill(""),
+  row4: new Array(6).fill(""),
+  row5: new Array(6).fill(""),
+  row6: new Array(6).fill(""),
+};
+
 function App() {
+  // initAlbums['row2']['cols'][5]['showCol'] = 'none';
+  // initAlbums['row3']['cols'][5]['showCol'] = 'none';
+  // initAlbums['row4']['cols'][5]['showCol'] = 'none';
+  // initAlbums['row5']['cols'][5]['showCol'] = 'none';
+  // initAlbums['row6']['cols'][5]['showCol'] = 'none';
+
+  const [ albums, setAlbums ] = useState(initAlbums);
+  const [ showSearch, setShowSearch ] = useState('none');
+  const [ selected, setSelected ] = useState(null);
+  const [ term, setTerm ] = useState("");
+  const [ country, setCountry ] = useState("us");
+  const [ searchResult, setSearchResult ] = useState([]);
+  const [ showAlbumTitle, setShowAlbumTitle ] = useState(false);
+  const [ showOptions, setShowOptions ] = useState('none');
+  const [ backgroundColor, setBackgroundColor ] = useState("#000");
+  const [ rows, setRows ] = useState(5);
+  const [ columns, setColumns] = useState(5);
+  const [ albumWidth, setAlbumWidth ] = useState("18vw");
+  const [ titles, setTitles ] = useState(initTitles);
+
+  const handleClickTopster = (e) => {
+    e.preventDefault();
+    if (showSearch === 'none') {
+      setShowSearch('');
+      setSelected(e.target.id);
+      console.log(e.target.id);
+    }
+    
+  }
+
+  const handleClickAlbum = (e) => {
+    console.log('handle click album');
+    // const imgs = document.getElementsByTagName('img');
+    // imgs[selected].src = e.target.src;
+    // imgs[selected].alt = e.target.alt;
+
+    const selectedRow = selected.slice(0, 4);
+    const selectedCol = Number.parseInt(selected.slice(5));
+    const newAlbums = _.assign({}, albums);
+    
+    console.log(selectedRow);
+    console.log(selectedCol);
+    console.log(newAlbums[selectedRow].cols[selectedCol])
+    newAlbums[selectedRow].cols.splice(selectedCol, 1, { src: e.target.src, alt: e.target.alt });
+    // _.assign(newAlbums[selectedRow].cols[selectedCol], { src: e.target.src, alt: e.target.alt });
+
+    setAlbums(newAlbums);
+
+    const newTitles = {...titles};
+    newTitles[selectedRow][selectedCol] = e.target.alt;
+    setTitles(newTitles);
+    console.log('topster updated');
+
+    // for (let [index, imgNode] of albums.entries()) {
+    //   if (index === selected) {
+        
+    //     // const newAlbums = [...albums];
+    //     // const newImgNode = newAlbums[index];
+    //     // newImgNode.src = e.target.src;
+    //     // newImgNode.alt = e.target.alt;
+    //     // console.log(newImgNode);
+    //     // newAlbums.splice(selected, 1, newImgNode);
+    //     // setAlbums(newAlbums);
+    //     // imgNode.src = e.target.src;
+    //     // imgNode.alt = e.target.alt;
+    //     // const newTitles = [...titles];
+    //     // newTitles[index] = e.target.alt;
+    //     // console.log('topster updated');
+    //     break;
+    //   }
+    // }
+
+    setSelected(null);
+    setShowSearch('none');
+  }
+
+
+  //   const imgList = document.querySelectorAll('.image-cover');
+  //   imgList.forEach((node) => {
+  //     node.addEventListener('click', () => {
+  //       const imgUrl = node.src;
+  //       const title = node.alt.slice(0, node.alt.lastIndexOf('a'));
+  //       const textnode = node.parentElement.nextElementSibling.childNodes[2].textContent;
+  //       const artistName = textnode.trim(7);
+  //       window.parent.postMessage({ 
+  //         albumTitle: title,
+  //         artistName: artistName,
+  //         imgUrl: imgUrl
+  //       }, 'http://localhost:3000/');
+  //     })
+  //   })
+  // }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    console.log(term);
+    const trimTerm = term.trim();
+    const queryTerm = trimTerm.replace(" ", "+");
+    
+    // const ITUNES_API = `https://itunes.apple.com/search?term=${queryTerm}&country=${country}&media=music&entity=album&callback=jsonpcallback`;
+
+    // query itunes api
+    $.ajax({
+      url: 'https://itunes.apple.com/search',
+      crossDomain: true,
+      dataType: 'jsonp',
+      data: {
+        term: queryTerm,
+        country: country,
+        // media: 'music',
+        entity: 'album',
+        limit: 100,
+        explicit: 'No'
+      },
+      method: 'GET',
+      success: function(data){
+        console.log(data);
+        const { results } = data;
+        setSearchResult(results);
+      }
+    })
+  }
+
+  useEffect(() => {
+    // const imgNodes = document.getElementsByTagName('img');
+    // const nodeArr = Array.from(imgNodes);
+    // setAlbums(nodeArr);
+    // console.log(albums);
+  }, [])
+
+  // const ImgWithCaption = (props) => (
+  //   <figure className="figure" style={{...props.style, width: albumWidth }}>
+  //     <img id={props.id} src={props.src} alt={props.alt} onClick={handleClickTopster}/>
+  //     {/* {showAlbumTitle ? <figcaption>{props.alt}</figcaption> : <></>} */}
+  //   </figure>)
+
+  // const handleColumns = (curColumns) => {
+  //   // const docRows = Array.from(document.getElementsByClassName('row'));
+  //   // // const showingRows = docRows.filter(row => row.style.display === '');
+  //   // docRows.forEach((arow) => {
+  //   //   const showingColumns = Array.from(arow.children).filter(acolumn => acolumn.style.display === '');
+  //   let newAlbums = { ...albums };
+  //   const showingColumns = newAlbums.row1.cols.filter(album => album.showCol === false);
+
+  //     if (curColumns === showingColumns.length) {
+  //       return
+  //     }
+  //     else if (curColumns > showingColumns.length) {
+  //       // 새로운 칼럼이 기존보다 더 많을 경우
+  //       for (let row of Object.values(newAlbums)) {
+  //         for (let i = showingColumns.length; i < curColumns; i++) {
+  //           row[i].showCol = '';
+  //         }
+
+  //       }
+  //     }
+  //     else {
+  //       // 새로운 칼럼이 기존보다 더 적을 경우
+  //       // for (let row of Object.values(newAlbums)) {
+  //       //   for (let i = curColumns; i < showingColumns.length; i++) {
+  //       //     row[i].showCol = 'none';
+  //       //   }
+  //       // }
+  //       // for (let key of _.keys(albums)) {
+  //       //   // const toUpdate = _.takeRight(newAlbums[key].cols, diff);
+  //       //   // const updated = toUpdate.map(each => {
+  //       //   //   const newOne = { ...each, showCol: true };
+  //       //   //   return newOne
+  //       //   // })
+  //       //   // const dropped = _.dropRight(newAlbums[key], diff);
+  //       //   // const merged = _.concat(dropped, updated);
+  //       //   // newAlbums[key].cols = merged;
+  
+  //       //   // const last = _.nth(newAlbums[key].cols);
+  //       //   // console.log(last);
+  //       //   // last.showCol = true;
+  //       //   // newAlbums[key].cols.splice(newAlbums[key].cols.length - 1, 1, last);
+  //       //   newAlbums[key].cols[showingColumns.length - 1].showCol = true;
+  //       // }
+  //       setAlbums(newAlbums);
+  //       console.log(newAlbums);
+  //     }
+  //   // })
+    
+  // }
+
+  // const handleRows = (curRows) => {
+  //   const topCon = document.getElementById('topCon');
+  //   const showingRows = Array.from(topCon.children).filter(arow => arow.style.display === '');
+  //   if (curRows === showingRows.length) {
+  //     return
+  //   }
+  //   else if (curRows > showingRows.length) {
+  //     // 새로운 로우가 기존보다 많을 경우
+  //     for (let i = showingRows.length; i < curRows; i++) {
+  //       topCon.children[i].style.display = '';
+  //     }
+  //   }
+  //   else {
+  //     // 새로운 로우가 기존보다 적을 경우 
+  //     for (let i = curRows; i < showingRows.length; i++) {
+  //       topCon.children[i].style.display = 'none';
+  //     }
+  //   }
+  // }
+
+  const handleSave = () => {
+    const topCon = document.getElementById('topCon');
+    const options = {
+      pixelRatio: 1
+    }
+    htmlToImage.toBlob(topCon, options)
+    .then(data => saveAs(data, 'topster-mobile.jpg'))
+    .catch(err => console.warn(err));
+  }
+
+  const handleSetGrid = (curRows, curColumns) => {
+    console.log('handling set grid');
+    // handleRows(rows);
+    // handleColumns(columns);
+    
+    let newAlbums = { ...albums };
+    const showingColumns = newAlbums.row1.cols.filter(album => album.showCol === false);
+    // console.log(newAlbums);
+    
+    // console.log(showingColumns.length);
+    // console.log(typeof curColumns);
+    const hideCol = (row, differ) => {
+      const theRow = newAlbums[row];
+      const toUpdate = _.takeRight(theRow.cols, differ);
+      console.log(toUpdate);
+      // const updated = toUpdate.map(each => {
+      //   const newOne = { ...each, showCol: true };
+      //   return newOne
+      // })
+      const updated = _.map(toUpdate, each => ({ ...each, showCol: true}));
+      const dropped = _.dropRight(theRow.cols, differ);
+      console.log(dropped);
+      const merged = _.concat(dropped, updated);
+      newAlbums[row].cols = merged;
+
+    }
+    
+    const showCol = (row, differ) => {
+      const theRow = newAlbums[row];
+      const toUpdate = _.take(theRow.cols, differ);
+      console.log(toUpdate);
+      // const updated = toUpdate.map(each => {
+      //   const newOne = { ...each, showCol: false };
+      //   return newOne
+      // })
+      const updated = _.map(toUpdate, each => ({ ...each, showCol: false}));
+      const dropped = _.drop(theRow.cols, differ);
+      console.log(dropped);
+      const merged = _.concat(updated, dropped);
+      newAlbums[row].cols = merged;  
+    }
+
+    if (curColumns === showingColumns.length) {
+      
+    }
+    else if (curColumns > showingColumns.length) {
+      // 새로운 칼럼이 기존보다 더 많을 경우
+      // for (let arow of Object.values(newAlbums)) {
+      //   for (let i = showingColumns.length; i <= curColumns; i++) {
+      //     // arow['cols'][i]['showCol'] = false;
+      //     console.log(arow);
+      //     _.set(arow, `cols[${i}].showCol`, false);
+      //   }
+      // }
+      const diff = curColumns;
+      showCol('row1', diff);
+      showCol('row2', diff);
+      showCol('row3', diff);
+      showCol('row4', diff);
+      showCol('row5', diff);
+      showCol('row6', diff);
+      console.log(newAlbums);
+    }
+    else {
+      
+      // 새로운 칼럼이 기존보다 더 적을 경우
+      // for (let arow of Object.values(newAlbums)) {
+      //   for (let i = curColumns; i <= showingColumns.length; i++) {
+      //     console.log(i);
+      //     console.log(arow);
+      //     arow.cols[i].showCol = true;
+      //     // _.set(arow, `cols[${i}].showCol`, true);
+      //     console.log(arow);
+      //   }
+      // }
+
+      // Object.keys(albums).forEach((key, index) => {
+      //   console.log(albums);
+      //   console.log(key);
+      //   albums[key].cols.forEach((col, index, thisRow) => {
+      //     if (index >= curColumns) {
+      //       console.log(newAlbums[key]['cols']);
+      //       newAlbums[key]['cols'][index].showCol = true;
+      //       console.log(newAlbums[key]['cols']);
+      //       return
+      //     }
+      //   })
+      //   return
+      // })
+      
+      const diff = 6 - curColumns;
+      console.log(albums);
+      // for (let key of _.keys(newAlbums)) {
+      //   // const toUpdate = _.takeRight(newAlbums[key].cols, diff);
+      //   // const updated = toUpdate.map(each => {
+      //   //   const newOne = { ...each, showCol: true };
+      //   //   return newOne
+      //   // })
+      //   // const dropped = _.dropRight(newAlbums[key], diff);
+      //   // const merged = _.concat(dropped, updated);
+      //   // newAlbums[key].cols = merged;
+
+      //   const last = _.last(newAlbums[key].cols);
+      //   console.log(last);
+      //   last.showCol = true;
+      //   newAlbums[key].cols.splice(newAlbums[key].cols.length - 1, 1, last);
+      // }
+      console.log(newAlbums);
+      hideCol('row1', diff);
+      hideCol('row2', diff);
+      hideCol('row3', diff);
+      hideCol('row4', diff);
+      hideCol('row5', diff);
+      hideCol('row6', diff);
+      console.log(newAlbums);
+    }
+
+    console.log('handling rows');
+    // const showingRows = Object.getOwnPropertyNames(albums);
+    let count = 0;
+    for (let row of Object.values(newAlbums)) {
+      if (row.isShow === false) {
+        count += 1;
+      }
+    }
+
+    console.log(count);
+    console.log(curRows);
+
+    if (curRows === count) {
+      
+    }
+    else if (curRows > count) {
+      // 새로운 로우가 기존보다 많을 경우
+      // for (let [index, element] of Object.keys(newAlbums).entries()) {
+      //   if (index >= count) {
+      //     newAlbums[element].isShow = false;
+      //     console.log(newAlbums[element]);
+      //   }
+      // }
+      Object.keys(newAlbums).forEach((key, index) => {
+        if (index <= curRows) {
+          newAlbums[key].isShow = false;
+        }
+      })
+    }
+    else {
+      // 새로운 로우가 기존보다 적을 경우 
+      // for (let [key, value] of Object.keys(newAlbums)) {
+      //   if (index >= count) {
+      //     newAlbums[element].isShow = true;
+      //   }
+      // }
+      Object.keys(newAlbums).forEach((key, index) => {
+        if (index >= curRows) {
+          newAlbums[key].isShow = true;
+        }
+      })
+    }
+
+    console.log(newAlbums);
+    setAlbums(newAlbums);
+
+    console.log(curColumns);
+    const newImgWidth = `${Math.floor(90 / curColumns)}vw`;
+    console.log(newImgWidth);
+    setAlbumWidth(newImgWidth);
+  }
+
+  const handleShowOptions = () => {
+    if (showOptions === '') {
+      setShowOptions('none');
+    }
+    else {
+      setShowOptions('');
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={handleShowOptions}>Options</button>
+      <button onClick={handleSave}>Save</button>
+      {/* 탑스터  */}
+      <div id="topCon" className="topCon" style={{ backgroundColor: backgroundColor }}>
+        <div className="row" id="row1" hidden={albums['row1'].isShow}>
+          {albums['row1']['cols'].map((album, index) => {
+            return (<img key={`row1-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row1-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+           {/* <ImgWithCaption id={0} src={albums[0].src} alt={albums[0].alt}/>
+           <ImgWithCaption id={1} src={albums[1].src} alt={albums[1].alt}/>
+           <ImgWithCaption id={2} src={albums[2].src} alt={albums[2].alt}/>
+           <ImgWithCaption id={3} src={albums[3].src} alt={albums[3].alt}/>
+           <ImgWithCaption id={4} src={albums[4].src} alt={albums[4].alt}/>
+           <ImgWithCaption style={{ display: 'none' }} id={5} src={albums[5].src]} alt={albums[5].alt}/> */}
+        </div>
+        <div className="row" id="row2" hidden={albums['row2'].isShow}>
+          {albums['row2']['cols'].map((album, index) => {
+            return (<img key={`row2-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row2-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+           {/* <ImgWithCaption id={6} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={7} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={8} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={9} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={10} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption style={{ display: 'none' }} id={11} src={"/smallblank.png"} alt={""}/> */}
+        </div>
+        <div className="row" id="row3" hidden={albums['row3'].isShow}>
+          {albums['row3']['cols'].map((album, index) => {
+            return (<img key={`row3-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row3-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+           {/* <ImgWithCaption id={12} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={13} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={14} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={15} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={16} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption style={{ display: 'none' }} id={17} src={"/smallblank.png"} alt={""}/> */}
+        </div>
+        <div className="row" id="row4" hidden={albums['row4'].isShow}>
+          {albums['row4']['cols'].map((album, index) => {
+            return (<img key={`row4-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row4-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+           {/* <ImgWithCaption id={18} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={19} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={20} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={21} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={22} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption style={{ display: 'none' }} id={23} src={"/smallblank.png"} alt={""}/> */}
+        </div>
+        <div className="row" id="row5" hidden={albums['row5'].isShow}>
+          {albums['row5']['cols'].map((album, index) => {
+            return (<img key={`row5-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row5-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+           {/* <ImgWithCaption id={24} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={25} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={26} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={27} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={28} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption style={{ display: 'none' }} id={29} src={"/smallblank.png"} alt={""}/> */}
+        </div>
+        <div className="row" id="row6" hidden={true}>
+          {albums['row6']['cols'].map((album, index) => {
+            return (<img key={`row6-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row6-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+           {/* <ImgWithCaption id={30} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={31} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={32} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={33} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption id={34} src={"/smallblank.png"} alt={""}/>
+           <ImgWithCaption style={{ display: 'none' }} id={35} src={"/smallblank.png"} alt={""}/> */}
+        </div>
+        <div style={ showAlbumTitle ? { display: '' } : { display: 'none' } }>
+          <ul>
+            {titles['row1'].map((title,index) => <li key={`row1-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row2'].map((title,index) => <li key={`row2-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row3'].map((title,index) => <li key={`row3-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row4'].map((title,index) => <li key={`row4-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row5'].map((title,index) => <li key={`row5-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row6'].map((title,index) => <li key={`row6-${index}-title`} >{title}</li>)}
+          </ul>
+        </div>
+      </div>
+      <div style={{ display: showOptions }}>
+        {/* <input type="text" id="widthInput" name="widthInput"/>
+        <input type="text" id="heightInput" name="heightInput"/>
+        <button>submit</button> */}
+        <input type="checkbox" checked={showAlbumTitle} onChange={(e) => setShowAlbumTitle(!showAlbumTitle)}/> 
+        <label>album titles </label>
+        <br></br>
+        <label>Background: </label>
+        <input type="text" placeholder="#HEX color" value={backgroundColor} onChange={e => setBackgroundColor(e.target.value)}/>
+        <label>#HEX</label>
+        <br></br>
+        <label>rows</label>
+        <input type="range" min="1" max="6" value={rows} onChange={e => {
+          setRows(Number.parseInt(e.target.value))
+          e.preventDefault();
+          }}/><span>{rows}</span>
+        <br></br>
+        <label>columns</label>
+        <input type="range" min="1" max="6" value={columns} onChange={e => {
+          setColumns(Number.parseInt(e.target.value));
+          e.preventDefault();
+          }}/><span>{columns}</span>
+          <br></br>
+        <button onClick={(e) => {
+          handleSetGrid(rows, columns)
+          e.preventDefault();
+          }}>SetGrid</button>
+      </div>
+         {/* 검색창  */}
+      <div id="framecontainer" style={{ display: showSearch, position: 'fixed', width: '100%', top: '20px', backgroundColor: 'transparent', overflow: 'auto'}}>
+        <img src='/cross.png' alt="cross" onClick={() => setShowSearch('none')}/>
+        <div id="formcontainer">
+          <form action="" method="get" acceptCharset="utf-8" id="iTunesSearchForm" onSubmit={handleSubmit}>
+	  	      <input type="text" className="text" name="term" id="term" onChange={(e) => {
+              setTerm(e.target.value);
+              }}/>
+	  	      <select name="country" id="country" onChange={(e) => setCountry(e.target.value)}>
+                  <option value="us">United States of America</option>
+                  <option value="gb">United Kingdom</option>
+                  <option value="al">Albania</option>
+                  <option value="dz">Algeria</option>
+                  <option value="ao">Angola</option>
+                  <option value="ai">Anguilla</option>
+                  <option value="ag">Antigua and Barbuda</option>
+                  <option value="ar">Argentina</option>
+                  <option value="am">Armenia</option>
+                  <option value="au">Australia</option>
+                  <option value="at">Austria</option>
+                  <option value="az">Azerbaijan</option>
+                  <option value="bs">Bahamas</option>
+                  <option value="bh">Bahrain</option>
+                  <option value="bb">Barbados</option>
+                  <option value="by">Belarus</option>
+                  <option value="be">Belgium</option>
+                  <option value="bz">Belize</option>
+                  <option value="bj">Benin</option>
+                  <option value="bm">Bermuda</option>
+                  <option value="bt">Bhutan</option>
+                  <option value="bo">Bolivia</option>
+                  <option value="bw">Botswana</option>
+                  <option value="br">Brazil</option>
+                  <option value="vg">British Virgin Islands</option>
+                  <option value="bn">Brunei Darussalam</option>
+                  <option value="bg">Bulgaria</option>
+                  <option value="bf">Burkina-Faso</option>
+                  <option value="kh">Cambodia</option>
+                  <option value="ca">Canada</option>
+                  <option value="cv">Cape Verde</option>
+                  <option value="ky">Cayman Islands</option>
+                  <option value="td">Chad</option>
+                  <option value="cl">Chile</option>
+                  <option value="cn">China</option>
+                  <option value="co">Colombia</option>
+                  <option value="cr">Costa Rica</option>
+                  <option value="hr">Croatia</option>
+                  <option value="cy">Cyprus</option>
+                  <option value="cz">Czech Republic</option>
+                  <option value="cg">Democratic Republic of the Congo</option>
+                  <option value="dk">Denmark</option>
+                  <option value="dm">Dominica</option>
+                  <option value="do">Dominican Republic</option>
+                  <option value="ec">Ecuador</option>
+                  <option value="eg">Egypt</option>
+                  <option value="sv">El Salvador</option>
+                  <option value="ee">Estonia</option>
+                  <option value="fm">Federated States of Micronesia</option>
+                  <option value="fj">Fiji</option>
+                  <option value="fi">Finland</option>
+                  <option value="fr">France</option>
+                  <option value="gm">Gambia</option>
+                  <option value="de">Germany</option>
+                  <option value="gh">Ghana</option>
+                  <option value="gr">Greece</option>
+                  <option value="gd">Grenada</option>
+                  <option value="gt">Guatemala</option>
+                  <option value="gw">Guinea Bissau</option>
+                  <option value="gy">Guyana</option>
+                  <option value="hn">Honduras</option>
+                  <option value="hk">Hong Kong</option>
+                  <option value="hu">Hungary</option>
+                  <option value="is">Iceland</option>
+                  <option value="in">India</option>
+                  <option value="id">Indonesia</option>
+                  <option value="ie">Ireland</option>
+                  <option value="il">Israel</option>
+                  <option value="it">Italy</option>
+                  <option value="jm">Jamaica</option>
+                  <option value="jp">Japan</option>
+                  <option value="jo">Jordan</option>
+                  <option value="kz">Kazakhstan</option>
+                  <option value="ke">Kenya</option>
+                  <option value="kg">Krygyzstan</option>
+                  <option value="kw">Kuwait</option>
+                  <option value="la">Laos</option>
+                  <option value="lv">Latvia</option>
+                  <option value="lb">Lebanon</option>
+                  <option value="lr">Liberia</option>
+                  <option value="lt">Lithuania</option>
+                  <option value="lu">Luxembourg</option>
+                  <option value="mo">Macau</option>
+                  <option value="mk">Macedonia</option>
+                  <option value="mg">Madagascar</option>
+                  <option value="mw">Malawi</option>
+                  <option value="my">Malaysia</option>
+                  <option value="ml">Mali</option>
+                  <option value="mt">Malta</option>
+                  <option value="mr">Mauritania</option>
+                  <option value="mu">Mauritius</option>
+                  <option value="mx">Mexico</option>
+                  <option value="md">Moldova</option>
+                  <option value="mn">Mongolia</option>
+                  <option value="ms">Montserrat</option>
+                  <option value="mz">Mozambique</option>
+                  <option value="na">Namibia</option>
+                  <option value="np">Nepal</option>
+                  <option value="nl">Netherlands</option>
+                  <option value="nz">New Zealand</option>
+                  <option value="ni">Nicaragua</option>
+                  <option value="ne">Niger</option>
+                  <option value="ng">Nigeria</option>
+                  <option value="no">Norway</option>
+                  <option value="om">Oman</option>
+                  <option value="pk">Pakistan</option>
+                  <option value="pw">Palau</option>
+                  <option value="pa">Panama</option>
+                  <option value="pg">Papua New Guinea</option>
+                  <option value="py">Paraguay</option>
+                  <option value="pe">Peru</option>
+                  <option value="ph">Philippines</option>
+                  <option value="pl">Poland</option>
+                  <option value="pt">Portugal</option>
+                  <option value="qa">Qatar</option>
+                  <option value="tt">Republic of Trinidad and Tobago</option>
+                  <option value="ro">Romania</option>
+                  <option value="ru">Russia</option>
+                  <option value="kn">Saint Kitts and Nevis</option>
+                  <option value="lc">Saint Lucia</option>
+                  <option value="vc">Saint Vincent and the Grenadines</option>
+                  <option value="st">Sao Tome e Principe</option>
+                  <option value="sa">Saudi Arabia</option>
+                  <option value="sn">Senegal</option>
+                  <option value="sc">Seychelles</option>
+                  <option value="sl">Sierra Leone</option>
+                  <option value="sg">Singapore</option>
+                  <option value="sk">Slovakia</option>
+                  <option value="si">Slovenia</option>
+                  <option value="sb">Soloman Islands</option>
+                  <option value="za">South Africa</option>
+                  <option value="kr">South Korea</option>
+                  <option value="es">Spain</option>
+                  <option value="lk">Sri Lanka</option>
+                  <option value="sr">Suriname</option>
+                  <option value="sz">Swaziland</option>
+                  <option value="se">Sweden</option>
+                  <option value="ch">Switzerland</option>
+                  <option value="tw">Taiwan</option>
+                  <option value="tj">Tajikistan</option>
+                  <option value="tz">Tanzania</option>
+                  <option value="th">Thailand</option>
+                  <option value="tn">Tunisia</option>
+                  <option value="tr">Turkey</option>
+                  <option value="tm">Turkmenistan</option>
+                  <option value="tc">Turks and Caicos Islands</option>
+                  <option value="ug">Uganda</option>
+                  <option value="ua">Ukraine</option>
+                  <option value="ae">United Arab Emirates</option>
+                  <option value="gb">United Kingdom</option>
+                  <option value="us">United States of America</option>
+                  <option value="uy">Uruguay</option>
+                  <option value="uz">Uzbekistan</option>
+                  <option value="ve">Venezuela</option>
+                  <option value="vn">Vietnam</option>
+                  <option value="ye">Yemen</option>
+                  <option value="zw">Zimbabwe</option>
+	  	      </select>
+	  	      <input type="submit" className="submit" value="Search"/>
+	        </form>
+        </div>
+        {/* <iframe ref={iframeRef} id="iframe" src="https://www.covermytunes.com/" width="80%" height="500px" onLoad={handelOnloadIframe}>
+        </iframe> */}
+        { 
+          searchResult.length !== 0 ?
+          searchResult.map(collection => <img key={collection.collectionId} src={collection.artworkUrl60} alt={collection.collectionName + '-' + collection.artistName} onClick={handleClickAlbum}/>)
+          :
+          <></>
+        }
+      </div>
     </div>
   );
 }
