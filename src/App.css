@@ -24,7 +24,7 @@
 }
 
 #row6 {
-  display: 'none';
+  display: "none";
 }
 
 .row-6 {
@@ -64,4 +64,9 @@ ul {
   list-style: none;
   color: white;
   font-size: 10px;
+}
+
+h5 {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }

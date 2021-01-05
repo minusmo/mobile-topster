@@ -357,7 +357,7 @@ function App() {
     else if (curRows > count) {
       // 새로운 로우가 기존보다 많을 경우
       Object.keys(newAlbums).forEach((key, index) => {
-        if (index <= curRows) {
+        if (index < curRows) {
           newAlbums[key].isShow = false;
         }
       })
@@ -456,7 +456,7 @@ function App() {
            <ImgWithCaption id={28} src={"/smallblank.png"} alt={""}/>
            <ImgWithCaption style={{ display: 'none' }} id={29} src={"/smallblank.png"} alt={""}/> */}
         </div>
-        <div className="row" id="row6" hidden={true}>
+        <div className="row" id="row6" hidden={albums['row6'].isShow}>
           {albums['row6']['cols'].map((album, index) => {
             return (<img key={`row6-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row6-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
             })}
@@ -682,10 +682,15 @@ function App() {
         </div>
         { 
           searchResult.length !== 0 ?
-          searchResult.map(collection => <img key={collection.collectionId} width={60} height={60} src={collection.artworkUrl100} alt={collection.collectionName + '-' + collection.artistName} onClick={handleClickAlbum}/>)
+          searchResult.map(collection => <img key={collection.collectionId} width={60} height={60} src={collection.artworkUrl100} alt={collection.collectionName + ' - ' + collection.artistName} onClick={handleClickAlbum}/>)
           :
           <></>
         }
+      </div>
+      <div>
+        <h5>사용방법: desktop 탑스터와 비슷합니다.</h5>
+        <h5>이미지를 클릭하면 새로운 앨범을 <br></br>검색하고 추가할 수 있습니다.</h5>
+        <h5>문의: bldolphin96@gmail.com</h5>
       </div>
     </div>
   );
