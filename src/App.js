@@ -100,11 +100,6 @@ const initTitles = {
 };
 
 function App() {
-  // initAlbums['row2']['cols'][5]['showCol'] = 'none';
-  // initAlbums['row3']['cols'][5]['showCol'] = 'none';
-  // initAlbums['row4']['cols'][5]['showCol'] = 'none';
-  // initAlbums['row5']['cols'][5]['showCol'] = 'none';
-  // initAlbums['row6']['cols'][5]['showCol'] = 'none';
 
   const [ albums, setAlbums ] = useState(initAlbums);
   const [ showSearch, setShowSearch ] = useState('none');
@@ -132,9 +127,6 @@ function App() {
 
   const handleClickAlbum = (e) => {
     console.log('handle click album');
-    // const imgs = document.getElementsByTagName('img');
-    // imgs[selected].src = e.target.src;
-    // imgs[selected].alt = e.target.alt;
 
     const selectedRow = selected.slice(0, 4);
     const selectedCol = Number.parseInt(selected.slice(5));
@@ -144,7 +136,6 @@ function App() {
     console.log(selectedCol);
     console.log(newAlbums[selectedRow].cols[selectedCol])
     newAlbums[selectedRow].cols.splice(selectedCol, 1, { src: e.target.src, alt: e.target.alt });
-    // _.assign(newAlbums[selectedRow].cols[selectedCol], { src: e.target.src, alt: e.target.alt });
 
     setAlbums(newAlbums);
 
@@ -153,45 +144,9 @@ function App() {
     setTitles(newTitles);
     console.log('topster updated');
 
-    // for (let [index, imgNode] of albums.entries()) {
-    //   if (index === selected) {
-        
-    //     // const newAlbums = [...albums];
-    //     // const newImgNode = newAlbums[index];
-    //     // newImgNode.src = e.target.src;
-    //     // newImgNode.alt = e.target.alt;
-    //     // console.log(newImgNode);
-    //     // newAlbums.splice(selected, 1, newImgNode);
-    //     // setAlbums(newAlbums);
-    //     // imgNode.src = e.target.src;
-    //     // imgNode.alt = e.target.alt;
-    //     // const newTitles = [...titles];
-    //     // newTitles[index] = e.target.alt;
-    //     // console.log('topster updated');
-    //     break;
-    //   }
-    // }
-
     setSelected(null);
     setShowSearch('none');
   }
-
-
-  //   const imgList = document.querySelectorAll('.image-cover');
-  //   imgList.forEach((node) => {
-  //     node.addEventListener('click', () => {
-  //       const imgUrl = node.src;
-  //       const title = node.alt.slice(0, node.alt.lastIndexOf('a'));
-  //       const textnode = node.parentElement.nextElementSibling.childNodes[2].textContent;
-  //       const artistName = textnode.trim(7);
-  //       window.parent.postMessage({ 
-  //         albumTitle: title,
-  //         artistName: artistName,
-  //         imgUrl: imgUrl
-  //       }, 'http://localhost:3000/');
-  //     })
-  //   })
-  // }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -225,10 +180,6 @@ function App() {
   }
 
   useEffect(() => {
-    // const imgNodes = document.getElementsByTagName('img');
-    // const nodeArr = Array.from(imgNodes);
-    // setAlbums(nodeArr);
-    // console.log(albums);
   }, [])
 
   // const ImgWithCaption = (props) => (
@@ -319,23 +270,15 @@ function App() {
 
   const handleSetGrid = (curRows, curColumns) => {
     console.log('handling set grid');
-    // handleRows(rows);
-    // handleColumns(columns);
     
     let newAlbums = { ...albums };
     const showingColumns = newAlbums.row1.cols.filter(album => album.showCol === false);
-    // console.log(newAlbums);
-    
-    // console.log(showingColumns.length);
-    // console.log(typeof curColumns);
+
     const hideCol = (row, differ) => {
       const theRow = newAlbums[row];
       const toUpdate = _.takeRight(theRow.cols, differ);
       console.log(toUpdate);
-      // const updated = toUpdate.map(each => {
-      //   const newOne = { ...each, showCol: true };
-      //   return newOne
-      // })
+     
       const updated = _.map(toUpdate, each => ({ ...each, showCol: true}));
       const dropped = _.dropRight(theRow.cols, differ);
       console.log(dropped);
@@ -348,10 +291,7 @@ function App() {
       const theRow = newAlbums[row];
       const toUpdate = _.take(theRow.cols, differ);
       console.log(toUpdate);
-      // const updated = toUpdate.map(each => {
-      //   const newOne = { ...each, showCol: false };
-      //   return newOne
-      // })
+
       const updated = _.map(toUpdate, each => ({ ...each, showCol: false}));
       const dropped = _.drop(theRow.cols, differ);
       console.log(dropped);
@@ -364,13 +304,7 @@ function App() {
     }
     else if (curColumns > showingColumns.length) {
       // 새로운 칼럼이 기존보다 더 많을 경우
-      // for (let arow of Object.values(newAlbums)) {
-      //   for (let i = showingColumns.length; i <= curColumns; i++) {
-      //     // arow['cols'][i]['showCol'] = false;
-      //     console.log(arow);
-      //     _.set(arow, `cols[${i}].showCol`, false);
-      //   }
-      // }
+   
       const diff = curColumns;
       showCol('row1', diff);
       showCol('row2', diff);
@@ -383,47 +317,10 @@ function App() {
     else {
       
       // 새로운 칼럼이 기존보다 더 적을 경우
-      // for (let arow of Object.values(newAlbums)) {
-      //   for (let i = curColumns; i <= showingColumns.length; i++) {
-      //     console.log(i);
-      //     console.log(arow);
-      //     arow.cols[i].showCol = true;
-      //     // _.set(arow, `cols[${i}].showCol`, true);
-      //     console.log(arow);
-      //   }
-      // }
-
-      // Object.keys(albums).forEach((key, index) => {
-      //   console.log(albums);
-      //   console.log(key);
-      //   albums[key].cols.forEach((col, index, thisRow) => {
-      //     if (index >= curColumns) {
-      //       console.log(newAlbums[key]['cols']);
-      //       newAlbums[key]['cols'][index].showCol = true;
-      //       console.log(newAlbums[key]['cols']);
-      //       return
-      //     }
-      //   })
-      //   return
-      // })
       
       const diff = 6 - curColumns;
       console.log(albums);
-      // for (let key of _.keys(newAlbums)) {
-      //   // const toUpdate = _.takeRight(newAlbums[key].cols, diff);
-      //   // const updated = toUpdate.map(each => {
-      //   //   const newOne = { ...each, showCol: true };
-      //   //   return newOne
-      //   // })
-      //   // const dropped = _.dropRight(newAlbums[key], diff);
-      //   // const merged = _.concat(dropped, updated);
-      //   // newAlbums[key].cols = merged;
-
-      //   const last = _.last(newAlbums[key].cols);
-      //   console.log(last);
-      //   last.showCol = true;
-      //   newAlbums[key].cols.splice(newAlbums[key].cols.length - 1, 1, last);
-      // }
+  
       console.log(newAlbums);
       hideCol('row1', diff);
       hideCol('row2', diff);
@@ -435,7 +332,7 @@ function App() {
     }
 
     console.log('handling rows');
-    // const showingRows = Object.getOwnPropertyNames(albums);
+
     let count = 0;
     for (let row of Object.values(newAlbums)) {
       if (row.isShow === false) {
@@ -451,12 +348,6 @@ function App() {
     }
     else if (curRows > count) {
       // 새로운 로우가 기존보다 많을 경우
-      // for (let [index, element] of Object.keys(newAlbums).entries()) {
-      //   if (index >= count) {
-      //     newAlbums[element].isShow = false;
-      //     console.log(newAlbums[element]);
-      //   }
-      // }
       Object.keys(newAlbums).forEach((key, index) => {
         if (index <= curRows) {
           newAlbums[key].isShow = false;
@@ -464,12 +355,7 @@ function App() {
       })
     }
     else {
-      // 새로운 로우가 기존보다 적을 경우 
-      // for (let [key, value] of Object.keys(newAlbums)) {
-      //   if (index >= count) {
-      //     newAlbums[element].isShow = true;
-      //   }
-      // }
+      // 새로운 로우가 기존보다 적을 경우
       Object.keys(newAlbums).forEach((key, index) => {
         if (index >= curRows) {
           newAlbums[key].isShow = true;
@@ -584,9 +470,6 @@ function App() {
         </div>
       </div>
       <div style={{ display: showOptions }}>
-        {/* <input type="text" id="widthInput" name="widthInput"/>
-        <input type="text" id="heightInput" name="heightInput"/>
-        <button>submit</button> */}
         <input type="checkbox" checked={showAlbumTitle} onChange={(e) => setShowAlbumTitle(!showAlbumTitle)}/> 
         <label>album titles </label>
         <br></br>
@@ -781,8 +664,6 @@ function App() {
 	  	      <input type="submit" className="submit" value="Search"/>
 	        </form>
         </div>
-        {/* <iframe ref={iframeRef} id="iframe" src="https://www.covermytunes.com/" width="80%" height="500px" onLoad={handelOnloadIframe}>
-        </iframe> */}
         { 
           searchResult.length !== 0 ?
           searchResult.map(collection => <img key={collection.collectionId} src={collection.artworkUrl60} alt={collection.collectionName + '-' + collection.artistName} onClick={handleClickAlbum}/>)
