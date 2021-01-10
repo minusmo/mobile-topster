@@ -4,8 +4,8 @@
 
 .topCon {
   background-color: black;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 1.5vh;
+  padding-bottom: 1.5vh;
   width: 100vw;
   display: block;
   /* gap: 1px; */
@@ -23,7 +23,7 @@
   grid-template-rows: 1fr; */
 }
 
-#row6 {
+#row10 {
   display: "none";
 }
 
@@ -44,9 +44,9 @@
 }
 
 .topCon div img {
-  width: 18vw;
-  padding-left: 2px;
-  padding-right: 2px;
+  width: 10%;
+  padding-left: 0.2vh;
+  padding-right: 0.2vh;
 }
 
 .figure {

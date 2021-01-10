@@ -1,16 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Qs from 'querystring';
 import $ from 'jquery';
+import axios from 'axios';
 import * as _ from "lodash";
 import { saveAs } from 'file-saver';
 import * as htmlToImage from 'html-to-image';
 import './App.css';
 import smallblank from './smallblank.png';
 import cross from "./cross.png";
+import { config } from 'process';
 
 let initAlbums = {
   'row1': {
     isShow: false,
-    cols: new Array(6).fill({
+    cols: new Array(10).fill({
       src: smallblank,
       alt: "",
       showCol: false,
@@ -18,7 +21,7 @@ let initAlbums = {
 },
   'row2': {
     isShow: false,
-    cols: new Array(6).fill({
+    cols: new Array(10).fill({
       src: smallblank,
       alt: "",
       showCol: false,
@@ -26,7 +29,7 @@ let initAlbums = {
 },
   'row3': {
     isShow: false,
-    cols: new Array(6).fill({
+    cols: new Array(10).fill({
       src: smallblank,
       alt: "",
       showCol: false,
@@ -34,7 +37,7 @@ let initAlbums = {
 },
   'row4': {
     isShow: false,
-    cols: new Array(6).fill({
+    cols: new Array(10).fill({
       src: smallblank,
       alt: "",
       showCol: false,
@@ -42,15 +45,47 @@ let initAlbums = {
 },
   'row5': {
     isShow: false,
-    cols: new Array(6).fill({
+    cols: new Array(10).fill({
       src: smallblank,
       alt: "",
       showCol: false,
   }),
 },
   'row6': {
+    isShow: false,
+    cols: new Array(10).fill({
+      src: smallblank,
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row7': {
+    isShow: false,
+    cols: new Array(10).fill({
+      src: smallblank,
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row8': {
+    isShow: false,
+    cols: new Array(10).fill({
+      src: smallblank,
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row9': {
+    isShow: false,
+    cols: new Array(10).fill({
+      src: smallblank,
+      alt: "",
+      showCol: false,
+  }),
+},
+  'row10': {
     isShow: true,
-    cols: new Array(6).fill({
+    cols: new Array(10).fill({
       src: smallblank,
       alt: "",
       showCol: false,
@@ -59,32 +94,52 @@ let initAlbums = {
 }
 
 // console.log(initAlbums['row1']['cols'])
-initAlbums['row1']['cols'].splice(5,1,{
+initAlbums['row1']['cols'].splice(9,1,{
   src: smallblank,
   alt: "",
   showCol: true,
 });
-initAlbums['row2']['cols'].splice(5,1,{
+initAlbums['row2']['cols'].splice(9,1,{
   src: smallblank,
   alt: "",
   showCol: true,
 });
-initAlbums['row3']['cols'].splice(5,1,{
+initAlbums['row3']['cols'].splice(9,1,{
   src: smallblank,
   alt: "",
   showCol: true,
 });
-initAlbums['row4']['cols'].splice(5,1,{
+initAlbums['row4']['cols'].splice(9,1,{
   src: smallblank,
   alt: "",
   showCol: true,
 });
-initAlbums['row5']['cols'].splice(5,1,{
+initAlbums['row5']['cols'].splice(9,1,{
   src: smallblank,
   alt: "",
   showCol: true,
 });
-initAlbums['row6']['cols'].splice(5,1,{
+initAlbums['row6']['cols'].splice(9,1,{
+  src: smallblank,
+  alt: "",
+  showCol: true,
+});
+initAlbums['row7']['cols'].splice(9,1,{
+  src: smallblank,
+  alt: "",
+  showCol: true,
+});
+initAlbums['row8']['cols'].splice(9,1,{
+  src: smallblank,
+  alt: "",
+  showCol: true,
+});
+initAlbums['row9']['cols'].splice(9,1,{
+  src: smallblank,
+  alt: "",
+  showCol: true,
+});
+initAlbums['row10']['cols'].splice(9,1,{
   src: smallblank,
   alt: "",
   showCol: true,
@@ -93,12 +148,16 @@ initAlbums['row6']['cols'].splice(5,1,{
 // console.log(initAlbums);
 
 const initTitles = {
-  row1: new Array(6).fill(""),
-  row2: new Array(6).fill(""),
-  row3: new Array(6).fill(""),
-  row4: new Array(6).fill(""),
-  row5: new Array(6).fill(""),
-  row6: new Array(6).fill(""),
+  row1: new Array(10).fill(""),
+  row2: new Array(10).fill(""),
+  row3: new Array(10).fill(""),
+  row4: new Array(10).fill(""),
+  row5: new Array(10).fill(""),
+  row6: new Array(10).fill(""),
+  row7: new Array(10).fill(""),
+  row8: new Array(10).fill(""),
+  row9: new Array(10).fill(""),
+  row10: new Array(10).fill(""),
 };
 
 function App() {
@@ -112,9 +171,9 @@ function App() {
   const [ showAlbumTitle, setShowAlbumTitle ] = useState(false);
   const [ showOptions, setShowOptions ] = useState('none');
   const [ backgroundColor, setBackgroundColor ] = useState("#000");
-  const [ rows, setRows ] = useState(5);
-  const [ columns, setColumns] = useState(5);
-  const [ albumWidth, setAlbumWidth ] = useState("18vw");
+  const [ rows, setRows ] = useState(9);
+  const [ columns, setColumns] = useState(9);
+  const [ albumWidth, setAlbumWidth ] = useState("10%");
   const [ titles, setTitles ] = useState(initTitles);
 
   const handleClickTopster = (e) => {
@@ -144,7 +203,7 @@ function App() {
     const newTitles = {...titles};
     newTitles[selectedRow][selectedCol] = e.target.alt;
     setTitles(newTitles);
-    console.log('topster updated');
+    // console.log('topster updated');
 
     setSelected(null);
     setShowSearch('none');
@@ -153,38 +212,84 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    console.log(term);
+    // console.log(term);
     const trimTerm = term.trim();
     const queryTerm = trimTerm.replace(" ", "+");
     
     // const ITUNES_API = `https://itunes.apple.com/search?term=${queryTerm}&country=${country}&media=music&entity=album&callback=jsonpcallback`;
 
     // query itunes api
-    $.ajax({
-      url: 'https://itunes.apple.com/search',
-      crossDomain: true,
-      dataType: 'jsonp',
-      data: {
-        term: queryTerm,
-        country: country,
-        // media: 'music',
-        entity: 'album',
-        limit: 100,
-        explicit: 'No'
+    // $.ajax({
+    //   url: 'https://itunes.apple.com/search',
+    //   crossDomain: true,
+    //   dataType: 'jsonp',
+    //   data: {
+    //     term: queryTerm,
+    //     country: country,
+    //     // media: 'music',
+    //     entity: 'album',
+    //     limit: 100,
+    //     explicit: 'No'
+    //   },
+    //   method: 'GET',
+    //   success: function(data){
+    //     console.log(data);
+    //     const { results } = data;
+    //     const arr = [{
+    //       collectionId: '000000',
+    //       collectionName: '',
+    //       artistName: '',
+    //       artworkUrl100: smallblank,
+    //     }, ...results]
+    //     setSearchResult(arr);
+    //   }
+    // });
+
+    // query spotify api 
+    const authConfig = {
+      method: 'post',
+      url: 'https://accounts.spotify.com/api/token',
+      headers: { 
+        // 'Authorization': 'Basic MDY0YzVhODRkODFhNDkwNDg2NjA4ODNmMGI0ZmVlNTI6OTIxZjFiNzE4NDE2NGE4Nzk4ZDdkNDNiMWFkZWY0YmM=', 
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
-      method: 'GET',
-      success: function(data){
-        // console.log(data);
-        const { results } = data;
+      data: Qs.stringify({ 'grant_type': 'client_credentials' }),
+      auth: {
+        username: "064c5a84d81a49048660883f0b4fee52",
+        password: "921f1b7184164a8798d7d43b1adef4bc"
+      },
+      withCredentials: true
+  }
+
+    axios(authConfig)
+    .then(res => {
+      const api1 = `https://api.spotify.com/v1/search/?q=album:${queryTerm}%20OR%20artist:${queryTerm}&type=album&market=${country}&limit=50`;
+      const api2 = `https://api.spotify.com/v1/search/?q=${queryTerm}&type=album&market=${country}&limit=50`;
+      // console.log(res.data);
+      const { access_token } = res.data;
+      const queryConfig = {
+        method: 'get',
+        url: api2,
+        headers: { 
+          'Authorization': `Bearer ${access_token}`
+        }
+      };
+
+      axios(queryConfig)
+      .then(res => {
+        // console.log(res.data);
+        const { albums: { items } } = res.data;
         const arr = [{
-          collectionId: '000000',
-          collectionName: '',
-          artistName: '',
-          artworkUrl100: smallblank,
-        }, ...results]
+          artists: [{ name: '' }],
+          name: '',
+          images: [{ url: smallblank }],
+          id: '00000',
+        }, ...items]
         setSearchResult(arr);
-      }
+      })
     })
+    .catch(err => console.warn(err));
+
   }
 
   useEffect(() => {
@@ -268,11 +373,16 @@ function App() {
 
   const handleSave = () => {
     const topCon = document.getElementById('topCon');
+    topCon.style.width = '1700px';
+
     const options = {
-      pixelRatio: 1
+      pixelRatio: 1,
     }
     htmlToImage.toBlob(topCon, options)
-    .then(data => saveAs(data, 'topster-mobile.jpg'))
+    .then(data => {
+      saveAs(data, 'topster-mobile.png');
+      topCon.style.width = '100vw';
+    })
     .catch(err => console.warn(err));
   }
 
@@ -320,13 +430,17 @@ function App() {
       showCol('row4', diff);
       showCol('row5', diff);
       showCol('row6', diff);
+      showCol('row7', diff);
+      showCol('row8', diff);
+      showCol('row9', diff);
+      showCol('row10', diff);
       console.log(newAlbums);
     }
     else {
       
       // 새로운 칼럼이 기존보다 더 적을 경우
       
-      const diff = 6 - curColumns;
+      const diff = 10 - curColumns;
       console.log(albums);
   
       console.log(newAlbums);
@@ -336,6 +450,10 @@ function App() {
       hideCol('row4', diff);
       hideCol('row5', diff);
       hideCol('row6', diff);
+      hideCol('row7', diff);
+      hideCol('row8', diff);
+      hideCol('row9', diff);
+      hideCol('row10', diff);
       console.log(newAlbums);
     }
 
@@ -371,12 +489,12 @@ function App() {
       })
     }
 
-    console.log(newAlbums);
+    // console.log(newAlbums);
     setAlbums(newAlbums);
 
-    console.log(curColumns);
-    const newImgWidth = `${Math.floor(90 / curColumns)}vw`;
-    console.log(newImgWidth);
+    // console.log(curColumns);
+    const newImgWidth = `${Math.floor(95 / curColumns)}%`;
+    // console.log(newImgWidth);
     setAlbumWidth(newImgWidth);
   }
 
@@ -460,13 +578,28 @@ function App() {
           {albums['row6']['cols'].map((album, index) => {
             return (<img key={`row6-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row6-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
             })}
-           {/* <ImgWithCaption id={30} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={31} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={32} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={33} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={34} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption style={{ display: 'none' }} id={35} src={"/smallblank.png"} alt={""}/> */}
         </div>
+        <div className="row" id="row7" hidden={albums['row7'].isShow}>
+          {albums['row7']['cols'].map((album, index) => {
+            return (<img key={`row7-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row7-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+        </div>
+        <div className="row" id="row8" hidden={albums['row8'].isShow}>
+          {albums['row8']['cols'].map((album, index) => {
+            return (<img key={`row8-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row8-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+        </div>
+        <div className="row" id="row9" hidden={albums['row9'].isShow}>
+          {albums['row9']['cols'].map((album, index) => {
+            return (<img key={`row9-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row9-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+        </div>
+        <div className="row" id="row10" hidden={albums['row10'].isShow}>
+          {albums['row10']['cols'].map((album, index) => {
+            return (<img key={`row10-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row10-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            })}
+        </div>
+
         <div style={ showAlbumTitle ? { display: '' } : { display: 'none' } }>
           <ul>
             {titles['row1'].map((title,index) => <li key={`row1-${index}-title`} >{title}</li>)}
@@ -480,6 +613,14 @@ function App() {
             {titles['row5'].map((title,index) => <li key={`row5-${index}-title`} >{title}</li>)}
             <br></br>
             {titles['row6'].map((title,index) => <li key={`row6-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row7'].map((title,index) => <li key={`row7-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row8'].map((title,index) => <li key={`row8-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row9'].map((title,index) => <li key={`row9-${index}-title`} >{title}</li>)}
+            <br></br>
+            {titles['row10'].map((title,index) => <li key={`row10-${index}-title`} >{title}</li>)}
           </ul>
         </div>
       </div>
@@ -492,13 +633,13 @@ function App() {
         <label>#HEX</label>
         <br></br>
         <label>rows</label>
-        <input type="range" min="1" max="6" value={rows} onChange={e => {
+        <input type="range" min="1" max="10" value={rows} onChange={e => {
           setRows(Number.parseInt(e.target.value))
           e.preventDefault();
           }}/><span>{rows}</span>
         <br></br>
         <label>columns</label>
-        <input type="range" min="1" max="6" value={columns} onChange={e => {
+        <input type="range" min="1" max="10" value={columns} onChange={e => {
           setColumns(Number.parseInt(e.target.value));
           e.preventDefault();
           }}/><span>{columns}</span>
@@ -509,7 +650,7 @@ function App() {
           }}>SetGrid</button>
       </div>
          {/* 검색창  */}
-      <div id="framecontainer" style={{ display: showSearch, position: 'fixed', width: '100%', top: '20px', backgroundColor: 'transparent', overflow: 'auto'}}>
+      <div id="framecontainer" style={{ display: showSearch, position: 'absolute', width: '100%', top: '20px', left: 0, backgroundColor: 'transparent', overflow: 'auto'}}>
         <img src={cross} alt="cross" onClick={() => setShowSearch('none')}/>
         <div id="formcontainer">
           <form action="" method="get" acceptCharset="utf-8" id="iTunesSearchForm" onSubmit={handleSubmit}>
@@ -682,7 +823,7 @@ function App() {
         </div>
         { 
           searchResult.length !== 0 ?
-          searchResult.map(collection => <img key={collection.collectionId} width={60} height={60} src={collection.artworkUrl100} alt={collection.collectionName + ' - ' + collection.artistName} onClick={handleClickAlbum}/>)
+          searchResult.map(collection => <img key={collection.id} width={60} height={60} src={collection.images[0].url} alt={collection.name + ' - ' + collection.artists[0].name} onClick={handleClickAlbum}/>)
           :
           <></>
         }
