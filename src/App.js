@@ -9,6 +9,7 @@ import './App.css';
 import smallblank from './smallblank.png';
 import cross from "./cross.png";
 import { config } from 'process';
+import { username, password } from './credentials';
 
 let initAlbums = {
   'row1': {
@@ -255,8 +256,8 @@ function App() {
       },
       data: Qs.stringify({ 'grant_type': 'client_credentials' }),
       auth: {
-        username: "064c5a84d81a49048660883f0b4fee52",
-        password: "921f1b7184164a8798d7d43b1adef4bc"
+        username: username,
+        password: password,
       },
       withCredentials: true
   }
