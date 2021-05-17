@@ -1,33 +1,53 @@
 .App {
   text-align: center;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  /* display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; */
 }
 
 .topCon {
   background-color: black;
-  padding-top: 1.5vh;
-  padding-bottom: 1.5vh;
-  width: 100vw;
-  display: block;
-  /* gap: 1px; */
-  /* align-items: center;
-  justify-items: center; */
-  /* grid-template-rows: repeat(3, "auto"); */
+  /* padding-top: 1.5vh;
+  padding-bottom: 1.5vh; */
+  padding: 2.5vw;
+  width: 95vw;
+  height: 95vw;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  row-gap: 1%;
+  /* padding: auto; */
 }
 
 .row {
-  /* display: block; */
-  /* gap: 5px; */
-  /* align-items: center;
-  justify-items: center; */
-  /* grid-template-columns: repeat(5, 18vw);
-  grid-template-rows: 1fr; */
+  grid-row: span 1;
+  grid-column: span 10;
+  display: grid;
+  grid-template-rows: repeat(1, 1fr);
+  grid-template-columns: repeat(10, 1fr);
+  column-gap: 1%;
 }
 
-#row10 {
+.topCon .row div {
+  grid-column: span 1;
+  grid-row: span 1;
+  background-repeat: no-repeat;
+  /* background-image: url("https://picsum.photos/600/600"); */
+  background-position: center center;
+  background-size: contain;
+  /* border: 2% white solid; */
+  /* width: 100%;
+  height: auto; */
+}
+
+/* #row10 {
   display: "none";
-}
+} */
 
-.row-6 {
+/* .row-6 {
   display: grid;
   align-items: center;
   justify-items: center;
@@ -41,13 +61,7 @@
   justify-items: center;
   grid-template-columns: repeat(10, 10vw);
   grid-template-rows: 1fr 1fr;
-}
-
-.topCon div img {
-  width: 10%;
-  padding-left: 0.2vh;
-  padding-right: 0.2vh;
-}
+} */
 
 .figure {
   display: inline;
@@ -60,13 +74,40 @@ figcaption {
   display: inline;
 }
 
+#titleContainer {
+  background-color: black;
+  padding: 2.5vw;
+  font-weight: 700;
+  font-size: 0.5em;
+}
+
+#titleContainer li {
+  padding-left: auto;
+  padding-right: auto;
+}
+
+li::before {
+  content: "💿";
+  position: relative;
+  padding-right: 1em;
+}
+
 ul {
-  list-style: none;
   color: white;
-  font-size: 10px;
+  padding: 0;
+  /* padding-left: 30%; */
 }
 
 h5 {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.columnControl input {
+  width: 10vw;
+  text-align: center;
+}
+
+.columnControl p {
+  margin-top: 0.2em;
 }

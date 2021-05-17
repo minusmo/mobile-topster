@@ -8,143 +8,145 @@ import * as htmlToImage from 'html-to-image';
 import './App.css';
 import smallblank from './smallblank.png';
 import cross from "./cross.png";
-import { config } from 'process';
+import { config, debugPort, title } from 'process';
 import { username, password } from './credentials';
+import { slice } from 'lodash';
+import { SSL_OP_NO_COMPRESSION, SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } from 'constants';
 
 let initAlbums = {
   'row1': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row2': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row3': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row4': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row5': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row6': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row7': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row8': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row9': {
-    isShow: false,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
   'row10': {
-    isShow: true,
+    isHidden: false,
     cols: new Array(10).fill({
       src: smallblank,
       alt: "",
-      showCol: false,
+      hideCol: false,
   }),
 },
 }
 
 // console.log(initAlbums['row1']['cols'])
-initAlbums['row1']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row2']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row3']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row4']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row5']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row6']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row7']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row8']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row9']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
-initAlbums['row10']['cols'].splice(9,1,{
-  src: smallblank,
-  alt: "",
-  showCol: true,
-});
+// initAlbums['row1']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row2']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row3']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row4']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row5']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row6']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row7']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row8']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row9']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
+// initAlbums['row10']['cols'].splice(9,1,{
+//   src: smallblank,
+//   alt: "",
+//   hideCol: true,
+// });
 
 // console.log(initAlbums);
 
@@ -172,10 +174,27 @@ function App() {
   const [ showAlbumTitle, setShowAlbumTitle ] = useState(false);
   const [ showOptions, setShowOptions ] = useState('none');
   const [ backgroundColor, setBackgroundColor ] = useState("#000");
-  const [ rows, setRows ] = useState(9);
-  const [ columns, setColumns] = useState(9);
+  const [ rows, setRows ] = useState(10);
+  const [ columns, setColumns] = useState(10);
   const [ albumWidth, setAlbumWidth ] = useState("10%");
   const [ titles, setTitles ] = useState(initTitles);
+  const [ topConHeight, setTopConHeight ] = useState('95vw');
+  const [ row1Cols, setRow1Cols ] = useState(10);
+  const [ row2Cols, setRow2Cols ] = useState(10);
+  const [ row3Cols, setRow3Cols ] = useState(10);
+  const [ row4Cols, setRow4Cols ] = useState(10);
+  const [ row5Cols, setRow5Cols ] = useState(10);
+  const [ row6Cols, setRow6Cols ] = useState(10);
+  const [ row7Cols, setRow7Cols ] = useState(10);
+  const [ row8Cols, setRow8Cols ] = useState(10);
+  const [ row9Cols, setRow9Cols ] = useState(10);
+  const [ row10Cols, setRow10Cols ] = useState(10);
+  const [ curTopsterStyle, setCurTopsterStyle ] = useState("10x10");
+  const topStyles = useRef({
+    "10x10": 'repeat(10, 1fr)',
+    "42": "calc(95vw/5) calc(95vw/5) calc(95vw/6) calc(95vw/6) calc(95vw/10) calc(95vw/10)",
+  })
+
 
   const handleClickTopster = (e) => {
     e.preventDefault();
@@ -189,15 +208,23 @@ function App() {
 
   const handleClickAlbum = (e) => {
     // console.log('handle click album');
+    let selectedRow = null;
+    let selectedCol = null;
 
-    const selectedRow = selected.slice(0, 4);
-    const selectedCol = Number.parseInt(selected.slice(5));
-    const newAlbums = _.assign({}, albums);
-    
+    if (selected.slice(0, 5) === "row10") {
+      selectedRow = selected.slice(0, 5);
+      selectedCol = Number.parseInt(selected.slice(6));
+    }
+    else {
+      selectedRow = selected.slice(0, 4);
+      selectedCol = Number.parseInt(selected.slice(5));
+    }
+
+    const newAlbums = _.assign({}, albums);  
     // console.log(selectedRow);
     // console.log(selectedCol);
     // console.log(newAlbums[selectedRow].cols[selectedCol]);
-    newAlbums[selectedRow].cols.splice(selectedCol, 1, { src: e.target.src, alt: e.target.alt, showCol: false });
+    newAlbums[selectedRow].cols.splice(selectedCol, 1, { src: e.target.src, alt: e.target.alt, hideCol: false });
 
     setAlbums(newAlbums);
 
@@ -210,11 +237,32 @@ function App() {
     setShowSearch('none');
   }
 
+
   const handleSubmit = (e) => {
     e.preventDefault();
     
     // console.log(term);
     const trimTerm = term.trim();
+    if (trimTerm.slice(0, 4) === 'http') {
+      const artists = window.prompt('아티스트명을 입력해주세요.');
+      const albumName = window.prompt('앨범명을 입력해주세요.');
+
+      const arr = [{
+        artists: [{ name: '' }],
+        name: '',
+        images: [{ url: smallblank }],
+        id: '00000',
+      },
+      {
+        artists: [{ name: artists }],
+        name: albumName,
+        images: [{ url: trimTerm }],
+        id: '99999',
+      }
+    ]
+    setSearchResult(arr);
+    return;
+    }
     const queryTerm = trimTerm.replace(" ", "+");
     
     // const ITUNES_API = `https://itunes.apple.com/search?term=${queryTerm}&country=${country}&media=music&entity=album&callback=jsonpcallback`;
@@ -294,6 +342,7 @@ function App() {
   }
 
   useEffect(() => {
+    console.log(curTopsterStyle);
   }, [])
 
   // const ImgWithCaption = (props) => (
@@ -308,7 +357,7 @@ function App() {
   //   // docRows.forEach((arow) => {
   //   //   const showingColumns = Array.from(arow.children).filter(acolumn => acolumn.style.display === '');
   //   let newAlbums = { ...albums };
-  //   const showingColumns = newAlbums.row1.cols.filter(album => album.showCol === false);
+  //   const showingColumns = newAlbums.row1.cols.filter(album => album.hideCol === false);
 
   //     if (curColumns === showingColumns.length) {
   //       return
@@ -317,7 +366,7 @@ function App() {
   //       // 새로운 칼럼이 기존보다 더 많을 경우
   //       for (let row of Object.values(newAlbums)) {
   //         for (let i = showingColumns.length; i < curColumns; i++) {
-  //           row[i].showCol = '';
+  //           row[i].hideCol = '';
   //         }
 
   //       }
@@ -326,13 +375,13 @@ function App() {
   //       // 새로운 칼럼이 기존보다 더 적을 경우
   //       // for (let row of Object.values(newAlbums)) {
   //       //   for (let i = curColumns; i < showingColumns.length; i++) {
-  //       //     row[i].showCol = 'none';
+  //       //     row[i].hideCol = 'none';
   //       //   }
   //       // }
   //       // for (let key of _.keys(albums)) {
   //       //   // const toUpdate = _.takeRight(newAlbums[key].cols, diff);
   //       //   // const updated = toUpdate.map(each => {
-  //       //   //   const newOne = { ...each, showCol: true };
+  //       //   //   const newOne = { ...each, hideCol: true };
   //       //   //   return newOne
   //       //   // })
   //       //   // const dropped = _.dropRight(newAlbums[key], diff);
@@ -341,9 +390,9 @@ function App() {
   
   //       //   // const last = _.nth(newAlbums[key].cols);
   //       //   // console.log(last);
-  //       //   // last.showCol = true;
+  //       //   // last.hideCol = true;
   //       //   // newAlbums[key].cols.splice(newAlbums[key].cols.length - 1, 1, last);
-  //       //   newAlbums[key].cols[showingColumns.length - 1].showCol = true;
+  //       //   newAlbums[key].cols[showingColumns.length - 1].hideCol = true;
   //       // }
   //       setAlbums(newAlbums);
   //       console.log(newAlbums);
@@ -371,18 +420,47 @@ function App() {
   //     }
   //   }
   // }
+  const getExtenedHeight = (gridtemplaterow) => {
+    const heights = gridtemplaterow.split(' ');
+    const viewportWidth = window.innerWidth;
+    const viewportRatios = _.map(heights, height => {
+      return viewportWidth * Number.parseFloat(height.slice(5,9)) / 100; 
+    })
+    const tentimes = _.map(viewportRatios, viewportRatio => 10 * viewportRatio + 'px');
+    return tentimes.join(" ");
+  }
 
   const handleSave = () => {
+    const mainCon = document.getElementById('mainContainer');
     const topCon = document.getElementById('topCon');
-    topCon.style.width = '1700px';
+    const titleContainer = document.getElementById('titleContainer');
+    const gridStyle = topCon.style.gridTemplateRows;
+    if (curTopsterStyle === "42") {
+      const extendedStyle = getExtenedHeight(gridStyle);
+      topCon.style.gridTemplateRows = extendedStyle;
+    }
+    const topConWidth = topCon.offsetWidth;
+    topCon.style.width = topCon.offsetWidth * 10 + 'px';
+    topCon.style.height = curTopsterStyle === "42" ? topCon.offsetHeight * 9.5 + 'px' : topCon.offsetHeight * 10 + 'px';
+    topCon.style.padding = '25vw';
+
+    titleContainer.style.width = topConWidth * 10 + 'px';
+    titleContainer.style.padding = '25vw';
+    titleContainer.style.fontSize = '5em';
 
     const options = {
       pixelRatio: 1,
     }
-    htmlToImage.toBlob(topCon, options)
-    .then(data => {
-      saveAs(data, 'topster-mobile.png');
-      topCon.style.width = '100vw';
+    htmlToImage.toBlob(mainCon, options)
+    .then(blob => {
+      saveAs(blob, 'topster-mobile.png');
+      topCon.style.gridTemplateRows = gridStyle;
+      topCon.style.width = '95vw';
+      topCon.style.height = '95vw';
+      topCon.style.padding = '2.5vw';
+      titleContainer.style.width = '95vw';
+      titleContainer.style.fontSize = '.5em';
+      titleContainer.style.padding = '2.5vw';
     })
     .catch(err => console.warn(err));
   }
@@ -391,14 +469,14 @@ function App() {
     // console.log('handling set grid');
     
     let newAlbums = { ...albums };
-    const showingColumns = newAlbums.row1.cols.filter(album => album.showCol === false);
+    const showingColumns = newAlbums.row1.cols.filter(album => album.hideCol === false);
 
     const hideCol = (row, differ) => {
       const theRow = newAlbums[row];
       const toUpdate = _.takeRight(theRow.cols, differ);
       // console.log(toUpdate);
      
-      const updated = _.map(toUpdate, each => ({ ...each, showCol: true}));
+      const updated = _.map(toUpdate, each => ({ ...each, hideCol: true}));
       const dropped = _.dropRight(theRow.cols, differ);
       // console.log(dropped);
       const merged = _.concat(dropped, updated);
@@ -411,7 +489,7 @@ function App() {
       const toUpdate = _.take(theRow.cols, differ);
       console.log(toUpdate);
 
-      const updated = _.map(toUpdate, each => ({ ...each, showCol: false}));
+      const updated = _.map(toUpdate, each => ({ ...each, hideCol: false}));
       const dropped = _.drop(theRow.cols, differ);
       console.log(dropped);
       const merged = _.concat(updated, dropped);
@@ -457,12 +535,18 @@ function App() {
       hideCol('row10', diff);
       console.log(newAlbums);
     }
+    // columns 조정이 끝난 후 row의 그리드를 수정
+    const allRows = document.getElementsByClassName('row');
+    const changeGridColumnNumber = (row) => {
+      row.style.gridTemplateColumns = `repeat(${curColumns}, 1fr)`;
+    }
+    _.forEach(allRows, changeGridColumnNumber);
 
     console.log('handling rows');
 
     let count = 0;
     for (let row of Object.values(newAlbums)) {
-      if (row.isShow === false) {
+      if (row.isHidden === false) {
         count += 1;
       }
     }
@@ -477,7 +561,7 @@ function App() {
       // 새로운 로우가 기존보다 많을 경우
       Object.keys(newAlbums).forEach((key, index) => {
         if (index < curRows) {
-          newAlbums[key].isShow = false;
+          newAlbums[key].isHidden = false;
         }
       })
     }
@@ -485,16 +569,21 @@ function App() {
       // 새로운 로우가 기존보다 적을 경우
       Object.keys(newAlbums).forEach((key, index) => {
         if (index >= curRows) {
-          newAlbums[key].isShow = true;
+          newAlbums[key].isHidden = true;
         }
       })
     }
-
+    // 탑스터 컨테이너를 가져와서 row를 수정 
+    const newImgWidth = `${Math.floor(95 / curColumns)}%`;
+    const topCon = document.getElementById('topCon');
+    topCon.style.gridTemplateRows = `repeat(${curRows}, 1fr)`;
+    const topHeight = Number.parseFloat(Number.parseInt(curRows) * Math.floor(95 / curColumns));
+    const newTopConHeight = `${topHeight}vw`;
+    setTopConHeight(newTopConHeight);
     // console.log(newAlbums);
     setAlbums(newAlbums);
 
     // console.log(curColumns);
-    const newImgWidth = `${Math.floor(95 / curColumns)}%`;
     // console.log(newImgWidth);
     setAlbumWidth(newImgWidth);
   }
@@ -514,122 +603,126 @@ function App() {
     img.alt = "";
   }
 
+  const handleShowTitles = (albums) => {
+    const showingRows = _.filter(albums, row => row.isHidden === false);
+    const titles = [];
+    _.forEach(showingRows, (rowData, rowname) => {
+      _.forEach(rowData.cols, (albumData) => {
+        if (!albumData.hideCol ) {
+          titles.push(albumData.alt);
+        }
+      })
+    })
+    const titleLists = _.map(titles, (title, key)=> {
+      const listElement = document.createElement('li');
+      listElement.textContent = title;
+      return listElement;
+    })
+    console.log(titleLists);
+    return titleLists;
+  }
+
   return (
     <div className="App">
       <button onClick={handleShowOptions}>Options</button>
       <button onClick={handleSave}>Save</button>
       {/* 탑스터  */}
-      <div id="topCon" className="topCon" style={{ backgroundColor: backgroundColor }}>
-        <div className="row" id="row1" hidden={albums['row1'].isShow}>
+      <div id="mainContainer">
+      <div id="topCon" className="topCon" style={{ backgroundColor: backgroundColor, height: topConHeight, gridTemplateRows: topStyles.current[curTopsterStyle],  rowGap: curTopsterStyle === '42' ? '' : '1%', }}>
+        <div className="row" id="row1" style={{ gridTemplateColumns: `repeat(${row1Cols}, 1fr)` ,display: albums['row1'].isHidden ? 'none' : ''}}>
           {albums['row1']['cols'].map((album, index) => {
-            return (<img key={`row1-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row1-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row1-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }}  id={`row1-${index}`} onClick={handleClickTopster}/>)
             })}
-           {/* <ImgWithCaption id={0} src={albums[0].src} alt={albums[0].alt}/>
-           <ImgWithCaption id={1} src={albums[1].src} alt={albums[1].alt}/>
-           <ImgWithCaption id={2} src={albums[2].src} alt={albums[2].alt}/>
-           <ImgWithCaption id={3} src={albums[3].src} alt={albums[3].alt}/>
-           <ImgWithCaption id={4} src={albums[4].src} alt={albums[4].alt}/>
-           <ImgWithCaption style={{ display: 'none' }} id={5} src={albums[5].src]} alt={albums[5].alt}/> */}
         </div>
-        <div className="row" id="row2" hidden={albums['row2'].isShow}>
+        <div className="row" id="row2" style={{ gridTemplateColumns: `repeat(${row2Cols}, 1fr)` ,display: albums['row2'].isHidden ? 'none' : ''}}>
           {albums['row2']['cols'].map((album, index) => {
-            return (<img key={`row2-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row2-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row2-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }}  id={`row2-${index}`} onClick={handleClickTopster}/>)
             })}
-           {/* <ImgWithCaption id={6} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={7} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={8} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={9} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={10} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption style={{ display: 'none' }} id={11} src={"/smallblank.png"} alt={""}/> */}
         </div>
-        <div className="row" id="row3" hidden={albums['row3'].isShow}>
+        <div className="row" id="row3" style={{ gridTemplateColumns: `repeat(${row3Cols}, 1fr)` ,display: albums['row3'].isHidden ? 'none' : ''}}>
           {albums['row3']['cols'].map((album, index) => {
-            return (<img key={`row3-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row3-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row3-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }}  id={`row3-${index}`} onClick={handleClickTopster}/>)
             })}
-           {/* <ImgWithCaption id={12} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={13} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={14} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={15} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={16} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption style={{ display: 'none' }} id={17} src={"/smallblank.png"} alt={""}/> */}
         </div>
-        <div className="row" id="row4" hidden={albums['row4'].isShow}>
+        <div className="row" id="row4" style={{ gridTemplateColumns: `repeat(${row4Cols}, 1fr)` ,display: albums['row4'].isHidden ? 'none' : ''}}>
           {albums['row4']['cols'].map((album, index) => {
-            return (<img key={`row4-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row4-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row4-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }}  id={`row4-${index}`} onClick={handleClickTopster}/>)
             })}
-           {/* <ImgWithCaption id={18} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={19} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={20} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={21} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={22} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption style={{ display: 'none' }} id={23} src={"/smallblank.png"} alt={""}/> */}
         </div>
-        <div className="row" id="row5" hidden={albums['row5'].isShow}>
+        <div className="row" id="row5" style={{ gridTemplateColumns: `repeat(${row5Cols}, 1fr)` ,display: albums['row5'].isHidden ? 'none' : ''}}>
           {albums['row5']['cols'].map((album, index) => {
-            return (<img key={`row5-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row5-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row5-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }}  id={`row5-${index}`} onClick={handleClickTopster}/>)
             })}
-           {/* <ImgWithCaption id={24} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={25} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={26} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={27} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption id={28} src={"/smallblank.png"} alt={""}/>
-           <ImgWithCaption style={{ display: 'none' }} id={29} src={"/smallblank.png"} alt={""}/> */}
         </div>
-        <div className="row" id="row6" hidden={albums['row6'].isShow}>
+        <div className="row" id="row6" style={{ gridTemplateColumns: `repeat(${row6Cols}, 1fr)` ,display: albums['row6'].isHidden ? 'none' : ''}}>
           {albums['row6']['cols'].map((album, index) => {
-            return (<img key={`row6-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row6-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row6-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }} id={`row6-${index}`} onClick={handleClickTopster}/>)
             })}
         </div>
-        <div className="row" id="row7" hidden={albums['row7'].isShow}>
+        <div className="row" id="row7" style={{ gridTemplateColumns: `repeat(${row7Cols}, 1fr)` ,display: albums['row7'].isHidden ? 'none' : ''}}>
           {albums['row7']['cols'].map((album, index) => {
-            return (<img key={`row7-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row7-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row7-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }} id={`row7-${index}`} onClick={handleClickTopster}/>)
             })}
         </div>
-        <div className="row" id="row8" hidden={albums['row8'].isShow}>
+        <div className="row" id="row8" style={{ gridTemplateColumns: `repeat(${row8Cols}, 1fr)` ,display: albums['row8'].isHidden ? 'none' : ''}}>
           {albums['row8']['cols'].map((album, index) => {
-            return (<img key={`row8-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row8-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row8-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }} id={`row8-${index}`} onClick={handleClickTopster}/>)
             })}
         </div>
-        <div className="row" id="row9" hidden={albums['row9'].isShow}>
+        <div className="row" id="row9" style={{ gridTemplateColumns: `repeat(${row9Cols}, 1fr)` ,display: albums['row9'].isHidden ? 'none' : ''}}>
           {albums['row9']['cols'].map((album, index) => {
-            return (<img key={`row9-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row9-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row9-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }} id={`row9-${index}`} onClick={handleClickTopster}/>)
             })}
         </div>
-        <div className="row" id="row10" hidden={albums['row10'].isShow}>
+        <div className="row" id="row10" style={{ gridTemplateColumns: `repeat(${row10Cols}, 1fr)` ,display: albums['row10'].isHidden ? 'none' : ''}}>
           {albums['row10']['cols'].map((album, index) => {
-            return (<img key={`row10-${index}`} hidden={album.showCol} style={{ width: albumWidth, }} id={`row10-${index}`} src={album.src} alt={album.alt} onClick={handleClickTopster}/>)
+            return (<div key={`row10-${index}`} style={{ display: album.hideCol ? 'none' : 'block', backgroundImage: `url(${album.src})` }} id={`row10-${index}`} onClick={handleClickTopster}/>)
             })}
         </div>
-
-        <div style={ showAlbumTitle ? { display: '' } : { display: 'none' } }>
-          <ul>
-            {titles['row1'].map((title,index) => <li key={`row1-${index}-title`} >{title}</li>)}
+      </div>
+      <div id="titleContainer" style={{ display: showAlbumTitle ? '' : 'none' }}>
+          <ul id="titleUnorderedlist">
+            {titles['row1'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row1-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row2'].map((title,index) => <li key={`row2-${index}-title`} >{title}</li>)}
+            {titles['row2'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row2-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row3'].map((title,index) => <li key={`row3-${index}-title`} >{title}</li>)}
+            {titles['row3'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row3-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row4'].map((title,index) => <li key={`row4-${index}-title`} >{title}</li>)}
+            {titles['row4'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row4-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row5'].map((title,index) => <li key={`row5-${index}-title`} >{title}</li>)}
+            {titles['row5'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row5-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row6'].map((title,index) => <li key={`row6-${index}-title`} >{title}</li>)}
+            {titles['row6'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row6-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row7'].map((title,index) => <li key={`row7-${index}-title`} >{title}</li>)}
+            {titles['row7'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row7-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row8'].map((title,index) => <li key={`row8-${index}-title`} >{title}</li>)}
+            {titles['row8'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row8-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row9'].map((title,index) => <li key={`row9-${index}-title`} >{title}</li>)}
+            {titles['row9'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row9-${index}-title`} >{title}</li>) : null})}
             <br></br>
-            {titles['row10'].map((title,index) => <li key={`row10-${index}-title`} >{title}</li>)}
+            {titles['row10'].map((title,index) => {
+              return title.length !== 0 ? (<li key={`row10-${index}-title`} >{title}</li>) : null})}
+            {/* {handleShowTitles(albums)} */}
           </ul>
         </div>
       </div>
+      
       <div style={{ display: showOptions }}>
-        <input type="checkbox" checked={showAlbumTitle} onChange={(e) => setShowAlbumTitle(!showAlbumTitle)}/> 
-        <label>album titles </label>
+        <input type="checkbox" checked={showAlbumTitle} onChange={(e) => {
+          setShowAlbumTitle(!showAlbumTitle);
+          }}/>
+        <label>show album titles </label>
         <br></br>
-        <label>Background: </label>
+        <label>BackgroundColor: </label>
         <input type="text" placeholder="#HEX color" value={backgroundColor} onChange={e => setBackgroundColor(e.target.value)}/>
         <label>#HEX</label>
         <br></br>
@@ -649,9 +742,80 @@ function App() {
           handleSetGrid(rows, columns)
           e.preventDefault();
           }}>SetGrid</button>
+        <button onClick={(e) => {
+          setCurTopsterStyle("42");
+          setTopConHeight('93vw');
+          setRows(6);
+          setRow1Cols(5);
+          setRow2Cols(5);
+          setRow3Cols(6);
+          setRow4Cols(6);
+          setRow5Cols(10);
+          setRow6Cols(10);
+          e.preventDefault();
+          }}>Set42</button>
+        <button onClick={(e) => {
+            handleSetGrid(10, 10);
+            setRows(10);
+            setColumns(10);
+            setTopConHeight('95vw');
+            setCurTopsterStyle('10x10');
+            setRow1Cols(10);
+            setRow2Cols(10);
+            setRow3Cols(10);
+            setRow4Cols(10);
+            e.preventDefault();
+          }}>reset</button>
+
+          <div id="columnController">
+            <p>행별 개수 조절하기↓</p>
+            <p style={{ fontSize: '.8em' }}>반드시 그리드 조절 후 해주시기 바랍니다.</p>
+            <div className="columnControl" style={{ width: '100vw', display: 'grid', gridTemplateRows: 'repeat(2, 1fr)', gridTemplateColumns: 'repeat(5, 1fr)' }}>
+                <p>row1</p>
+                <p>row2</p>
+                <p>row3</p>
+                <p>row4</p>
+                <p>row5</p>
+                <div>
+                  <input type="text" value={row1Cols} onChange={ e => setRow1Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row2Cols} onChange={ e => setRow2Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row3Cols} onChange={ e => setRow3Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row4Cols} onChange={ e => setRow4Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row5Cols} onChange={ e => setRow5Cols(e.target.value)}/>
+                </div>
+                <p>row6</p>
+                <p>row7</p>
+                <p>row8</p>
+                <p>row9</p>
+                <p>row10</p>
+                <div>
+                  <input type="text" value={row6Cols} onChange={ e => setRow6Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row7Cols} onChange={ e => setRow7Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row8Cols} onChange={ e => setRow8Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row9Cols} onChange={ e => setRow9Cols(e.target.value)}/>
+                </div>
+                <div>
+                  <input type="text" value={row10Cols} onChange={ e => setRow10Cols(e.target.value)}/>
+                </div>
+            </div>
+          </div>
       </div>
          {/* 검색창  */}
-      <div id="framecontainer" style={{ display: showSearch, position: 'absolute', width: '100%', top: '20px', left: 0, backgroundColor: 'transparent', overflow: 'auto'}}>
+      <div id="framecontainer" style={{ display: showSearch, position: 'absolute', width: '100%', top: '20px', left: 0, backgroundColor: 'rgba(189, 229, 237, .9)', overflow: 'auto'}}>
         <img src={cross} alt="cross" onClick={() => setShowSearch('none')}/>
         <div id="formcontainer">
           <form action="" method="get" acceptCharset="utf-8" id="iTunesSearchForm" onSubmit={handleSubmit}>
@@ -829,8 +993,9 @@ function App() {
           <></>
         }
       </div>
-      <div>
+      <div style={{ marginTop: '1em' }}>
         <h5>사용방법: desktop 탑스터와 비슷합니다.</h5>
+        <h5>SetGrid와 Set42는 반드시 reset후에 설정해주시기 바랍니다.</h5>
         <h5>이미지를 클릭하면 새로운 앨범을 <br></br>검색하고 추가할 수 있습니다.</h5>
         <h5>문의: bldolphin96@gmail.com</h5>
       </div>
