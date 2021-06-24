@@ -8,6 +8,10 @@
   flex-direction: column; */
 }
 
+body {
+  max-width: 500px;
+}
+
 .topCon {
   background-color: black;
   /* padding-top: 1.5vh;
@@ -84,6 +88,10 @@ figcaption {
 #titleContainer li {
   padding-left: auto;
   padding-right: auto;
+}
+
+li::marker {
+  content: none;
 }
 
 li::before {
