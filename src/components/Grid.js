@@ -7,7 +7,7 @@ let xPoints = [];
 for (let i = 0; i < 10; i++) {
   xPoints = _.concat(xPoints, _.range(10));
 }
-console.log(xPoints);
+// console.log(xPoints);
 const yPoints = _.fill(Array(10), 0);
 const layout = _.fill(Array(100), {
   i: _.uniqueId(),
