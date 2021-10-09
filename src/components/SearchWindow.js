@@ -4,7 +4,6 @@ import axios from "axios";
 import { username, password } from "../credentials";
 import SearchForm from "./SearchForm";
 import cancel from "../images/cancel.png";
-import lp from "../images/lp.png";
 import paper from "../images/paper.jpeg";
 
 const SPOTIFY_API = "https://accounts.spotify.com/api/token";

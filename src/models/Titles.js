@@ -5,6 +5,5 @@ export default class Titles {
     this._row = row;
     this._col = col;
     this.titleList = new Array(this._row).fill(new Array(this._col).fill(""));
-    console.log(this.titleList);
   }
 }

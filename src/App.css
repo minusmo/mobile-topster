@@ -40,17 +40,13 @@ body {
   background-color: white;
   padding: 2.5vw;
   width: 95vw;
-  /* height: 95vw; */
   display: grid;
-  /* grid-template-columns: repeat(10, calc(95vw / 10));
-  grid-template-rows: repeat(10, calc(95vw / 10)); */
 }
 
 .gridContainer-42 {
   background-color: black;
   padding: 2.5vw;
   width: 95vw;
-  /* height: 92vw; */
   display: grid;
   grid-template-columns: repeat(30, calc(95vw / 30));
   grid-template-rows: repeat(30, calc(95vw / 30));
@@ -75,15 +71,6 @@ body {
   grid-column: span 3;
   grid-row: span 3;
 }
-
-/* .row {
-  grid-row: span 1;
-  grid-column: span 10;
-  display: grid;
-  grid-template-rows: repeat(1, 1fr);
-  grid-template-columns: repeat(10, 1fr);
-  column-gap: 1%;
-} */
 
 .gridCell {
   padding: 1vw;
