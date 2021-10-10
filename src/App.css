@@ -110,6 +110,12 @@ body {
   overflow: auto;
 }
 
+#cancelButton {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
+
 #titleList {
   font-size: 0.8em;
   background-color: black;

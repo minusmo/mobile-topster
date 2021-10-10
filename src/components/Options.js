@@ -11,7 +11,6 @@ function Options({
   columns,
   setColumns,
   setTopster,
-  fetchTopster,
   updateTopster,
 }) {
   return (
@@ -89,17 +88,6 @@ function Options({
       >
         Top42
       </button>
-
-      {/* 리셋버튼 */}
-      {/* <button
-        onClick={(e) => {
-          resetTopster();
-          fetchTopster();
-          e.preventDefault();
-        }}
-      >
-        Reset
-      </button> */}
     </div>
   );
 }

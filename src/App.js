@@ -57,27 +57,11 @@ function App() {
     localStorage.setItem("rows", rows.toString());
     localStorage.setItem("columns", columns.toString());
     localStorage.setItem("type", type);
-    localStorage.setItem("showSearch", showSearch);
-    localStorage.setItem("showAlbumTitle", showAlbumTitle);
-    localStorage.setItem("showOptions", showOptions);
+    localStorage.setItem("showSearch", String(showSearch));
+    localStorage.setItem("showAlbumTitle", String(showAlbumTitle));
+    localStorage.setItem("showOptions", String(showOptions));
     localStorage.setItem("backgroundColor", backgroundColor);
     localStorage.setItem("selectedCell", selectedCell);
-  };
-
-  const fetchTopster = (newTopster) => {
-    if (localStorage.imgSrcs && localStorage.imgAlts) {
-      const imgSrcs = JSON.parse(localStorage.getItem("imgSrcs"));
-      const imgAlts = JSON.parse(localStorage.getItem("imgAlts"));
-
-      newTopster.rows.forEach((row, rowIndex) => {
-        row.forEach((tile, colIndex) => {
-          tile.src = imgSrcs[rowIndex][colIndex];
-          tile.alt = imgAlts[rowIndex][colIndex];
-        });
-      });
-      setTopster(newTopster.rows);
-      topsterRef.current = newTopster;
-    }
   };
 
   useEffect(() => {
@@ -88,9 +72,15 @@ function App() {
       setRows(Number.parseInt(localStorage.getItem("rows")));
       setColumns(Number.parseInt(localStorage.getItem("columns")));
       setType(localStorage.getItem("type"));
-      setShowSearch(Boolean(localStorage.getItem("showSearch")));
-      setShowAlbumTitle(Boolean(localStorage.getItem("showAlbumTitle")));
-      setShowOptions(Boolean(localStorage.getItem("showOptions")));
+      setShowSearch(
+        localStorage.getItem("showSearch") === "false" ? false : true
+      );
+      setShowAlbumTitle(
+        localStorage.getItem("showAlbumTitle") === "false" ? false : true
+      );
+      setShowOptions(
+        localStorage.getItem("showOptions") === "false" ? false : true
+      );
       setBackgroundColor(localStorage.getItem("backgroundColor"));
     } else {
       topsterRef.current = new Topster(10, 10, "grid");
@@ -99,69 +89,78 @@ function App() {
 
   useEffect(() => {
     saveTopster();
-  }, [topster, rows, columns, backgroundColor]);
-
-  const getExtenedHeight = (gridtemplaterow) => {
-    const heights = gridtemplaterow.split(" ");
-    const viewportWidth = window.innerWidth;
-    const viewportRatios = _.map(heights, (height) => {
-      return (viewportWidth * Number.parseFloat(height.slice(5, 9))) / 100;
-    });
-    const tentimes = _.map(
-      viewportRatios,
-      (viewportRatio) => 10 * viewportRatio + "px"
-    );
-    return tentimes.join(" ");
-  };
+  }, [
+    topster,
+    rows,
+    columns,
+    backgroundColor,
+    showSearch,
+    showOptions,
+    showAlbumTitle,
+  ]);
 
   const handleSave = () => {
-    const mainCon = document.getElementById("mainContainer");
-    const gridCon = document.getElementById("gridContainer");
-    const titleList = document.getElementById("titleList");
-    const gridCellClassName = type === "top42" ? "gridCell42" : "gridCell";
-    const gridCells = document.getElementsByClassName(gridCellClassName);
-
-    const {
-      gridTemplateRows,
-      gridTemplateColumns,
-      padding: gridconPadding,
-      width: gridconWidth,
-    } = gridCon.style;
-    gridCon.style.gridTemplateRows = `repeat(${rows}, calc(10*95vw/${rows}))`;
-    gridCon.style.gridTemplateColumns = `repeat(${columns}, calc(10*95vw/${rows}))`;
-    gridCon.style.padding = `calc(10*${gridconPadding})`;
-    gridCon.style.width = "950vw";
-
-    Array.from(gridCells).forEach((cell) => (cell.style.padding = "10vw"));
-
-    const { padding: titlelistPadding, fontSize } = titleList.style;
-    const titlelistWidth = titleList.offsetWidth;
-    titleList.style.width = `950vw`;
-    titleList.style.padding = `calc(10*${gridconPadding})`;
-    titleList.style.fontSize = "8em";
+    const userAgent = window.navigator.userAgent;
 
     const options = {
       pixelRatio: 1,
     };
 
-    htmlToImage
-      .toBlob(mainCon, options)
-      .then((blob) => {
-        saveAs(blob, "topster-mobile.png");
-        gridCon.style.width = "95vw";
+    const mainCon = document.getElementById("mainContainer");
 
-        gridCon.style.padding = gridconPadding;
-        gridCon.style.gridTemplateRows = gridTemplateRows;
-        gridCon.style.gridTemplateColumns = gridTemplateColumns;
-        gridCon.style.width = gridconWidth;
+    if (userAgent.indexOf("Chrome") !== -1) {
+      // if browser is chrome
+      const gridCon = document.getElementById("gridContainer");
+      const titleList = document.getElementById("titleList");
+      const gridCellClassName = type === "top42" ? "gridCell42" : "gridCell";
+      const gridCells = document.getElementsByClassName(gridCellClassName);
 
-        titleList.style.width = ``;
-        titleList.style.fontSize = ".8em";
-        titleList.style.padding = "2.5vw";
+      const {
+        gridTemplateRows,
+        gridTemplateColumns,
+        padding: gridconPadding,
+        width: gridconWidth,
+      } = gridCon.style;
+      gridCon.style.gridTemplateRows = `repeat(${rows}, calc(10*95vw/${rows}))`;
+      gridCon.style.gridTemplateColumns = `repeat(${columns}, calc(10*95vw/${rows}))`;
+      gridCon.style.padding = `calc(10*${gridconPadding})`;
+      gridCon.style.width = "950vw";
 
-        Array.from(gridCells).forEach((cell) => (cell.style.padding = "1vw"));
-      })
-      .catch((err) => console.warn(err));
+      Array.from(gridCells).forEach((cell) => (cell.style.padding = "10vw"));
+
+      const { padding: titlelistPadding, fontSize } = titleList.style;
+      const titlelistWidth = titleList.offsetWidth;
+      titleList.style.width = `950vw`;
+      titleList.style.padding = `calc(10*${gridconPadding})`;
+      titleList.style.fontSize = "8em";
+
+      htmlToImage
+        .toBlob(mainCon, options)
+        .then((blob) => {
+          saveAs(blob, "topster-mobile.png");
+          gridCon.style.width = "95vw";
+
+          gridCon.style.padding = gridconPadding;
+          gridCon.style.gridTemplateRows = gridTemplateRows;
+          gridCon.style.gridTemplateColumns = gridTemplateColumns;
+          gridCon.style.width = gridconWidth;
+
+          titleList.style.width = ``;
+          titleList.style.fontSize = ".8em";
+          titleList.style.padding = "2.5vw";
+
+          Array.from(gridCells).forEach((cell) => (cell.style.padding = "1vw"));
+        })
+        .catch((err) => console.warn(err));
+    } else if (userAgent.indexOf("Safari") !== -1) {
+      // if browser is safari
+      htmlToImage
+        .toBlob(mainCon, options)
+        .then((dataUrl) => {
+          saveAs(dataUrl, "topster-mobile.png");
+        })
+        .catch((err) => console.warn(err));
+    }
   };
 
   const handleShowOptions = () => {
@@ -243,7 +242,6 @@ function App() {
         setColumns={setColumns}
         saveTopster={saveTopster}
         setTopster={setTopster}
-        fetchTopster={fetchTopster}
         updateTopster={updateTopster}
       />
 
