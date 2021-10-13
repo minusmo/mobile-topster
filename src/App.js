@@ -1,7 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-import Qs from "querystring";
-import $ from "jquery";
-import axios from "axios";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
@@ -20,6 +17,8 @@ import Manual from "./components/Manual";
 import Options from "./components/Options";
 import { Topster, Tile } from "./models/Topster";
 import Titles from "./models/Titles";
+import { Helmet } from "react-helmet";
+import ReactGA from "react-ga";
 
 function App() {
   const topsterRef = useRef(null);
@@ -65,6 +64,8 @@ function App() {
   };
 
   useEffect(() => {
+    ReactGA.initialize("G-7S580YRBGT");
+    ReactGA.pageview(window.location.pathname);
     const savedTopster = localStorage.getItem("topster");
     if (savedTopster) {
       topsterRef.current = JSON.parse(localStorage.getItem("topsterRef"));
@@ -99,65 +100,100 @@ function App() {
     showAlbumTitle,
   ]);
 
+  const preSave = (gridconPadding, gridCells, gridCon, titleList) => {
+    gridCon.style.gridTemplateRows = `repeat(${rows}, calc(10*95vw/${rows}))`;
+    gridCon.style.gridTemplateColumns = `repeat(${columns}, calc(10*95vw/${rows}))`;
+    gridCon.style.padding = `calc(10*${gridconPadding})`;
+    gridCon.style.width = "950vw";
+
+    Array.from(gridCells).forEach((cell) => (cell.style.padding = "10vw"));
+
+    const { padding: titlelistPadding, fontSize } = titleList.style;
+    const titlelistWidth = titleList.offsetWidth;
+    titleList.style.width = `950vw`;
+    titleList.style.padding = `calc(10*${gridconPadding})`;
+    titleList.style.fontSize = "8em";
+  };
+
+  const postSave = (
+    gridconPadding,
+    gridTemplateRows,
+    gridTemplateColumns,
+    gridconWidth,
+    gridCells,
+    gridCon,
+    titleList
+  ) => {
+    gridCon.style.width = "95vw";
+
+    gridCon.style.padding = gridconPadding;
+    gridCon.style.gridTemplateRows = gridTemplateRows;
+    gridCon.style.gridTemplateColumns = gridTemplateColumns;
+    gridCon.style.width = gridconWidth;
+
+    titleList.style.width = `95vw`;
+    titleList.style.fontSize = ".8em";
+    titleList.style.padding = "2.5vw";
+
+    Array.from(gridCells).forEach((cell) => (cell.style.padding = "1vw"));
+  };
+
   const handleSave = () => {
     const userAgent = window.navigator.userAgent;
+    const mainCon = document.getElementById("mainContainer");
+    const gridCon = document.getElementById("gridContainer");
+    const titleList = document.getElementById("titleList");
+    const gridCellClassName = type === "top42" ? "gridCell42" : "gridCell";
+    const gridCells = document.getElementsByClassName(gridCellClassName);
+
+    const {
+      gridTemplateRows,
+      gridTemplateColumns,
+      padding: gridconPadding,
+      width: gridconWidth,
+    } = gridCon.style;
 
     const options = {
       pixelRatio: 1,
     };
 
-    const mainCon = document.getElementById("mainContainer");
-
     if (userAgent.indexOf("Chrome") !== -1) {
       // if browser is chrome
-      const gridCon = document.getElementById("gridContainer");
-      const titleList = document.getElementById("titleList");
-      const gridCellClassName = type === "top42" ? "gridCell42" : "gridCell";
-      const gridCells = document.getElementsByClassName(gridCellClassName);
-
-      const {
-        gridTemplateRows,
-        gridTemplateColumns,
-        padding: gridconPadding,
-        width: gridconWidth,
-      } = gridCon.style;
-      gridCon.style.gridTemplateRows = `repeat(${rows}, calc(10*95vw/${rows}))`;
-      gridCon.style.gridTemplateColumns = `repeat(${columns}, calc(10*95vw/${rows}))`;
-      gridCon.style.padding = `calc(10*${gridconPadding})`;
-      gridCon.style.width = "950vw";
-
-      Array.from(gridCells).forEach((cell) => (cell.style.padding = "10vw"));
-
-      const { padding: titlelistPadding, fontSize } = titleList.style;
-      const titlelistWidth = titleList.offsetWidth;
-      titleList.style.width = `950vw`;
-      titleList.style.padding = `calc(10*${gridconPadding})`;
-      titleList.style.fontSize = "8em";
+      preSave(gridconPadding, gridCells, gridCon, titleList);
 
       htmlToImage
         .toBlob(mainCon, options)
         .then((blob) => {
           saveAs(blob, "topster-mobile.png");
-          gridCon.style.width = "95vw";
-
-          gridCon.style.padding = gridconPadding;
-          gridCon.style.gridTemplateRows = gridTemplateRows;
-          gridCon.style.gridTemplateColumns = gridTemplateColumns;
-          gridCon.style.width = gridconWidth;
-
-          titleList.style.width = ``;
-          titleList.style.fontSize = ".8em";
-          titleList.style.padding = "2.5vw";
-
-          Array.from(gridCells).forEach((cell) => (cell.style.padding = "1vw"));
+          postSave(
+            gridconPadding,
+            gridTemplateRows,
+            gridTemplateColumns,
+            gridconWidth,
+            gridCells,
+            gridCon,
+            titleList
+          );
         })
         .catch((err) => console.warn(err));
     } else if (userAgent.indexOf("Safari") !== -1) {
       // if browser is safari
+      mainCon.style.width = "950vw";
+      preSave(gridconPadding, gridCells, gridCon, titleList);
       htmlToImage
         .toBlob(mainCon, options)
-        .then((dataUrl) => {
-          saveAs(dataUrl, "topster-mobile.png");
+        .then((blob) => {
+          saveAs(blob, "topster-mobile.png");
+          postSave(
+            gridconPadding,
+            gridTemplateRows,
+            gridTemplateColumns,
+            gridconWidth,
+            gridCells,
+            gridCon,
+            titleList
+          );
+          mainCon.style.width = "95vw";
         })
         .catch((err) => console.warn(err));
     }
@@ -204,6 +240,11 @@ function App() {
 
   return (
     <div className="App">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <meta name="description" content="mobile topster" />
+        <title>Mobile Topster</title>
+      </Helmet>
       <ControlButtons
         handleShowOptions={handleShowOptions}
         handleSave={handleSave}
