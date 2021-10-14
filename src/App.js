@@ -4,7 +4,7 @@ import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
 import "./App.css";
 import paper from "./images/paper.jpeg";
-import { username, password } from "./credentials";
+import { username, password, GAID } from "./credentials";
 import {
   SSL_OP_NO_COMPRESSION,
   SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION,
@@ -64,8 +64,9 @@ function App() {
   };
 
   useEffect(() => {
-    ReactGA.initialize("G-7S580YRBGT");
+    ReactGA.initialize(GAID);
     ReactGA.pageview(window.location.pathname);
+
     const savedTopster = localStorage.getItem("topster");
     if (savedTopster) {
       topsterRef.current = JSON.parse(localStorage.getItem("topsterRef"));
