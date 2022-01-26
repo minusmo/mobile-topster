@@ -5,10 +5,6 @@ import * as htmlToImage from "html-to-image";
 import "./App.css";
 import paper from "./images/paper.jpeg";
 import { username, password, GAID } from "./credentials";
-import {
-  SSL_OP_NO_COMPRESSION,
-  SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION,
-} from "constants";
 import SearchWindow from "./components/SearchWindow";
 import TitleList from "./components/TitleList";
 import ControlButtons from "./components/ControlButtons";
@@ -20,7 +16,7 @@ import Titles from "./models/Titles";
 import { Helmet } from "react-helmet";
 import ReactGA from "react-ga";
 
-function App() {
+function MobileTopsterMaker() {
   const topsterRef = useRef(null);
   const [rows, setRows] = useState(10);
   const [columns, setColumns] = useState(10);
@@ -300,4 +296,4 @@ function App() {
   );
 }
 
-export default App;
+export default MobileTopsterMaker;
