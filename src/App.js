@@ -9,10 +9,6 @@ import "./App.css";
 import lp from "./images/lp.png";
 import paper from "./images/paper.jpeg";
 import { username, password } from "./credentials";
-import {
-  SSL_OP_NO_COMPRESSION,
-  SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION,
-} from "constants";
 import TopsterGrid from "./components/Grid";
 import SearchWindow from "./components/SearchWindow";
 import TitleList from "./components/TitleList";
@@ -23,7 +19,7 @@ import Options from "./components/Options";
 import { Topster, Tile } from "./models/Topster";
 import Titles from "./models/Titles";
 
-function App() {
+function MobileTopsterMaker() {
   const topsterRef = useRef(null);
   const [rows, setRows] = useState(10);
   const [columns, setColumns] = useState(10);
@@ -303,4 +299,4 @@ function App() {
   );
 }
 
-export default App;
+export default MobileTopsterMaker;
