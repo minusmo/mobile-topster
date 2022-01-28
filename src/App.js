@@ -1,12 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import Qs from "querystring";
-import $ from "jquery";
 import axios from "axios";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
 import "./App.css";
-import lp from "./images/lp.png";
 import paper from "./images/paper.jpeg";
 import { username, password } from "./credentials";
 import TopsterGrid from "./components/Grid";
