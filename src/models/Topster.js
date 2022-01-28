@@ -1,7 +1,24 @@
-import { each } from "jquery";
+"use strict";
 import * as _ from "lodash";
 import lp from "../images/lp.png";
 import paper from "../images/paper.jpeg";
+
+function createCollage(rows = 10, cols = 10) {
+  let collage = [];
+  for (let i = 0; i < rows; i++) {
+    let row = _.map(new Array(cols), createTile());
+    coallge.push(row);
+  }
+  return collage;
+}
+
+function createTile(src = paper, alt = "") {
+  let newTile = {
+    src: src,
+    alt: alt,
+  };
+  return newTile;
+}
 
 export class Tile {
   constructor(src = paper, alt = "") {
