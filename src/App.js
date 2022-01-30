@@ -31,20 +31,10 @@ function MobileTopsterMaker() {
   const [showOptions, setShowOptions] = useState("none");
 
   const updateTopster = (row, col, type) => {
-    // const oldTopster = _.cloneDeep(topsterRef.current);
-    // const newTopster = _.cloneDeep(
-    //   type === "grid"
-    //     ? Topster.createGrid(row, col, type)
-    //     : Topster.create42(6, 7, "top42")
-    // );
-    // console.log("oldTopster: \n", oldTopster, "newTopster: \n", newTopster);
-    // saveTopster();
-    // console.log(newTopster);
     setType(type);
     setRows(row);
     setColumns(col);
     updateTopsterRef(row, col, type);
-    // fetchTopster(newTopster);
   };
 
   const updateTopsterRef = (row, col, type) => {
@@ -56,19 +46,7 @@ function MobileTopsterMaker() {
     }
   };
 
-  // const resetTopster = () => {
-  //   setRows(10);
-  //   setColumns(10);
-  //   // 앨범 이미지를 새로운 탑스터로 옮김
-  //   let newTopster = new Topster(10, 10, "grid");
-  //   setTopster(newTopster);
-  // };
-
   const saveTopster = () => {
-    // const imgSrcs = Topster.extractImgSrcs(oldTopster.rows, newTopster);
-    // const imgAlts = Topster.extractImgAlts(oldTopster.rows, newTopster);
-    // localStorage.setItem("imgSrcs", JSON.stringify(imgSrcs));
-    // localStorage.setItem("imgAlts", JSON.stringify(imgAlts));
     localStorage.setItem("topsterRef", JSON.stringify(topsterRef.current));
     localStorage.setItem("topster", JSON.stringify(topster));
     localStorage.setItem("rows", rows.toString());
@@ -85,7 +63,7 @@ function MobileTopsterMaker() {
     if (localStorage.imgSrcs && localStorage.imgAlts) {
       const imgSrcs = JSON.parse(localStorage.getItem("imgSrcs"));
       const imgAlts = JSON.parse(localStorage.getItem("imgAlts"));
-      // let updatedTopster = _.assign({}, topsterRef.current);
+
       newTopster.rows.forEach((row, rowIndex) => {
         row.forEach((tile, colIndex) => {
           tile.src = imgSrcs[rowIndex][colIndex];
@@ -94,7 +72,6 @@ function MobileTopsterMaker() {
       });
       setTopster(newTopster.rows);
       topsterRef.current = newTopster;
-      // setTitles(topsterRef.current.titleList);
     }
   };
 
@@ -155,14 +132,6 @@ function MobileTopsterMaker() {
     gridCon.style.padding = `calc(10*${gridconPadding})`;
     gridCon.style.width = "950vw";
 
-    // const gridConWidth = gridCon.offsetWidth;
-    // gridCon.style.width = gridCon.offsetWidth * 10 + "px";
-    // gridCon.style.height =
-    //   curTopsterStyle === "42"
-    //     ? gridCon.offsetHeight * 9.5 + "px"
-    //     : gridCon.offsetHeight * 10 + "px";
-    // gridCon.style.height = gridCon.offsetWidth * 10 + "px";
-    // gridCon.style.padding = "25vw";
     Array.from(gridCells).forEach((cell) => (cell.style.padding = "10vw"));
 
     const { padding: titlelistPadding, fontSize } = titleList.style;
@@ -214,7 +183,6 @@ function MobileTopsterMaker() {
     if (showSearch === false) {
       setShowSearch(true);
       setSelectedCell(e.target.id);
-      // console.log(e.target.id);
     }
   };
 
