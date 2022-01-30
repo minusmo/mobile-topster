@@ -116,11 +116,6 @@ function MobileTopsterMaker() {
     const gridCellClassName = type === "top42" ? "gridCell42" : "gridCell";
     const gridCells = document.getElementsByClassName(gridCellClassName);
 
-    // const gridStyle = gridCon.style.gridTemplateRows;
-    // if (curTopsterStyle === "42") {
-    //   const extendedStyle = getExtenedHeight(gridStyle);
-    //   gridCon.style.gridTemplateRows = extendedStyle;
-    // }
     const {
       gridTemplateRows,
       gridTemplateColumns,
@@ -149,7 +144,7 @@ function MobileTopsterMaker() {
       .then((blob) => {
         saveAs(blob, "topster-mobile.png");
         gridCon.style.width = "95vw";
-        // gridCon.style.height = "95vw";
+
         gridCon.style.padding = gridconPadding;
         gridCon.style.gridTemplateRows = gridTemplateRows;
         gridCon.style.gridTemplateColumns = gridTemplateColumns;
