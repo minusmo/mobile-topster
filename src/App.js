@@ -3,7 +3,7 @@ import axios from "axios";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
-import "./App.css";
+import "./styles/App.css";
 import paper from "./images/paper.jpeg";
 import { username, password } from "./credentials";
 import TopsterGrid from "./components/Grid";
