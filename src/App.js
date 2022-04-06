@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
 import "./styles/App.css";
-import paper from "./images/paper.jpeg";
-import { username, password } from "./credentials";
-import TopsterGrid from "./components/Grid";
 import SearchWindow from "./components/SearchWindow";
 import TitleList from "./components/TitleList";
 import ControlButtons from "./components/ControlButtons";
@@ -14,7 +10,6 @@ import TopsterTemplate from "./components/TopsterTemplate";
 import Manual from "./components/Manual";
 import Options from "./components/Options";
 import { Topster, Tile } from "./models/Topster";
-import Titles from "./models/Titles";
 
 function MobileTopsterMaker() {
   const topsterRef = useRef(null);
@@ -165,12 +160,6 @@ function MobileTopsterMaker() {
     } else {
       setShowOptions("");
     }
-  };
-
-  const handleDoubleClick = (e) => {
-    const img = e.target;
-    img.src = paper;
-    img.alt = "";
   };
 
   const handleClickGridcell = (e) => {
