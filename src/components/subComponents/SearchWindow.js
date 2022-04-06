@@ -100,7 +100,12 @@ function SearchWindow({ onClickCancel, showSearch, handleClickAlbum }) {
     <div
       id={showSearch ? "searchBoxContainer-show" : "searchBoxContainer-hidden"}
     >
-      <img src={cancel} alt="cancel" onClick={onClickCancel} />
+      <img
+        id="cancelButton"
+        src={cancel}
+        alt="cancel"
+        onClick={onClickCancel}
+      />
       <div id="formContainer">
         <SearchForm
           onSubmit={(e) => handleSubmit(e, searchInput, country)}
