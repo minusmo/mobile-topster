@@ -1,20 +1,12 @@
 import * as _ from "lodash";
 import paper from "../assets/images/paper.jpeg";
 
-function createTile(src = paper, alt = "") {
-  let newTile = {
+const createTile = (src: string = paper, alt: string = ""): Tile => {
+  return {
     src: src,
     alt: alt,
   };
-  return newTile;
-}
-
-export class Tile {
-  constructor(src = paper, alt = "") {
-    this.src = src;
-    this.alt = alt;
-  }
-}
+};
 
 export class Topster {
   constructor(row = 10, col = 10, type = "grid") {
