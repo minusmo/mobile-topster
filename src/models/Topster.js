@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import paper from "../images/paper.jpeg";
+import paper from "../assets/images/paper.jpeg";
 
 function createTile(src = paper, alt = "") {
   let newTile = {
@@ -44,5 +44,4 @@ export class Topster {
 
     return _.cloneDeep(rows);
   }
-
 }

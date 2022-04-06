@@ -1,4 +1,4 @@
-import { Topster } from "../models/Topster";
+import { Topster } from "../../models/Topster";
 
 function Options({
   showOptions,

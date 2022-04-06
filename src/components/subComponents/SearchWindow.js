@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Qs from "querystring";
 import axios from "axios";
-import { username, password } from "../credentials";
+import { username, password } from "../../constants/credentials";
 import SearchForm from "./SearchForm";
-import cancel from "../images/cancel.png";
-import paper from "../images/paper.jpeg";
+import cancel from "../../assets/images/cancel.png";
+import paper from "../../assets/images/paper.jpeg";
 
 const SPOTIFY_API = "https://accounts.spotify.com/api/token";
 const CONTENT_TYPE = "application/x-www-form-urlencoded";

@@ -3,12 +3,12 @@ import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
 import "./styles/App.css";
-import SearchWindow from "./components/SearchWindow";
-import TitleList from "./components/TitleList";
-import ControlButtons from "./components/ControlButtons";
-import TopsterTemplate from "./components/TopsterTemplate";
-import Manual from "./components/Manual";
-import Options from "./components/Options";
+import SearchWindow from "./components/subComponents/SearchWindow";
+import TitleList from "./components/mainComponents/TitleList";
+import ControlButtons from "./components/mainComponents/ControlButtons";
+import TopsterTemplate from "./components/mainComponents/TopsterTemplate";
+import Manual from "./components/mainComponents/Manual";
+import Options from "./components/subComponents/Options";
 import { Topster, Tile } from "./models/Topster";
 
 function MobileTopsterMaker() {
