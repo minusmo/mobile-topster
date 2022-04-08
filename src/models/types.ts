@@ -1,7 +1,9 @@
-type Tile = {
+type Cell = {
   src: Number;
   alt: String;
 };
+
+type Grid = Cell[Cell[]];
 
 type Titles = {
   _row: Number;
@@ -9,4 +11,4 @@ type Titles = {
   titleList: Array<Array<Tile>>;
 };
 
-export { Tile, Titles };
+export { Cell, Grid, Titles };

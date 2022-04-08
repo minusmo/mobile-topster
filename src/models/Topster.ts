@@ -1,12 +1,19 @@
 import * as _ from "lodash";
 import paper from "../assets/images/paper.jpeg";
+import { Cell, Grid } from "./types";
 
-const createTile = (src: string = paper, alt: string = ""): Tile => {
+const createCell = (src: string = paper, alt: string = ""): Cell => {
   return {
     src: src,
     alt: alt,
   };
 };
+
+const createSquareGrid = (row: number, col: number): Grid => {
+  let grid: Cell[][] = [];
+};
+
+const create42Grid = (): Grid => {};
 
 export class Topster {
   constructor(row = 10, col = 10, type = "grid") {

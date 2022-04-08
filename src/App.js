@@ -3,8 +3,6 @@ import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
 import { Helmet } from "react-helmet";
-import ReactGA from "react-ga";
-// import { GAID } from "./constants/credentials";
 import SearchWindow from "./components/subComponents/SearchWindow";
 import TitleList from "./components/mainComponents/TitleList";
 import ControlButtons from "./components/mainComponents/ControlButtons";
@@ -14,6 +12,8 @@ import Options from "./components/subComponents/Options";
 import { Topster, Tile } from "./models/Topster";
 import "./styles/App.css";
 import paper from "./assets/images/paper.jpeg";
+import ReactGA from "react-ga";
+// import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
   const topsterRef = useRef(null);

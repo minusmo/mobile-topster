@@ -1,9 +1,13 @@
 import React from "react";
-
-export default ControlButtons = ({
+type ButtonEventHandler = () => void;
+type ControlButtonProps = {
+  handleShowOptions: ButtonEventHandler;
+  handleSave: ButtonEventHandler;
+};
+const ControlButtons = ({
   handleShowOptions,
   handleSave,
-}): React.Component => {
+}: ControlButtonProps): JSX.Element => {
   return (
     <div id="controlButtons">
       <button onClick={handleShowOptions}>Options</button>
@@ -11,3 +15,5 @@ export default ControlButtons = ({
     </div>
   );
 };
+
+export default ControlButtons;
