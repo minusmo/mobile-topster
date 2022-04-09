@@ -1,6 +1,4 @@
-import React from "react";
-
-export default Manual = (): React.Component => {
+const Manual = (): JSX.Element => {
   return (
     <div id="manual">
       <h5>사용방법: desktop 탑스터와 비슷합니다.</h5>
@@ -12,3 +10,5 @@ export default Manual = (): React.Component => {
     </div>
   );
 };
+
+export default Manual;

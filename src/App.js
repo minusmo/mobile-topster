@@ -9,19 +9,16 @@ import ControlButtons from "./components/mainComponents/ControlButtons";
 import TopsterTemplate from "./components/mainComponents/TopsterTemplate";
 import Manual from "./components/mainComponents/Manual";
 import Options from "./components/subComponents/Options";
-import { Topster, Tile } from "./models/Topster";
+import { createSquareGrid, createCell } from "./models/Topster";
 import "./styles/App.css";
 import paper from "./assets/images/paper.jpeg";
 import ReactGA from "react-ga";
 // import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
-  const topsterRef = useRef(null);
   const [rows, setRows] = useState(10);
   const [columns, setColumns] = useState(10);
-  const [topster, setTopster] = useState(() =>
-    Topster.createGrid(10, 10, "grid")
-  );
+  const [topster, setTopster] = useState(createSquareGrid(10,10));
   const [type, setType] = useState("grid");
   const [selectedCell, setSelectedCell] = useState(null);
   const [backgroundColor, setBackgroundColor] = useState("#000");
@@ -33,20 +30,9 @@ function MobileTopsterMaker() {
     setType(type);
     setRows(row);
     setColumns(col);
-    updateTopsterRef(row, col, type);
-  };
-
-  const updateTopsterRef = (row, col, type) => {
-    if (topsterRef.current) {
-      topsterRef.current._row = row;
-      topsterRef.current._col = col;
-      topsterRef.current._type = type;
-      topsterRef.current._tiles = row * col;
-    }
   };
 
   const saveTopster = () => {
-    localStorage.setItem("topsterRef", JSON.stringify(topsterRef.current));
     localStorage.setItem("topster", JSON.stringify(topster));
     localStorage.setItem("rows", rows.toString());
     localStorage.setItem("columns", columns.toString());
@@ -64,7 +50,6 @@ function MobileTopsterMaker() {
 
     const savedTopster = localStorage.getItem("topster");
     if (savedTopster) {
-      topsterRef.current = JSON.parse(localStorage.getItem("topsterRef"));
       setTopster(JSON.parse(savedTopster));
       setRows(Number.parseInt(localStorage.getItem("rows")));
       setColumns(Number.parseInt(localStorage.getItem("columns")));
@@ -79,8 +64,6 @@ function MobileTopsterMaker() {
         localStorage.getItem("showOptions") === "false" ? false : true
       );
       setBackgroundColor(localStorage.getItem("backgroundColor"));
-    } else {
-      topsterRef.current = new Topster(10, 10, "grid");
     }
   }, []);
 
@@ -224,7 +207,7 @@ function MobileTopsterMaker() {
     let updatedTopster = _.cloneDeep(topster);
 
     let updatedRow = [...updatedTopster[selectedRow]];
-    updatedRow[selectedCol] = new Tile(e.target.src, e.target.alt);
+    updatedRow[selectedCol] = createCell(e.target.src, e.target.alt);
     updatedTopster[selectedRow] = updatedRow;
 
     setTopster(updatedTopster);
@@ -239,7 +222,7 @@ function MobileTopsterMaker() {
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content="mobile topster" />
-        <title>Mobile Topster</title>
+        <title>Mobile-Topster</title>
       </Helmet>
       <ControlButtons
         handleShowOptions={handleShowOptions}

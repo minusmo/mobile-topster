@@ -1,9 +1,9 @@
 type Cell = {
-  src: Number;
+  src: string;
   alt: String;
 };
 
-type Grid = Cell[Cell[]];
+type Grid = Array<Array<Cell>>;
 
 type Titles = {
   _row: Number;

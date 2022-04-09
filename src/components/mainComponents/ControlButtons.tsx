@@ -1,9 +1,9 @@
-import React from "react";
 type ButtonEventHandler = () => void;
 type ControlButtonProps = {
   handleShowOptions: ButtonEventHandler;
   handleSave: ButtonEventHandler;
 };
+
 const ControlButtons = ({
   handleShowOptions,
   handleSave,

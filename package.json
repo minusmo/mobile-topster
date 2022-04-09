@@ -54,5 +54,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "http://minusmo.github.io/mobile-topster"
+  "homepage": "http://minusmo.github.io/mobile-topster",
+  "devDependencies": {
+    "@types/lodash": "^4.14.181"
+  }
 }
