@@ -22,5 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/src/credentials.js
+/src/constants/*
+/src/utils/*
 
+.vscode
+package-lock.json
+tsconfig.json
+yarn.lock
