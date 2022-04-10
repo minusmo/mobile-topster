@@ -261,7 +261,6 @@ function MobileTopsterMaker() {
         columns={columns}
         setColumns={setColumns}
         saveTopster={saveTopster}
-        setTopster={setTopster}
         updateTopster={updateTopster}
       />
 

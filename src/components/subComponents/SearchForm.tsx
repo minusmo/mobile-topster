@@ -1,21 +1,17 @@
-function SearchForm({ onSubmit, onChangeInput, onChangeCountry }) {
+
+type searchFormProps = {
+  onSubmit: React.FormEventHandler;
+  onChangeInput: React.ChangeEventHandler;
+  onChangeCountry: React.ChangeEventHandler;
+}
+
+type countrySelectionProps = {
+  onChangeCountry: React.ChangeEventHandler;
+}
+
+const CountrySelection = ({ onChangeCountry }: countrySelectionProps): JSX.Element => {
   return (
-    <form
-      action=""
-      method="get"
-      acceptCharset="utf-8"
-      id="iTunesSearchForm"
-      onSubmit={onSubmit}
-    >
-      <input
-        type="text"
-        className="text"
-        name="searchInput"
-        id="searchInput"
-        onChange={onChangeInput}
-      />
-      <br></br>
-      <select
+    <select
         name="country"
         id="country"
         onChange={onChangeCountry}
@@ -178,6 +174,37 @@ function SearchForm({ onSubmit, onChangeInput, onChangeCountry }) {
         <option value="ye">Yemen</option>
         <option value="zw">Zimbabwe</option>
       </select>
+  );
+}
+
+type searchInputProps = {
+  onChangeInput: React.ChangeEventHandler;
+}
+
+const SearchInput = ({ onChangeInput }: searchInputProps):JSX.Element => {
+  return (
+    <input
+      type="text"
+      className="text"
+      name="searchInput"
+      id="searchInput"
+      onChange={onChangeInput}
+    />
+  );
+}
+
+const SearchForm = ({ onSubmit, onChangeInput, onChangeCountry }: searchFormProps): JSX.Element => {
+  return (
+    <form
+      action=""
+      method="get"
+      acceptCharset="utf-8"
+      id="spotifySearchForm"
+      onSubmit={onSubmit}
+    >
+      <SearchInput onChangeInput={onChangeInput}/>
+      <br></br>
+      <CountrySelection onChangeCountry={onChangeCountry}/>
       <br></br>
       <input type="submit" className="submit" value="Search" />
     </form>

@@ -1,49 +1,68 @@
 import React, { useState } from "react";
 import Qs from "querystring";
 import axios from "axios";
-import { username, password } from "../../constants/credentials";
 import SearchForm from "./SearchForm";
 import cancel from "../../assets/images/cancel.png";
 import paper from "../../assets/images/paper.jpeg";
+import { username, password } from "../../constants/credentials";
+import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
+import { getAlbumsByAlbumName } from "../../utils/httpUtils";
 
-const SPOTIFY_API = "https://accounts.spotify.com/api/token";
-const CONTENT_TYPE = "application/x-www-form-urlencoded";
+type searchWindowProps = {
+  onClickCancel: () => void;
+  showSearch: boolean;
+  handleClickAlbum: React.MouseEventHandler;
+}
+type AlbumArtist = {
+  name: string;
+}
 
-const getApi1 = (query, country) =>
-  `https://api.spotify.com/v1/search/?q=album:${query}%20OR%20artist:${query}&type=album&market=${country}&limit=50`;
-const getApi2 = (query, country) =>
-  `https://api.spotify.com/v1/search/?q=${query}&type=album&market=${country}&limit=50`;
+type AlbumImg = {
+  url: string;
+}
 
-function SearchWindow({ onClickCancel, showSearch, handleClickAlbum }) {
+type AlbumSearchResult = {
+  artists: Array<AlbumArtist>;
+  name: string;
+  images: Array<AlbumImg>;
+  id: string;
+}
+
+const SearchWindow = ({ onClickCancel, showSearch, handleClickAlbum }: searchWindowProps): JSX.Element => {
   const [searchInput, setSearchInput] = useState("");
   const [country, setCountry] = useState("us");
   const [searchResult, setSearchResult] = useState([]);
 
-  const handleSubmit = (e, searchInput, country) => {
+  const userIsAddingAlbumManually = (trimmedSearchInput: String): boolean => {
+    return trimmedSearchInput.slice(0, 4) === "http" ? true : false;
+  }
+
+  const returnUsersAlbum = (trimmedSearchInput: String): void => {
+    const artists: string = window.prompt("아티스트명을 입력해주세요.");
+    const albumName: string = window.prompt("앨범명을 입력해주세요.");
+
+    const usersAlbum: Array<AlbumSearchResult> = [
+      {
+        artists: [{ name: "" }],
+        name: "",
+        images: [{ url: paper }],
+        id: "00000",
+      },
+      {
+        artists: [{ name: artists }],
+        name: albumName,
+        images: [{ url: trimmedSearchInput }],
+        id: "99999",
+      },
+    ];
+    setSearchResult(usersAlbum);
+    return;
+  }
+
+  const handleSubmit = (e: React.FormEvent, searchInput: String, country: string) => {
     e.preventDefault();
 
-    const trimmedSearchInput = searchInput.trim();
-    // 직접 앨범을 추가하는 경우
-    if (trimmedSearchInput.slice(0, 4) === "http") {
-      const artists = window.prompt("아티스트명을 입력해주세요.");
-      const albumName = window.prompt("앨범명을 입력해주세요.");
-
-      setSearchResult([
-        {
-          artists: [{ name: "" }],
-          name: "",
-          images: [{ url: paper }],
-          id: "00000",
-        },
-        {
-          artists: [{ name: artists }],
-          name: albumName,
-          images: [{ url: trimmedSearchInput }],
-          id: "99999",
-        },
-      ]);
-      return;
-    }
+    const trimmedSearchInput: String = searchInput.trim();
 
     const query = trimmedSearchInput.replace(" ", "+");
 
@@ -64,14 +83,13 @@ function SearchWindow({ onClickCancel, showSearch, handleClickAlbum }) {
 
     axios(authConfig)
       .then((res) => {
-        const api1 = getApi1(query, country);
-        const api2 = getApi2(query, country);
+        const getAlbums = getAlbumsByAlbumName(query, country);
 
         const { access_token } = res.data;
 
         const queryConfig = {
           method: "get",
-          url: api2,
+          url: getAlbums,
           headers: {
             Authorization: `Bearer ${access_token}`,
           },

@@ -1,6 +1,17 @@
-import { Topster } from "../../models/Topster";
+type optionsProps = {
+  showOptions: string;
+  showAlbumTitle: boolean;
+  setShowAlbumTitle: (showAlbumTitle: boolean) => boolean;
+  backgroundColor: string;
+  setBackgroundColor: (backgroundColor: string) => string;
+  rows: number;
+  setRows: (rows: number) => number;
+  columns: number;
+  setColumns: (columns: number) => number;
+  updateTopster: (row: number, col: number, type: string) => void;
+}
 
-function Options({
+const Options = ({
   showOptions,
   showAlbumTitle,
   setShowAlbumTitle,
@@ -10,10 +21,8 @@ function Options({
   setRows,
   columns,
   setColumns,
-  setTopster,
-  fetchTopster,
   updateTopster,
-}) {
+}: optionsProps):JSX.Element => {
   return (
     <div id="options" style={{ display: showOptions }}>
       {/* 타이틀 숨김버튼 */}
