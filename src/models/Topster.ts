@@ -1,7 +1,7 @@
 import { RecordWithTtl } from "dns";
 import * as _ from "lodash";
 import paper from "../assets/images/paper.jpeg";
-import { Cell, Grid } from "./types";
+import { Cell, Grid } from "./modelTypes";
 
 const createCell = (src: string = paper, alt: string = ""): Cell => {
   return {

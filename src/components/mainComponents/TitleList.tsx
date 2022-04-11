@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Grid } from "../../models/types";
+import { Grid } from "../../models/modelTypes";
 type TitleListElementProps = {
   title: String;
 }

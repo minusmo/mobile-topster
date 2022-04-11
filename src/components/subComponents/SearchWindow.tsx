@@ -43,6 +43,16 @@ type queryResponseData = {
   albums: albumItems;
 };
 
+type returnedAlbumImgProps = {
+  id: string;
+  imgUrl: string;
+  altText: string;
+}
+
+type cancelButtonProps = {
+  imgUri: string;
+}
+
 const SearchWindow = ({
   onClickCancel,
   showSearch,
@@ -150,9 +160,6 @@ const SearchWindow = ({
       alert("현재 앨범 조회가 불가능합니다.");
     }
   };
-  type cancelButtonProps = {
-    imgUri: string;
-  }
 
   const CancelButton = ({ imgUri }: cancelButtonProps):JSX.Element => {
     return <img
@@ -162,11 +169,7 @@ const SearchWindow = ({
       onClick={onClickCancel}
       />;
   }
-  type returnedAlbumImgProps = {
-    id: string;
-    imgUrl: string;
-    altText: string;
-  }
+  
   const ReturnedAlbumImg = ({ id, imgUrl, altText }: returnedAlbumImgProps):JSX.Element => {
     return <img
       key={id}

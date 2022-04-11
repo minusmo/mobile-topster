@@ -1,4 +1,4 @@
-import { Titles } from "./types";
+import { Titles } from "./modelTypes";
 
 const createTitles = (row: number, col: number): Titles => {
   return {
