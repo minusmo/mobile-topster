@@ -195,19 +195,21 @@ const SearchInput = ({ onChangeInput }: searchInputProps):JSX.Element => {
 
 const SearchForm = ({ onSubmit, onChangeInput, onChangeCountry }: searchFormProps): JSX.Element => {
   return (
-    <form
-      action=""
-      method="get"
-      acceptCharset="utf-8"
-      id="spotifySearchForm"
-      onSubmit={onSubmit}
-    >
-      <SearchInput onChangeInput={onChangeInput}/>
-      <br></br>
-      <CountrySelection onChangeCountry={onChangeCountry}/>
-      <br></br>
-      <input type="submit" className="submit" value="Search" />
-    </form>
+    <div id="formContainer">
+      <form
+        action=""
+        method="get"
+        acceptCharset="utf-8"
+        id="spotifySearchForm"
+        onSubmit={onSubmit}
+      >
+        <SearchInput onChangeInput={onChangeInput}/>
+        <br></br>
+        <CountrySelection onChangeCountry={onChangeCountry}/>
+        <br></br>
+        <input type="submit" className="submit" value="Search" />
+      </form>
+    </div>
   );
 }
 
