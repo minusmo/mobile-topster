@@ -7,13 +7,13 @@ import paper from "../../assets/images/paper.jpeg";
 import { username, password } from "../../constants/credentials";
 import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
 import { getAlbumsByAlbumName } from "../../utils/httpUtils";
-import { JsxEmit } from "typescript";
 
 type searchWindowProps = {
   onClickCancel: () => void;
   showSearch: boolean;
   handleClickAlbum: React.MouseEventHandler;
 };
+
 type AlbumArtist = {
   name: string;
 };
@@ -47,11 +47,70 @@ type returnedAlbumImgProps = {
   id: string;
   imgUrl: string;
   altText: string;
-}
+  handleClickAlbum: React.MouseEventHandler;
+};
 
 type cancelButtonProps = {
   imgUri: string;
-}
+  onClickCancel: () => void;
+};
+
+const userIsAddingAlbumManually = (trimmedSearchInput: String): boolean => {
+  return trimmedSearchInput.slice(0, 4) === "http" ? true : false;
+};
+
+const createAuthConfig = (): AxiosRequestConfig => {
+  return {
+    method: "post",
+    url: SPOTIFY_API,
+    headers: {
+      "Content-Type": CONTENT_TYPE,
+    },
+    data: Qs.stringify({ grant_type: "client_credentials" }),
+    auth: {
+      username: username,
+      password: password,
+    },
+    withCredentials: true,
+  };
+};
+
+const createQueryConfig = (
+  getAlbums: string,
+  access_token: string
+): AxiosRequestConfig => {
+  return {
+    method: "get",
+    url: getAlbums,
+    headers: {
+      Authorization: `Bearer ${access_token}`,
+    },
+  };
+};
+
+const CancelButton = ({ imgUri, onClickCancel }: cancelButtonProps): JSX.Element => {
+  return (
+    <img id="cancelButton" src={imgUri} alt="cancel" onClick={onClickCancel} />
+  );
+};
+
+const ReturnedAlbumImg = ({
+  id,
+  imgUrl,
+  altText,
+  handleClickAlbum
+}: returnedAlbumImgProps): JSX.Element => {
+  return (
+    <img
+      key={id}
+      width={60}
+      height={60}
+      src={imgUrl}
+      alt={altText}
+      onClick={handleClickAlbum}
+    />
+  );
+};
 
 const SearchWindow = ({
   onClickCancel,
@@ -63,10 +122,6 @@ const SearchWindow = ({
   const [searchResult, setSearchResult] = useState<Array<AlbumSearchResult>>(
     []
   );
-
-  const userIsAddingAlbumManually = (trimmedSearchInput: String): boolean => {
-    return trimmedSearchInput.slice(0, 4) === "http" ? true : false;
-  };
 
   const returnUsersAlbum = (trimmedSearchInput: String): void => {
     const artists: promptReturn = window.prompt("아티스트명을 입력해주세요.");
@@ -88,35 +143,6 @@ const SearchWindow = ({
     ];
     setSearchResult(usersAlbum);
     return;
-  };
-
-  const createAuthConfig = (): AxiosRequestConfig => {
-    return {
-      method: "post",
-      url: SPOTIFY_API,
-      headers: {
-        "Content-Type": CONTENT_TYPE,
-      },
-      data: Qs.stringify({ grant_type: "client_credentials" }),
-      auth: {
-        username: username,
-        password: password,
-      },
-      withCredentials: true,
-    };
-  };
-
-  const createQueryConfig = (
-    getAlbums: string,
-    access_token: string
-  ): AxiosRequestConfig => {
-    return {
-      method: "get",
-      url: getAlbums,
-      headers: {
-        Authorization: `Bearer ${access_token}`,
-      },
-    };
   };
 
   const queryAlbums = async (
@@ -161,45 +187,33 @@ const SearchWindow = ({
     }
   };
 
-  const CancelButton = ({ imgUri }: cancelButtonProps):JSX.Element => {
-    return <img
-      id="cancelButton"
-      src={imgUri}
-      alt="cancel"
-      onClick={onClickCancel}
-      />;
-  }
-  
-  const ReturnedAlbumImg = ({ id, imgUrl, altText }: returnedAlbumImgProps):JSX.Element => {
-    return <img
-      key={id}
-      width={60}
-      height={60}
-      src={imgUrl}
-      alt={altText}
-      onClick={handleClickAlbum}
-    />;
-  }
-
   return (
     <div
       id={showSearch ? "searchBoxContainer-show" : "searchBoxContainer-hidden"}
     >
-      <CancelButton imgUri={cancel} />
-        <SearchForm
-          onSubmit={(e) => queryAlbums(e, searchInput, country)}
-          onChangeInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setSearchInput(e.target.value)
-          }
-          onChangeCountry={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCountry(e.target.value)
-          }
-        />
+      <CancelButton imgUri={cancel} onClickCancel={onClickCancel}/>
+      <SearchForm
+        onSubmit={(e) => queryAlbums(e, searchInput, country)}
+        onChangeInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setSearchInput(e.target.value)
+        }
+        onChangeCountry={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setCountry(e.target.value)
+        }
+      />
       {searchResult.length !== 0 ? (
         searchResult.map((collection) => {
           const imgUrl: string = collection.images[0].url;
-          const altText: string = collection.name + " - " + collection.artists[0].name;
-          return <ReturnedAlbumImg id={collection.id} imgUrl={imgUrl} altText={altText} />;
+          const altText: string =
+            collection.name + " - " + collection.artists[0].name;
+          return (
+            <ReturnedAlbumImg
+              id={collection.id}
+              imgUrl={imgUrl}
+              altText={altText}
+              handleClickAlbum={handleClickAlbum}
+            />
+          );
         })
       ) : (
         <></>

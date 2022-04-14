@@ -1,13 +1,13 @@
 type optionsProps = {
-  showOptions: string;
+  showOptions: boolean;
   showAlbumTitle: boolean;
-  setShowAlbumTitle: (showAlbumTitle: boolean) => boolean;
+  setShowAlbumTitle: (showAlbumTitle: boolean) => void;
   backgroundColor: string;
-  setBackgroundColor: (backgroundColor: string) => string;
+  setBackgroundColor: (backgroundColor: string) => void;
   rows: number;
-  setRows: (rows: number) => number;
+  setRows: (rows: number) => void;
   columns: number;
-  setColumns: (columns: number) => number;
+  setColumns: (cols: number) => void;
   updateTopster: (row: number, col: number, type: string) => void;
 }
 
@@ -24,7 +24,7 @@ const Options = ({
   updateTopster,
 }: optionsProps):JSX.Element => {
   return (
-    <div id="options" style={{ display: showOptions }}>
+    <div id="options" style={{ display: showOptions ? "block" : "none" }}>
       {/* 타이틀 숨김버튼 */}
       <input
         type="checkbox"

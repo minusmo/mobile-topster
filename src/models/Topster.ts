@@ -1,5 +1,3 @@
-import { RecordWithTtl } from "dns";
-import * as _ from "lodash";
 import paper from "../assets/images/paper.jpeg";
 import { Cell, Grid } from "./modelTypes";
 
