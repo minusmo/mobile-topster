@@ -1,0 +1,35 @@
+.gridContainer-grid {
+  background-color: white;
+  padding: 2.5vw;
+  width: 95vw;
+  display: grid;
+}
+
+.gridContainer-42 {
+  background-color: black;
+  padding: 2.5vw;
+  width: 95vw;
+  display: grid;
+  grid-template-columns: repeat(30, calc(95vw / 30));
+  grid-template-rows: repeat(30, calc(95vw / 30));
+  row-gap: none;
+}
+
+.gridContainer-42 div {
+  padding: 1vw;
+}
+
+.gridContainer-42 div:nth-child(-n + 10) {
+  grid-column: span 6;
+  grid-row: span 6;
+}
+
+.gridContainer-42 div:nth-child(n + 11):nth-child(-n + 22) {
+  grid-column: span 5;
+  grid-row: span 5;
+}
+
+.gridContainer-42 div:nth-child(n + 23) {
+  grid-column: span 3;
+  grid-row: span 3;
+}

@@ -7,6 +7,8 @@ import paper from "../../assets/images/paper.jpeg";
 import { username, password } from "../../constants/credentials";
 import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
 import { getAlbumsByAlbumName } from "../../utils/httpUtils";
+import CancelButton from "./CancelButton";
+import SpotifyAlbumImg from "./SpotifyAlbumImg";
 
 type searchWindowProps = {
   onClickCancel: () => void;
@@ -43,18 +45,6 @@ type queryResponseData = {
   albums: albumItems;
 };
 
-type returnedAlbumImgProps = {
-  id: string;
-  imgUrl: string;
-  altText: string;
-  handleClickAlbum: React.MouseEventHandler;
-};
-
-type cancelButtonProps = {
-  imgUri: string;
-  onClickCancel: () => void;
-};
-
 const userIsAddingAlbumManually = (trimmedSearchInput: String): boolean => {
   return trimmedSearchInput.slice(0, 4) === "http" ? true : false;
 };
@@ -86,30 +76,6 @@ const createQueryConfig = (
       Authorization: `Bearer ${access_token}`,
     },
   };
-};
-
-const CancelButton = ({ imgUri, onClickCancel }: cancelButtonProps): JSX.Element => {
-  return (
-    <img id="cancelButton" src={imgUri} alt="cancel" onClick={onClickCancel} />
-  );
-};
-
-const ReturnedAlbumImg = ({
-  id,
-  imgUrl,
-  altText,
-  handleClickAlbum
-}: returnedAlbumImgProps): JSX.Element => {
-  return (
-    <img
-      key={id}
-      width={60}
-      height={60}
-      src={imgUrl}
-      alt={altText}
-      onClick={handleClickAlbum}
-    />
-  );
 };
 
 const SearchWindow = ({
@@ -191,7 +157,7 @@ const SearchWindow = ({
     <div
       id={showSearch ? "searchBoxContainer-show" : "searchBoxContainer-hidden"}
     >
-      <CancelButton imgUri={cancel} onClickCancel={onClickCancel}/>
+      <CancelButton imgUri={cancel} onClickCancel={onClickCancel} />
       <SearchForm
         onSubmit={(e) => queryAlbums(e, searchInput, country)}
         onChangeInput={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -207,7 +173,7 @@ const SearchWindow = ({
           const altText: string =
             collection.name + " - " + collection.artists[0].name;
           return (
-            <ReturnedAlbumImg
+            <SpotifyAlbumImg
               id={collection.id}
               imgUrl={imgUrl}
               altText={altText}

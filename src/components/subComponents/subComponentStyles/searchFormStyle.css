@@ -1,0 +1,25 @@
+#formContainer {
+  margin-bottom: 10px;
+}
+
+#formContainer form input[type="input"] {
+  border-style: solid;
+  font-weight: bold;
+  background-color: #f0f8ff;
+  margin-top: 5px;
+}
+
+#formContainer form input[type="text"] {
+  border-style: solid;
+  border-width: medium;
+  border-color: #000;
+  font-weight: bold;
+}
+
+#formContainer form select {
+  border-style: solid;
+  border-width: medium;
+  border-color: #000;
+  font-weight: bold;
+  margin-top: 5px;
+}

@@ -1,13 +1,17 @@
 import * as _ from "lodash";
 import { Grid } from "../../models/modelTypes";
+
 type TitleListElementProps = {
   title: String;
-}
+};
 
 type TitleListElementType = JSX.Element | null;
-const TitleListElement = ({ title }: TitleListElementProps): TitleListElementType => {
-  return (title.length !== 0 ? <li>{title}</li> : null);
-}
+
+const TitleListElement = ({
+  title,
+}: TitleListElementProps): TitleListElementType => {
+  return title.length !== 0 ? <li>{title}</li> : null;
+};
 
 type TitleListProps = {
   rows: number;
@@ -15,7 +19,7 @@ type TitleListProps = {
   showAlbumTitle: boolean;
   topsterRows: Grid;
   backgroundColor: string;
-}
+};
 
 const TitleList = ({
   rows,
@@ -41,6 +45,6 @@ const TitleList = ({
       </ul>
     </div>
   );
-}
+};
 
 export default TitleList;

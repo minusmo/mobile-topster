@@ -1,0 +1,35 @@
+#titleList {
+  font-size: 0.8em;
+  background-color: black;
+  padding: 2.5vw;
+  font-weight: 700;
+}
+
+.titleList-show {
+  display: "";
+}
+
+.titleList-hidden {
+  display: none;
+}
+
+#titleContainer li {
+  padding-left: auto;
+  padding-right: auto;
+}
+
+li::marker {
+  content: none;
+}
+
+li::before {
+  content: "💿";
+  position: relative;
+  padding-right: 1em;
+}
+
+ul {
+  color: white;
+  padding: 0;
+  list-style: none;
+}

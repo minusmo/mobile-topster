@@ -10,14 +10,14 @@ import TopsterTemplate from "./components/mainComponents/TopsterTemplate";
 import Manual from "./components/mainComponents/Manual";
 import Options from "./components/subComponents/Options";
 import { createSquareGrid, createCell } from "./models/Topster";
-import "./styles/App.css";
+import "./styles/Main.css";
 import ReactGA from "react-ga";
 // import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
   const [rows, setRows] = useState(10);
   const [columns, setColumns] = useState(10);
-  const [topster, setTopster] = useState(createSquareGrid(10,10));
+  const [topster, setTopster] = useState(createSquareGrid(10, 10));
   const [type, setType] = useState("grid");
   const [selectedCell, setSelectedCell] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#000");
@@ -78,7 +78,12 @@ function MobileTopsterMaker() {
     showAlbumTitle,
   ]);
 
-  const preSave = (gridconPadding: string, gridCells: HTMLCollectionOf<Element>, gridCon: HTMLElement, titleList: HTMLElement): void => {
+  const preSave = (
+    gridconPadding: string,
+    gridCells: HTMLCollectionOf<Element>,
+    gridCon: HTMLElement,
+    titleList: HTMLElement
+  ): void => {
     gridCon.style.gridTemplateRows = `repeat(${rows}, calc(10*95vw/${rows}))`;
     gridCon.style.gridTemplateColumns = `repeat(${columns}, calc(10*95vw/${rows}))`;
     gridCon.style.padding = `calc(10*${gridconPadding})`;
@@ -118,7 +123,7 @@ function MobileTopsterMaker() {
 
     Array.from(gridCells).forEach((cell: Element) => {
       const gridCell = cell as HTMLElement;
-      gridCell.style.padding = "1vw"
+      gridCell.style.padding = "1vw";
     });
   };
 
@@ -209,15 +214,15 @@ function MobileTopsterMaker() {
     if (selectedCell) {
       let selectedRow = Number.parseInt(selectedCell.split("-")[0]);
       let selectedCol = Number.parseInt(selectedCell.split("-")[1]);
-  
+
       let updatedTopster = _.cloneDeep(topster);
-  
+
       let updatedRow = [...updatedTopster[selectedRow]];
       updatedRow[selectedCol] = createCell(targetImg.src, targetImg.alt);
       updatedTopster[selectedRow] = updatedRow;
-  
+
       setTopster(updatedTopster);
-  
+
       setSelectedCell("");
       setShowSearch(false);
       e.preventDefault();
@@ -225,7 +230,7 @@ function MobileTopsterMaker() {
   };
 
   return (
-    <div className="App">
+    <div className="Main">
       <Helmet>
         <meta charSet="utf-8" />
         <meta name="description" content="mobile topster" />
