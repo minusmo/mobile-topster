@@ -1,3 +1,4 @@
+import "./subComponentStyles/settingsStyles.css";
 type optionsProps = {
   showOptions: boolean;
   showAlbumTitle: boolean;
@@ -9,9 +10,9 @@ type optionsProps = {
   columns: number;
   setColumns: (cols: number) => void;
   updateTopster: (row: number, col: number, type: string) => void;
-}
+};
 
-const Options = ({
+const Settings = ({
   showOptions,
   showAlbumTitle,
   setShowAlbumTitle,
@@ -22,9 +23,9 @@ const Options = ({
   columns,
   setColumns,
   updateTopster,
-}: optionsProps):JSX.Element => {
+}: optionsProps): JSX.Element => {
   return (
-    <div id="options" style={{ display: showOptions ? "block" : "none" }}>
+    <div id="settings" style={{ display: showOptions ? "block" : "none" }}>
       {/* 타이틀 숨김버튼 */}
       <input
         type="checkbox"
@@ -98,9 +99,8 @@ const Options = ({
       >
         Top42
       </button>
-
     </div>
   );
-}
+};
 
-export default Options;
+export default Settings;

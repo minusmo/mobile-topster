@@ -1,9 +1,9 @@
-#options {
+#settings {
   font-size: 1.5em;
   margin-top: 10px;
 }
 
-#options button {
+#settings button {
   font-size: 0.8em;
   margin: 0 0.8vw;
   border: none;

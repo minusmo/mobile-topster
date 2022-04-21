@@ -9,6 +9,7 @@ import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
 import { getAlbumsByAlbumName } from "../../utils/httpUtils";
 import CancelButton from "./CancelButton";
 import SpotifyAlbumImg from "./SpotifyAlbumImg";
+import "./subComponentStyles/searchWindowStyle.css";
 
 type searchWindowProps = {
   onClickCancel: () => void;

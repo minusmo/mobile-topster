@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./styles/index.css";
-import MobileTopsterMaker from "./Main";
+import App from "./App";
 
-ReactDOM.render(<MobileTopsterMaker />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("body"));

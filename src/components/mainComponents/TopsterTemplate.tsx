@@ -2,6 +2,7 @@ import React from "react";
 import * as _ from "lodash";
 import { Grid } from "../../models/modelTypes";
 import GridCell from "../subComponents/GridCell";
+import "./mainComponentStyles/topsterTemplateStyle.css";
 
 type TopsterTemplateProps = {
   rows: number;

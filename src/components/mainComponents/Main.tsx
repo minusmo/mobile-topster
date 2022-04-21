@@ -2,16 +2,19 @@ import React, { useState, useEffect } from "react";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
-import { Helmet } from "react-helmet";
-import SearchWindow from "./components/subComponents/SearchWindow";
-import TitleList from "./components/mainComponents/TitleList";
-import ControlButtons from "./components/mainComponents/ControlButtons";
-import TopsterTemplate from "./components/mainComponents/TopsterTemplate";
-import Manual from "./components/mainComponents/Manual";
-import Options from "./components/subComponents/Options";
-import { createSquareGrid, createCell } from "./models/Topster";
-import "./styles/Main.css";
+import SearchWindow from "../subComponents/SearchWindow";
+import TitleList from "./TitleList";
+import ControlButtons from "./ControlButtons";
+import TopsterTemplate from "./TopsterTemplate";
+import Manual from "./Manual";
+import Options from "../subComponents/Settings";
+import { createSquareGrid, createCell } from "../../models/Topster";
+import "./mainComponentStyles/Main.css";
 import ReactGA from "react-ga";
+import Settings from "../subComponents/Settings";
+import SettingsButton from "./SettingsButton";
+import HelpButton from "./HelpButton";
+import SaveImgButton from "./SaveImgButton";
 // import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
@@ -230,18 +233,10 @@ function MobileTopsterMaker() {
   };
 
   return (
-    <div className="Main">
-      <Helmet>
-        <meta charSet="utf-8" />
-        <meta name="description" content="mobile topster" />
-        <title>Mobile-Topster</title>
-      </Helmet>
-      <ControlButtons
-        handleShowOptions={handleShowOptions}
-        handleSave={handleSave}
-      />
-
-      <div id="mainContainer">
+    <main id="main">
+      <SettingsButton />
+      <HelpButton />
+      <div id="topster-container">
         {/* 탑스터  */}
         <TopsterTemplate
           rows={rows}
@@ -251,6 +246,7 @@ function MobileTopsterMaker() {
           backgroundColor={backgroundColor}
           handleClickGridcell={handleClickGridcell}
         />
+
         {/* 앨범 타이틀 목록 */}
         <TitleList
           rows={rows}
@@ -262,7 +258,7 @@ function MobileTopsterMaker() {
       </div>
 
       {/* 옵션 설정 */}
-      <Options
+      <Settings
         showOptions={showOptions}
         showAlbumTitle={showAlbumTitle}
         setShowAlbumTitle={setShowAlbumTitle}
@@ -282,9 +278,8 @@ function MobileTopsterMaker() {
         handleClickAlbum={handleClickAlbum}
       />
 
-      {/* 사용설명 */}
-      <Manual />
-    </div>
+      <SaveImgButton />
+    </main>
   );
 }
 

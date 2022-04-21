@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 import { Grid } from "../../models/modelTypes";
-
+import "./mainComponentStyles/titleListStyle.css";
 type TitleListElementProps = {
   title: String;
 };

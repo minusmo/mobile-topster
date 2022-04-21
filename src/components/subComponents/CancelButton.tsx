@@ -1,3 +1,5 @@
+import "./subComponentStyles/cancelButtonStyle.css";
+
 type cancelButtonProps = {
   imgUri: string;
   onClickCancel: () => void;

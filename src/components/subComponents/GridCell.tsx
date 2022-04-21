@@ -1,3 +1,4 @@
+import "./subComponentStyles/gridCellStyle.css";
 type GridCellProps = {
   topsterType: string;
   imgSrc: string;

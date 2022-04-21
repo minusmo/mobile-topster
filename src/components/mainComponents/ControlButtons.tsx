@@ -1,3 +1,4 @@
+import "./mainComponentStyles/controlButtonsStyle.css";
 type ButtonEventHandler = () => void;
 type ControlButtonProps = {
   handleShowOptions: ButtonEventHandler;
