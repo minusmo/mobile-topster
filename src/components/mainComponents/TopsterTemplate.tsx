@@ -63,7 +63,7 @@ const TopsterTemplate = ({
     cols
   );
   gridContainerClass = setGridContainerClass(topsterType);
-
+  gridContainerClass = gridContainerClass + " uk-border-rounded";
   return (
     <div
       id="gridContainer"

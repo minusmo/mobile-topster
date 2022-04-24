@@ -1,9 +1,8 @@
+import Settings from "../subComponents/Settings";
+
 const SettingsButton = () => {
   return (
-    <details>
-      <summary role="button">Settings</summary>
-      <p>…</p>
-    </details>
+      <summary className="uk-accordion-title">Settings</summary>
   );
 };
 

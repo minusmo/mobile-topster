@@ -11,10 +11,10 @@ import Options from "../subComponents/Settings";
 import { createSquareGrid, createCell } from "../../models/Topster";
 import "./mainComponentStyles/Main.css";
 import ReactGA from "react-ga";
-import Settings from "../subComponents/Settings";
-import SettingsButton from "./SettingsButton";
-import HelpButton from "./HelpButton";
+import SettingsAccordion from "./SettingAccordion";
+import HelpButton from "./HelpAccordion";
 import SaveImgButton from "./SaveImgButton";
+import HelpAccordion from "./HelpAccordion";
 // import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
@@ -130,7 +130,7 @@ function MobileTopsterMaker() {
     });
   };
 
-  const handleSave = () => {
+  const handleSave = (imgType: string): void => {
     const userAgent = window.navigator.userAgent;
     const mainCon = document.getElementById("mainContainer")!;
     const gridCon = document.getElementById("gridContainer")!;
@@ -157,7 +157,7 @@ function MobileTopsterMaker() {
         .toBlob(mainCon, options)
         .then((blob: Blob | null) => {
           if (blob) {
-            saveAs(blob, "topster-mobile.png");
+            saveAs(blob, `topster-mobile.${imgType}`);
             postSave(
               gridconPadding,
               gridTemplateRows,
@@ -178,7 +178,7 @@ function MobileTopsterMaker() {
         .toBlob(mainCon, options)
         .then((blob: Blob | null) => {
           if (blob) {
-            saveAs(blob, "topster-mobile.png");
+            saveAs(blob, `topster-mobile.${imgType}`);
             postSave(
               gridconPadding,
               gridTemplateRows,
@@ -233,32 +233,8 @@ function MobileTopsterMaker() {
   };
 
   return (
-    <main id="main">
-      <SettingsButton />
-      <HelpButton />
-      <div id="topster-container">
-        {/* 탑스터  */}
-        <TopsterTemplate
-          rows={rows}
-          cols={columns}
-          topsterType={type}
-          topster={topster}
-          backgroundColor={backgroundColor}
-          handleClickGridcell={handleClickGridcell}
-        />
-
-        {/* 앨범 타이틀 목록 */}
-        <TitleList
-          rows={rows}
-          cols={columns}
-          showAlbumTitle={showAlbumTitle}
-          topsterRows={topster}
-          backgroundColor={backgroundColor}
-        />
-      </div>
-
-      {/* 옵션 설정 */}
-      <Settings
+    <main id="main" className="uk-position-center">
+      <SettingsAccordion
         showOptions={showOptions}
         showAlbumTitle={showAlbumTitle}
         setShowAlbumTitle={setShowAlbumTitle}
@@ -270,6 +246,26 @@ function MobileTopsterMaker() {
         setColumns={setColumns}
         updateTopster={updateTopster}
       />
+      <HelpAccordion />
+      <div id="topster-container">
+        {/* 탑스터  */}
+        <TopsterTemplate
+          rows={rows}
+          cols={columns}
+          topsterType={type}
+          topster={topster}
+          backgroundColor={backgroundColor}
+          handleClickGridcell={handleClickGridcell}
+        />
+        {/* 앨범 타이틀 목록 */}
+        <TitleList
+          rows={rows}
+          cols={columns}
+          showAlbumTitle={showAlbumTitle}
+          topsterRows={topster}
+          backgroundColor={backgroundColor}
+        />
+      </div>
 
       {/* 검색창  */}
       <SearchWindow
@@ -278,7 +274,7 @@ function MobileTopsterMaker() {
         handleClickAlbum={handleClickAlbum}
       />
 
-      <SaveImgButton />
+      <SaveImgButton save={handleSave} />
     </main>
   );
 }

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Qs from "querystring";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import SearchForm from "./SearchForm";
-import cancel from "../../assets/images/cancel.png";
 import paper from "../../assets/images/paper.jpeg";
 import { username, password } from "../../constants/credentials";
 import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
@@ -158,7 +157,7 @@ const SearchWindow = ({
     <div
       id={showSearch ? "searchBoxContainer-show" : "searchBoxContainer-hidden"}
     >
-      <CancelButton imgUri={cancel} onClickCancel={onClickCancel} />
+      <CancelButton onClickCancel={onClickCancel} />
       <SearchForm
         onSubmit={(e) => queryAlbums(e, searchInput, country)}
         onChangeInput={(e: React.ChangeEvent<HTMLInputElement>) =>

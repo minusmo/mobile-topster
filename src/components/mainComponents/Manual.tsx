@@ -1,7 +1,11 @@
 import "./mainComponentStyles/manualStyle.css";
-const Manual = (): JSX.Element => {
+type manualProps = {
+  classname: string;
+}
+
+const Manual = ({ classname }: manualProps): JSX.Element => {
   return (
-    <div id="manual">
+    <div id="manual" className={classname}>
       <h5>
         이미지를 클릭하면 새로운 앨범을 <br></br>검색하고 추가할 수 있습니다.
       </h5>

@@ -14,7 +14,7 @@ const Navbar = (): JSX.Element => {
 
 const Header = (): JSX.Element => {
   return (
-    <header id="header" className="container">
+    <header className="uk-position-top" data-uk-navbar>
       <p id="header-text">Mobile Topster</p>
     </header>
   );

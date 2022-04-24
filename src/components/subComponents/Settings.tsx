@@ -1,5 +1,7 @@
 import "./subComponentStyles/settingsStyles.css";
-type optionsProps = {
+import * as _ from "lodash";
+
+type settingsProps = {
   showOptions: boolean;
   showAlbumTitle: boolean;
   setShowAlbumTitle: (showAlbumTitle: boolean) => void;
@@ -10,6 +12,158 @@ type optionsProps = {
   columns: number;
   setColumns: (cols: number) => void;
   updateTopster: (row: number, col: number, type: string) => void;
+};
+
+type toggleTitlesProps = {
+  showAlbumTitle: boolean;
+  ontoggle: (showAlbumTitle: boolean) => void;
+};
+const ToggleTitles = ({
+  showAlbumTitle,
+  ontoggle,
+}: toggleTitlesProps): JSX.Element => {
+  return (
+    <div className="uk-margin">
+      <label className="uk-form-label" htmlFor="toggle-titles">
+        Toggle Titles
+      </label>
+      <div className="uk-form-controls">
+        <input
+          className="uk-checkbox"
+          id="toggle-titles"
+          type="checkbox"
+          onChange={() => ontoggle(!showAlbumTitle)}
+          checked={showAlbumTitle}
+        ></input>
+      </div>
+    </div>
+  );
+};
+
+type backgroundInput = {
+  backgroundColor: string;
+  onchange: (backgroundColor: string) => void;
+};
+const BackgroundInput = ({
+  backgroundColor,
+  onchange,
+}: backgroundInput): JSX.Element => {
+  return (
+    <div className="uk-margin">
+      <label className="uk-form-label" htmlFor="input-backgroundColor">
+        BackgroundColor
+      </label>
+      <div className="uk-form-controls">
+        <input
+          className="uk-input"
+          id="input-backgroundColor"
+          type="text"
+          placeholder="#HEX color"
+          value={backgroundColor}
+          onChange={(e) => onchange(e.target.value)}
+        />
+      </div>
+    </div>
+  );
+};
+
+type selectProps = {
+  onSelection: (rows: number) => void;
+};
+const RowSelect = ({ onSelection }: selectProps): JSX.Element => {
+  const rows = Array(10)
+    .fill(0)
+    .map((value, index) => index + 1);
+  console.log(rows);
+  return (
+    <div className="uk-margin">
+      <label className="uk-form-label" htmlFor="select-rows">
+        Rows
+      </label>
+      <div className="uk-form-controls">
+        <select
+          className="uk-select"
+          id="select-rows"
+          onChange={(e) => onSelection(Number.parseInt(e.target.value))}
+        >
+          {rows.map((row) => (
+            <option key={_.uniqueId()} value={row}>{row}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+
+const ColumnSelect = ({ onSelection }: selectProps): JSX.Element => {
+  const columns = Array(10)
+    .fill(0)
+    .map((value, index) => index + 1);
+  return (
+    <div className="uk-margin">
+      <label className="uk-form-label" htmlFor="select-columns">
+        Columns
+      </label>
+      <div className="uk-form-controls">
+        <select
+          className="uk-select"
+          id="select-columns"
+          onChange={(e) => onSelection(Number.parseInt(e.target.value))}
+        >
+          {columns.map((column) => (
+            <option id={_.uniqueId()} value={column}>{column}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+  );
+};
+
+type gridSettingButtonProps = {
+  row: number;
+  col: number;
+  type: string;
+  onclick: (row: number, col: number, type: string) => void;
+};
+const GridSettingButton = ({
+  row,
+  col,
+  type,
+  onclick,
+}: gridSettingButtonProps): JSX.Element => {
+  return (
+    <div data-uk-form-custom>
+      <button type="button" onClick={() => onclick(row, col, type)}>
+        SetGrid
+      </button>
+    </div>
+  );
+};
+
+type top42SettingButtonProps = {
+  setRows: (rows: number) => void;
+  setColumns: (cols: number) => void;
+  updateTopster: (row: number, col: number, type: string) => void;
+};
+const Top42SettingButton = ({
+  setRows,
+  setColumns,
+  updateTopster,
+}: top42SettingButtonProps): JSX.Element => {
+  return (
+    <div data-uk-form-custom>
+      <button
+        type="button"
+        onClick={() => {
+          setRows(6);
+          setColumns(7);
+          updateTopster(6, 7, "top42");
+        }}
+      >
+        Top42
+      </button>
+    </div>
+  );
 };
 
 const Settings = ({
@@ -23,83 +177,31 @@ const Settings = ({
   columns,
   setColumns,
   updateTopster,
-}: optionsProps): JSX.Element => {
+}: settingsProps): JSX.Element => {
   return (
-    <div id="settings" style={{ display: showOptions ? "block" : "none" }}>
-      {/* 타이틀 숨김버튼 */}
-      <input
-        type="checkbox"
-        checked={showAlbumTitle}
-        onChange={(e) => setShowAlbumTitle(!showAlbumTitle)}
+    <form id="settings" className="uk-form-horizontal">
+      <ToggleTitles
+        showAlbumTitle={showAlbumTitle}
+        ontoggle={setShowAlbumTitle}
       />
-
-      <label>SHOW ALBUM TITLES</label>
-      <br></br>
-
-      {/* 배경색 설정버튼 */}
-      <label>BackgroundColor in #HEX: </label>
-      <input
-        type="text"
-        placeholder="#HEX color"
-        value={backgroundColor}
-        onChange={(e) => setBackgroundColor(e.target.value)}
+      <BackgroundInput
+        backgroundColor={backgroundColor}
+        onchange={setBackgroundColor}
       />
-
-      {/* <label>#HEX</label> */}
-      <br></br>
-
-      {/* row 설정 */}
-      <label>ROWS</label>
-      <input
-        type="range"
-        min="1"
-        max="10"
-        value={rows}
-        onChange={(e) => {
-          setRows(Number.parseInt(e.target.value));
-          e.preventDefault();
-        }}
+      <RowSelect onSelection={setRows} />
+      <ColumnSelect onSelection={setColumns} />
+      <GridSettingButton
+        row={rows}
+        col={columns}
+        type={"grid"}
+        onclick={updateTopster}
       />
-      <span>{rows}</span>
-      <br></br>
-
-      {/* columns 설정 */}
-      <label>COLUMNS</label>
-      <input
-        type="range"
-        min="1"
-        max="10"
-        value={columns}
-        onChange={(e) => {
-          setColumns(Number.parseInt(e.target.value));
-          e.preventDefault();
-        }}
+      <Top42SettingButton
+        setRows={setRows}
+        setColumns={setColumns}
+        updateTopster={updateTopster}
       />
-      <span>{columns}</span>
-      <br></br>
-
-      {/* 그리드설정버튼 */}
-      <button
-        onClick={(e) => {
-          updateTopster(rows, columns, "grid");
-          e.preventDefault();
-        }}
-      >
-        SetGrid
-      </button>
-
-      {/* top42 설정버튼 */}
-      <button
-        onClick={(e) => {
-          setRows(6);
-          setColumns(7);
-          updateTopster(6, 7, "top42");
-          e.preventDefault();
-        }}
-      >
-        Top42
-      </button>
-    </div>
+    </form>
   );
 };
 
