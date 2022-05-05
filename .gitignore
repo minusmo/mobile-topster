@@ -22,11 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-<<<<<<< HEAD
-/src/credentials.js
-
-.eslintcache
-=======
 /src/constants/*
 /src/utils/*
 
@@ -36,4 +31,3 @@ tsconfig.json
 yarn.lock
 
 .eslintcache
->>>>>>> dev
