@@ -17,7 +17,7 @@ import {
   changeBlankCellsToDefaultBackground,
   getGridContainerWidth,
 } from "../../models/topsterUtils";
-import { GAID } from "./constants/credentials";
+import { GAID } from "../../constants/credentials";
 
 function MobileTopsterMaker() {
   const [rows, setRows] = useState(10);
