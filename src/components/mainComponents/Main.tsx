@@ -100,11 +100,9 @@ function MobileTopsterMaker() {
 
   const preSave = (): void => {
     setProcessingSave(true);
-    changeBlankCellsToBackgroundColor(gridContainer.current, backgroundColor);
   };
 
   const postSave = (): void => {
-    changeBlankCellsToDefaultBackground(gridContainer.current);
     setProcessingSave(false);
   };
 
