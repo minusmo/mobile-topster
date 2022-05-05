@@ -1,4 +1,4 @@
-import SettingsButton from "./SettingsButton";
+import SettingsButton from "../subComponents/SettingsButton";
 import Settings from "../subComponents/Settings";
 type settingsAccordionProps = {
   showOptions: boolean;
@@ -11,6 +11,8 @@ type settingsAccordionProps = {
   columns: number;
   setColumns: (cols: number) => void;
   updateTopster: (row: number, col: number, type: string) => void;
+  isRoundedBorder: boolean;
+  toggleBorder: () => void;
 };
 
 const SettingsAccordion = ({
@@ -24,6 +26,8 @@ const SettingsAccordion = ({
   columns,
   setColumns,
   updateTopster,
+  isRoundedBorder,
+  toggleBorder
 }: settingsAccordionProps): JSX.Element => {
   return (
     <details data-uk-accordion>
@@ -40,6 +44,8 @@ const SettingsAccordion = ({
           columns={columns}
           setColumns={setColumns}
           updateTopster={updateTopster}
+          isRoundedBorder={isRoundedBorder}
+          toggleBorder={toggleBorder}
         />
       </div>
     </details>

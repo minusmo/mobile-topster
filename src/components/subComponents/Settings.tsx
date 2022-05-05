@@ -1,5 +1,5 @@
-import "./subComponentStyles/settingsStyles.css";
 import * as _ from "lodash";
+import { useEffect, useState } from "react";
 
 type settingsProps = {
   showOptions: boolean;
@@ -12,6 +12,8 @@ type settingsProps = {
   columns: number;
   setColumns: (cols: number) => void;
   updateTopster: (row: number, col: number, type: string) => void;
+  isRoundedBorder: boolean;
+  toggleBorder: () => void;
 };
 
 type toggleTitlesProps = {
@@ -23,9 +25,9 @@ const ToggleTitles = ({
   ontoggle,
 }: toggleTitlesProps): JSX.Element => {
   return (
-    <div className="uk-margin">
-      <label className="uk-form-label" htmlFor="toggle-titles">
-        Toggle Titles
+    <div className="uk-margin uk-flex uk-flex-left">
+      <label className="uk-form-label uk-margin-right" htmlFor="toggle-titles">
+        Show Titles
       </label>
       <div className="uk-form-controls">
         <input
@@ -49,8 +51,11 @@ const BackgroundInput = ({
   onchange,
 }: backgroundInput): JSX.Element => {
   return (
-    <div className="uk-margin">
-      <label className="uk-form-label" htmlFor="input-backgroundColor">
+    <div className="uk-margin uk-flex uk-flex-left uk-flex-middle">
+      <label
+        className="uk-form-label uk-margin-right"
+        htmlFor="input-backgroundColor"
+      >
         BackgroundColor
       </label>
       <div className="uk-form-controls">
@@ -67,27 +72,32 @@ const BackgroundInput = ({
   );
 };
 
+const options = Array(10)
+  .fill(0)
+  .map((value, index) => index + 1);
+
 type selectProps = {
   onSelection: (rows: number) => void;
+  value: number;
 };
-const RowSelect = ({ onSelection }: selectProps): JSX.Element => {
-  const rows = Array(10)
-    .fill(0)
-    .map((value, index) => index + 1);
-  console.log(rows);
+
+const RowSelect = ({ onSelection, value }: selectProps): JSX.Element => {
   return (
-    <div className="uk-margin">
-      <label className="uk-form-label" htmlFor="select-rows">
+    <div className="uk-margin uk-flex uk-flex-left uk-flex-middle">
+      <label className="uk-form-label uk-margin-right" htmlFor="select-rows">
         Rows
       </label>
       <div className="uk-form-controls">
         <select
+          value={value}
           className="uk-select"
           id="select-rows"
           onChange={(e) => onSelection(Number.parseInt(e.target.value))}
         >
-          {rows.map((row) => (
-            <option key={_.uniqueId()} value={row}>{row}</option>
+          {options.map((row, index) => (
+            <option key={_.uniqueId()} value={row}>
+              {row}
+            </option>
           ))}
         </select>
       </div>
@@ -95,23 +105,23 @@ const RowSelect = ({ onSelection }: selectProps): JSX.Element => {
   );
 };
 
-const ColumnSelect = ({ onSelection }: selectProps): JSX.Element => {
-  const columns = Array(10)
-    .fill(0)
-    .map((value, index) => index + 1);
+const ColumnSelect = ({ onSelection, value }: selectProps): JSX.Element => {
   return (
-    <div className="uk-margin">
-      <label className="uk-form-label" htmlFor="select-columns">
+    <div className="uk-margin uk-flex uk-flex-left uk-flex-middle">
+      <label className="uk-form-label uk-margin-right" htmlFor="select-columns">
         Columns
       </label>
       <div className="uk-form-controls">
         <select
+          value={value}
           className="uk-select"
           id="select-columns"
           onChange={(e) => onSelection(Number.parseInt(e.target.value))}
         >
-          {columns.map((column) => (
-            <option id={_.uniqueId()} value={column}>{column}</option>
+          {options.map((column, index) => (
+            <option key={_.uniqueId()} value={column}>
+              {column}
+            </option>
           ))}
         </select>
       </div>
@@ -123,20 +133,22 @@ type gridSettingButtonProps = {
   row: number;
   col: number;
   type: string;
-  onclick: (row: number, col: number, type: string) => void;
+  updateTopster: (row: number, col: number, type: string) => void;
 };
 const GridSettingButton = ({
   row,
   col,
   type,
-  onclick,
+  updateTopster,
 }: gridSettingButtonProps): JSX.Element => {
   return (
-    <div data-uk-form-custom>
-      <button type="button" onClick={() => onclick(row, col, type)}>
-        SetGrid
-      </button>
-    </div>
+    <button
+      className="uk-button uk-button-default uk-button-small"
+      type="button"
+      onClick={() => updateTopster(row, col, type)}
+    >
+      SetGrid
+    </button>
   );
 };
 
@@ -151,18 +163,48 @@ const Top42SettingButton = ({
   updateTopster,
 }: top42SettingButtonProps): JSX.Element => {
   return (
-    <div data-uk-form-custom>
-      <button
-        type="button"
-        onClick={() => {
-          setRows(6);
-          setColumns(7);
-          updateTopster(6, 7, "top42");
-        }}
-      >
-        Top42
-      </button>
-    </div>
+    <button
+      className="uk-button uk-button-default uk-button-small"
+      type="button"
+      onClick={() => {
+        updateTopster(6, 7, "top42");
+      }}
+    >
+      Top42
+    </button>
+  );
+};
+
+const ClearCacheButton = (): JSX.Element => {
+  return (
+    <button
+      className="uk-button uk-button-default uk-button-small"
+      type="button"
+      onClick={() => {
+        localStorage.clear();
+      }}
+    >
+      Clear Cache
+    </button>
+  );
+};
+
+type borderToggleButtonProps = {
+  isRoundedBorder: boolean;
+  toggleBorder: () => void;
+};
+const BorderToggleButton = ({
+  isRoundedBorder,
+  toggleBorder,
+}: borderToggleButtonProps): JSX.Element => {
+  return (
+    <button
+      className="uk-button uk-button-default uk-button-small"
+      type="button"
+      onClick={toggleBorder}
+    >
+      {isRoundedBorder ? "각진 모서리" : "둥근 모서리"}
+    </button>
   );
 };
 
@@ -177,9 +219,27 @@ const Settings = ({
   columns,
   setColumns,
   updateTopster,
+  isRoundedBorder,
+  toggleBorder,
 }: settingsProps): JSX.Element => {
+  const [curRows, setCurRows] = useState(rows);
+  const [curCols, setCurCols] = useState(columns);
+
+  useEffect(() => {
+    let savedRows = localStorage.getItem("rows");
+    if (savedRows) {
+      setCurRows(Number.parseInt(localStorage.getItem("rows")!));
+      setCurCols(Number.parseInt(localStorage.getItem("columns")!));
+    }
+  }, []);
+
+  useEffect(() => {
+    setCurRows(rows);
+    setCurCols(columns);
+  }, [rows, columns]);
+
   return (
-    <form id="settings" className="uk-form-horizontal">
+    <div id="settings" className="uk-form-horizontal">
       <ToggleTitles
         showAlbumTitle={showAlbumTitle}
         ontoggle={setShowAlbumTitle}
@@ -188,20 +248,27 @@ const Settings = ({
         backgroundColor={backgroundColor}
         onchange={setBackgroundColor}
       />
-      <RowSelect onSelection={setRows} />
-      <ColumnSelect onSelection={setColumns} />
-      <GridSettingButton
-        row={rows}
-        col={columns}
-        type={"grid"}
-        onclick={updateTopster}
-      />
-      <Top42SettingButton
-        setRows={setRows}
-        setColumns={setColumns}
-        updateTopster={updateTopster}
-      />
-    </form>
+      <RowSelect value={curRows} onSelection={setCurRows} />
+      <ColumnSelect value={curCols} onSelection={setCurCols} />
+      <div className="uk-buttom-group uk-flex uk-flex-center">
+        <GridSettingButton
+          row={curRows}
+          col={curCols}
+          type={"grid"}
+          updateTopster={updateTopster}
+        />
+        <Top42SettingButton
+          setRows={setRows}
+          setColumns={setColumns}
+          updateTopster={updateTopster}
+        />
+        <ClearCacheButton />
+        <BorderToggleButton
+          isRoundedBorder={isRoundedBorder}
+          toggleBorder={toggleBorder}
+        />
+      </div>
+    </div>
   );
 };
 

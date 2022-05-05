@@ -5,25 +5,41 @@ type GridCellProps = {
   rowIndex: number;
   colIndex: number;
   clickHandler: (e: React.MouseEvent<HTMLDivElement>) => void;
+  isRoundedBorder: boolean;
 };
 
-const setGridCellClass = (topsterType: string) => topsterType === "top42" ? "gridCell42" : "gridCell";
+const setGridCellClass = (topsterType: string) =>
+  topsterType === "top42" ? "gridCell top42" : "gridCell";
+
+type gridCellStyle = {
+  backgroundImage?: string;
+  backgroundColor?: string;
+};
+const setGridCellStyle = (imgSrc: string): gridCellStyle => {
+  let gridCellStyle: gridCellStyle = {};
+  if (imgSrc) {
+    gridCellStyle["backgroundImage"] = `url(${imgSrc})`;
+  } else {
+    gridCellStyle["backgroundColor"] = "white";
+  }
+  return gridCellStyle;
+};
 const GridCell = ({
   topsterType,
   imgSrc,
   rowIndex,
   colIndex,
   clickHandler,
+  isRoundedBorder,
 }: GridCellProps): JSX.Element => {
-  let gridCellClass = setGridCellClass(topsterType);
+  const gridCellClass = setGridCellClass(topsterType);
+  const gridCellStyle = setGridCellStyle(imgSrc);
   return (
     <div className={gridCellClass}>
       <div
-        style={{
-          backgroundImage: `url(${imgSrc})`,
-        }}
+        style={gridCellStyle}
         id={`${rowIndex}-${colIndex}`}
-        className={"uk-border-rounded"}
+        className={isRoundedBorder ? "border-rounded" : ""}
         onClick={clickHandler}
       ></div>
     </div>

@@ -1,19 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Qs from "querystring";
+import * as _ from "lodash";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import SearchForm from "./SearchForm";
-import paper from "../../assets/images/paper.jpeg";
+import SearchForm from "../subComponents/SearchForm";
 import { username, password } from "../../constants/credentials";
 import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
 import { getAlbumsByAlbumName } from "../../utils/httpUtils";
-import CancelButton from "./CancelButton";
-import SpotifyAlbumImg from "./SpotifyAlbumImg";
-import "./subComponentStyles/searchWindowStyle.css";
+import CancelButton from "../subComponents/CancelButton";
+import SpotifyAlbumImg from "../subComponents/SpotifyAlbumImg";
+import "./mainComponentStyles/searchWindowStyle.css";
 
 type searchWindowProps = {
   onClickCancel: () => void;
   showSearch: boolean;
-  handleClickAlbum: React.MouseEventHandler;
+  handleClickAlbum: React.MouseEventHandler<HTMLImageElement>;
 };
 
 type AlbumArtist = {
@@ -83,7 +83,7 @@ const SearchWindow = ({
   showSearch,
   handleClickAlbum,
 }: searchWindowProps): JSX.Element => {
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState<String>("");
   const [country, setCountry] = useState("us");
   const [searchResult, setSearchResult] = useState<Array<AlbumSearchResult>>(
     []
@@ -97,7 +97,7 @@ const SearchWindow = ({
       {
         artists: [{ name: "" }],
         name: "",
-        images: [{ url: paper }],
+        images: [{ url: "" }],
         id: "00000",
       },
       {
@@ -111,20 +111,14 @@ const SearchWindow = ({
     return;
   };
 
-  const queryAlbums = async (
-    e: React.FormEvent,
-    searchInput: String,
-    country: string
-  ): Promise<void> => {
-    e.preventDefault();
-
+  const queryAlbums = async (): Promise<void> => {
     const trimmedSearchInput: String = searchInput.trim();
     const query = trimmedSearchInput.replace(" ", "+");
-    let searchResult: Array<AlbumSearchResult> = [
+    let newSearchResult: Array<AlbumSearchResult> = [
       {
         artists: [{ name: "" }],
         name: "",
-        images: [{ url: paper }],
+        images: [{ url: "" }],
         id: "00000",
       },
     ];
@@ -145,45 +139,51 @@ const SearchWindow = ({
         albums: { items },
       }: queryResponseData = queryResponse.data;
 
-      setSearchResult(searchResult.concat(items));
+      setSearchResult(newSearchResult.concat(items));
     } catch (error) {
       console.warn(error);
-      setSearchResult(searchResult);
+      setSearchResult(newSearchResult);
       alert("현재 앨범 조회가 불가능합니다.");
     }
   };
 
+  let classname = "uk-modal-container searchBoxContainer";
+  if (showSearch) {
+    classname = classname + " show";
+  }
+
   return (
-    <div
-      id={showSearch ? "searchBoxContainer-show" : "searchBoxContainer-hidden"}
-    >
-      <CancelButton onClickCancel={onClickCancel} />
-      <SearchForm
-        onSubmit={(e) => queryAlbums(e, searchInput, country)}
-        onChangeInput={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setSearchInput(e.target.value)
-        }
-        onChangeCountry={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setCountry(e.target.value)
-        }
-      />
-      {searchResult.length !== 0 ? (
-        searchResult.map((collection) => {
-          const imgUrl: string = collection.images[0].url;
-          const altText: string =
-            collection.name + " - " + collection.artists[0].name;
-          return (
-            <SpotifyAlbumImg
-              id={collection.id}
-              imgUrl={imgUrl}
-              altText={altText}
-              handleClickAlbum={handleClickAlbum}
-            />
-          );
-        })
-      ) : (
-        <></>
-      )}
+    <div className={classname}>
+      <div className="uk-margin-auto-vertical">
+        <CancelButton onClickCancel={onClickCancel} />
+        <div className="uk-container uk-padding">
+          <SearchForm
+            setCountry={setCountry}
+            setSearchInput={setSearchInput}
+            onSubmission={queryAlbums}
+          />
+        </div>
+        <div className="uk-container">
+          {searchResult.length !== 0 ? (
+            searchResult.map((collection) => {
+              const imgUrl: string = collection.images[0].url;
+              const altText: string =
+                collection.name + " - " + collection.artists[0].name;
+              return (
+                <SpotifyAlbumImg
+                  key={_.uniqueId()}
+                  id={collection.id}
+                  imgUrl={imgUrl}
+                  altText={altText}
+                  handleClickAlbum={handleClickAlbum}
+                />
+              );
+            })
+          ) : (
+            <></>
+          )}
+        </div>
+      </div>
     </div>
   );
 };

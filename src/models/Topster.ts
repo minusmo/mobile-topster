@@ -1,7 +1,6 @@
-import paper from "../assets/images/paper.jpeg";
 import { Cell, Grid } from "./modelTypes";
 
-const createCell = (src: string = paper, alt: string = ""): Cell => {
+const createCell = (src: string = "", alt: string = ""): Cell => {
   return {
     src: src,
     alt: alt,

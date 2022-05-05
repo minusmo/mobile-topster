@@ -11,6 +11,8 @@ type TopsterTemplateProps = {
   topster: Grid;
   backgroundColor: string;
   handleClickGridcell: (e: React.MouseEvent<HTMLDivElement>) => void;
+  isRoundedBorder: boolean;
+  currentWidth: number | undefined;
 };
 
 type gridContainerStyle = {
@@ -24,26 +26,27 @@ const setGridContainerStyle = (
   topsterType: string,
   backgroundColor: string,
   rows: number,
-  cols: number
+  cols: number,
+  currentWidth: number | undefined
 ): gridContainerStyle => {
   let gridContainerStyle: gridContainerStyle;
   if (topsterType === "top42") {
     gridContainerStyle = {
       backgroundColor: backgroundColor,
-      height: "92vw",
+      gridTemplateRows: `repeat(28, calc(${currentWidth}px / 30))`,
     };
   } else {
     gridContainerStyle = {
       backgroundColor: backgroundColor,
-      gridTemplateColumns: `repeat(${cols}, calc(95vw / ${cols}))`,
-      gridTemplateRows: `repeat(${rows}, calc(95vw / ${cols}))`,
+      gridTemplateColumns: `repeat(${cols}, calc(100% / ${cols}))`,
+      gridTemplateRows: `repeat(${rows}, calc(${currentWidth}px / ${cols}))`,
     };
   }
   return gridContainerStyle;
 };
 
 const setGridContainerClass = (topsterType: string): string => {
-  return topsterType === "top42" ? "gridContainer-42" : "gridContainer-grid";
+  return topsterType === "top42" ? "grid-container top42" : "grid-container";
 };
 
 const TopsterTemplate = ({
@@ -53,6 +56,8 @@ const TopsterTemplate = ({
   topster,
   backgroundColor,
   handleClickGridcell,
+  isRoundedBorder,
+  currentWidth,
 }: TopsterTemplateProps): JSX.Element => {
   let gridContainerStyle: gridContainerStyle;
   let gridContainerClass: string;
@@ -60,13 +65,14 @@ const TopsterTemplate = ({
     topsterType,
     backgroundColor,
     rows,
-    cols
+    cols,
+    currentWidth
   );
   gridContainerClass = setGridContainerClass(topsterType);
-  gridContainerClass = gridContainerClass + " uk-border-rounded";
+  gridContainerClass = gridContainerClass + " border-rounded";
   return (
     <div
-      id="gridContainer"
+      id="grid-container"
       className={gridContainerClass}
       style={gridContainerStyle}
     >
@@ -80,6 +86,7 @@ const TopsterTemplate = ({
               rowIndex={rowIndex}
               colIndex={colIndex}
               clickHandler={handleClickGridcell}
+              isRoundedBorder={isRoundedBorder}
             />
           );
         });

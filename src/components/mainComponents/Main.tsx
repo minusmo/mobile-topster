@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
-import SearchWindow from "../subComponents/SearchWindow";
+import SearchWindow from "./SearchWindow";
 import TitleList from "./TitleList";
-import ControlButtons from "./ControlButtons";
 import TopsterTemplate from "./TopsterTemplate";
-import Manual from "./Manual";
-import Options from "../subComponents/Settings";
-import { createSquareGrid, createCell } from "../../models/Topster";
+import { createSquareGrid } from "../../models/Topster";
 import "./mainComponentStyles/Main.css";
 import ReactGA from "react-ga";
 import SettingsAccordion from "./SettingAccordion";
-import HelpButton from "./HelpAccordion";
 import SaveImgButton from "./SaveImgButton";
 import HelpAccordion from "./HelpAccordion";
+import Spinner from "../subComponents/Spinner";
+import {
+  changeBlankCellsToBackgroundColor,
+  changeBlankCellsToDefaultBackground,
+  getGridContainerWidth,
+} from "../../models/topsterUtils";
 // import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
@@ -27,6 +29,10 @@ function MobileTopsterMaker() {
   const [showSearch, setShowSearch] = useState(false);
   const [showAlbumTitle, setShowAlbumTitle] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
+  const [processingSave, setProcessingSave] = useState(false);
+  const [isRoundedBorder, setIsRoundedBorder] = useState(true);
+  const pictureContainer = useRef(document.getElementById("picture-container"));
+  const gridContainer = useRef(document.getElementById("grid-container"));
 
   const updateTopster = (row: number, col: number, type: string) => {
     setType(type);
@@ -44,11 +50,19 @@ function MobileTopsterMaker() {
     localStorage.setItem("showOptions", String(showOptions));
     localStorage.setItem("backgroundColor", backgroundColor);
     localStorage.setItem("selectedCell", selectedCell);
+    localStorage.setItem("isRoundedBorder", String(isRoundedBorder));
   };
 
   useEffect(() => {
     // ReactGA.initialize(GAID);
     // ReactGA.pageview(window.location.pathname);
+
+    pictureContainer.current = document.getElementById(
+      "picture-container"
+    )! as HTMLElement;
+    gridContainer.current = document.getElementById(
+      "grid-container"
+    )! as HTMLElement;
 
     const savedTopster = localStorage.getItem("topster");
     if (savedTopster) {
@@ -66,6 +80,9 @@ function MobileTopsterMaker() {
         localStorage.getItem("showOptions") === "false" ? false : true
       );
       setBackgroundColor(localStorage.getItem("backgroundColor")!);
+      setIsRoundedBorder(
+        localStorage.getItem("isRoundedBorder") === "false" ? false : true
+      );
     }
   }, []);
 
@@ -73,125 +90,66 @@ function MobileTopsterMaker() {
     saveTopster();
   }, [
     topster,
-    rows,
-    columns,
     backgroundColor,
     showSearch,
     showOptions,
     showAlbumTitle,
+    rows,
+    columns,
   ]);
 
-  const preSave = (
-    gridconPadding: string,
-    gridCells: HTMLCollectionOf<Element>,
-    gridCon: HTMLElement,
-    titleList: HTMLElement
-  ): void => {
-    gridCon.style.gridTemplateRows = `repeat(${rows}, calc(10*95vw/${rows}))`;
-    gridCon.style.gridTemplateColumns = `repeat(${columns}, calc(10*95vw/${rows}))`;
-    gridCon.style.padding = `calc(10*${gridconPadding})`;
-    gridCon.style.width = "950vw";
-
-    Array.from(gridCells).forEach((cell) => {
-      const gridCell = cell as HTMLElement;
-      gridCell.style.padding = "10vw";
-    });
-
-    const { padding: titlelistPadding, fontSize } = titleList.style;
-    const titlelistWidth = titleList.offsetWidth;
-    titleList.style.width = `950vw`;
-    titleList.style.padding = `calc(10*${gridconPadding})`;
-    titleList.style.fontSize = "8em";
+  const preSave = (): void => {
+    setProcessingSave(true);
+    changeBlankCellsToBackgroundColor(gridContainer.current, backgroundColor);
   };
 
-  const postSave = (
-    gridconPadding: string,
-    gridTemplateRows: string,
-    gridTemplateColumns: string,
-    gridconWidth: string,
-    gridCells: HTMLCollectionOf<Element>,
-    gridCon: HTMLElement,
-    titleList: HTMLElement
-  ) => {
-    gridCon.style.width = "95vw";
-
-    gridCon.style.padding = gridconPadding;
-    gridCon.style.gridTemplateRows = gridTemplateRows;
-    gridCon.style.gridTemplateColumns = gridTemplateColumns;
-    gridCon.style.width = gridconWidth;
-
-    titleList.style.width = `95vw`;
-    titleList.style.fontSize = ".8em";
-    titleList.style.padding = "2.5vw";
-
-    Array.from(gridCells).forEach((cell: Element) => {
-      const gridCell = cell as HTMLElement;
-      gridCell.style.padding = "1vw";
-    });
+  const postSave = (): void => {
+    changeBlankCellsToDefaultBackground(gridContainer.current);
+    setProcessingSave(false);
   };
 
-  const handleSave = (imgType: string): void => {
-    const userAgent = window.navigator.userAgent;
-    const mainCon = document.getElementById("mainContainer")!;
-    const gridCon = document.getElementById("gridContainer")!;
-    const titleList = document.getElementById("titleList")!;
-    const gridCellClassName = type === "top42" ? "gridCell42" : "gridCell";
-    const gridCells = document.getElementsByClassName(gridCellClassName)!;
+  type optionsType = {
+    pixelRatio?: number;
+    canvasWidth?: number;
+    canvasHeight?: number;
+  };
 
-    const {
-      gridTemplateRows,
-      gridTemplateColumns,
-      padding: gridconPadding,
-      width: gridconWidth,
-    } = gridCon.style;
-
-    const options = {
+  const createSaveOptions = (
+    pictureContainer: HTMLElement | null
+  ): optionsType => {
+    if (!pictureContainer) {
+      return {};
+    }
+    let options = {
       pixelRatio: 1,
+      canvasWidth: getGridContainerWidth(gridContainer.current) * 3,
+      canvasHeight: pictureContainer.clientHeight * 3,
     };
+    return options;
+  };
 
-    if (userAgent.indexOf("Chrome") !== -1) {
-      // if browser is chrome
-      preSave(gridconPadding, gridCells, gridCon, titleList);
+  const handleSave = async (imgType: string): Promise<void> => {
+    preSave();
+    const userAgent = window.navigator.userAgent!;
+    if (!pictureContainer.current) {
+      return
+    }
 
-      htmlToImage
-        .toBlob(mainCon, options)
-        .then((blob: Blob | null) => {
-          if (blob) {
-            saveAs(blob, `topster-mobile.${imgType}`);
-            postSave(
-              gridconPadding,
-              gridTemplateRows,
-              gridTemplateColumns,
-              gridconWidth,
-              gridCells,
-              gridCon,
-              titleList
-            );
-          }
-        })
-        .catch((err) => console.warn(err));
-    } else if (userAgent.indexOf("Safari") !== -1) {
-      // if browser is safari
-      mainCon.style.width = "950vw";
-      preSave(gridconPadding, gridCells, gridCon, titleList);
-      htmlToImage
-        .toBlob(mainCon, options)
-        .then((blob: Blob | null) => {
-          if (blob) {
-            saveAs(blob, `topster-mobile.${imgType}`);
-            postSave(
-              gridconPadding,
-              gridTemplateRows,
-              gridTemplateColumns,
-              gridconWidth,
-              gridCells,
-              gridCon,
-              titleList
-            );
-            mainCon.style.width = "95vw";
-          }
-        })
-        .catch((err) => console.warn(err));
+    const options = createSaveOptions(pictureContainer.current);
+
+    try {
+      const blob: Blob | null = await htmlToImage.toBlob(
+        pictureContainer.current,
+        options
+      );
+      if (blob) {
+        saveAs(blob, `topster-mobile.${imgType}`);
+      }
+    } catch (error) {
+      alert("저장에 실패했습니다.");
+      console.warn(error);
+    } finally {
+      postSave();
     }
   };
 
@@ -215,14 +173,12 @@ function MobileTopsterMaker() {
   const handleClickAlbum = (e: React.MouseEvent<HTMLImageElement>): void => {
     const targetImg = e.target as HTMLImageElement;
     if (selectedCell) {
-      let selectedRow = Number.parseInt(selectedCell.split("-")[0]);
-      let selectedCol = Number.parseInt(selectedCell.split("-")[1]);
+      let selectedRow: number = Number.parseInt(selectedCell.split("-")[0]);
+      let selectedCol: number = Number.parseInt(selectedCell.split("-")[1]);
 
       let updatedTopster = _.cloneDeep(topster);
-
-      let updatedRow = [...updatedTopster[selectedRow]];
-      updatedRow[selectedCol] = createCell(targetImg.src, targetImg.alt);
-      updatedTopster[selectedRow] = updatedRow;
+      updatedTopster[selectedRow][selectedCol].src = targetImg.src;
+      updatedTopster[selectedRow][selectedCol].alt = targetImg.alt;
 
       setTopster(updatedTopster);
 
@@ -232,8 +188,26 @@ function MobileTopsterMaker() {
     }
   };
 
+  const toggleBorder = (): void => {
+    setIsRoundedBorder(!isRoundedBorder);
+  };
+
+  const topsterContainerClassname = (
+    isRoundedBorder: boolean,
+    topsterType: string
+  ): string => {
+    let classList: string[] = [];
+    if (isRoundedBorder) {
+      classList.push("border-rounded");
+    }
+    if (topsterType === "top42") {
+      classList.push("top42-container");
+    }
+    return classList.join(" ");
+  };
+
   return (
-    <main id="main" className="uk-position-center">
+    <main id="main">
       <SettingsAccordion
         showOptions={showOptions}
         showAlbumTitle={showAlbumTitle}
@@ -245,18 +219,31 @@ function MobileTopsterMaker() {
         columns={columns}
         setColumns={setColumns}
         updateTopster={updateTopster}
+        isRoundedBorder={isRoundedBorder}
+        toggleBorder={toggleBorder}
       />
       <HelpAccordion />
-      <div id="topster-container">
-        {/* 탑스터  */}
-        <TopsterTemplate
-          rows={rows}
-          cols={columns}
-          topsterType={type}
-          topster={topster}
-          backgroundColor={backgroundColor}
-          handleClickGridcell={handleClickGridcell}
-        />
+      <hr />
+      <div id="picture-container">
+        <div
+          id="topster-container"
+          className={topsterContainerClassname(isRoundedBorder, type)}
+          style={{
+            backgroundColor: backgroundColor,
+          }}
+        >
+          {/* 탑스터  */}
+          <TopsterTemplate
+            rows={rows}
+            cols={columns}
+            topsterType={type}
+            topster={topster}
+            backgroundColor={backgroundColor}
+            handleClickGridcell={handleClickGridcell}
+            isRoundedBorder={isRoundedBorder}
+            currentWidth={getGridContainerWidth(gridContainer.current)}
+          />
+        </div>
         {/* 앨범 타이틀 목록 */}
         <TitleList
           rows={rows}
@@ -264,17 +251,17 @@ function MobileTopsterMaker() {
           showAlbumTitle={showAlbumTitle}
           topsterRows={topster}
           backgroundColor={backgroundColor}
+          isRoundedBorder={isRoundedBorder}
         />
       </div>
-
       {/* 검색창  */}
       <SearchWindow
         onClickCancel={() => setShowSearch(false)}
         showSearch={showSearch}
         handleClickAlbum={handleClickAlbum}
       />
-
       <SaveImgButton save={handleSave} />
+      <Spinner classname={processingSave ? "show" : ""} />
     </main>
   );
 }

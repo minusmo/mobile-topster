@@ -1,15 +1,8 @@
 .gridCell {
-  padding: 1vw;
+  padding: 2%;
 }
 
 .gridCell div {
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: contain;
-  height: 100%;
-}
-
-.gridCell42 div {
   background-repeat: no-repeat;
   background-position: center center;
   background-size: contain;

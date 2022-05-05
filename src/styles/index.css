@@ -1,7 +1,9 @@
-html {
+:root {
   --border-radius: 0.5em;
   --main-bgColor: #10191f;
   --primary: #1e88e5;
+  --dark-font-color: white;
+  --light-font-color: black;
 }
 
 body {
@@ -24,4 +26,13 @@ body::-webkit-scrollbar {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+#div-root {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100vh;
+  max-width: 950px;
+  padding: 2%;
+  margin: 0 auto;
 }

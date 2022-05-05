@@ -19,6 +19,7 @@ type TitleListProps = {
   showAlbumTitle: boolean;
   topsterRows: Grid;
   backgroundColor: string;
+  isRoundedBorder: boolean;
 };
 
 const TitleList = ({
@@ -27,14 +28,21 @@ const TitleList = ({
   showAlbumTitle,
   topsterRows,
   backgroundColor,
+  isRoundedBorder,
 }: TitleListProps): JSX.Element => {
+  let classname = "titleList";
+  if (showAlbumTitle) {
+    classname = classname + " show";
+  }
+  if (isRoundedBorder) {
+    classname = classname + " border-rounded-lower";
+  }
   return (
-    <div
-      id="titleList"
-      className={showAlbumTitle ? "titleList-show" : "titleList-hidden"}
-      style={{ backgroundColor: backgroundColor }}
-    >
-      <ul id="titleUnorderedlist">
+    <div className={classname} style={{ backgroundColor: backgroundColor }}>
+      <ul
+        id="title-Unorderedlist"
+        className="uk-column-1-2 uk-list uk-list-collapse"
+      >
         {topsterRows.slice(0, rows).map((row, index) => {
           return row
             .slice(0, cols)

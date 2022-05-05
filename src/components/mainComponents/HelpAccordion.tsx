@@ -1,4 +1,4 @@
-import Manual from "./Manual";
+import Manual from "../subComponents/Manual";
 
 const HelpAccordion = () => {
   return (

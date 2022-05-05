@@ -1,37 +1,25 @@
-#titleList {
-  font-size: 0.8em;
-  background-color: black;
-  padding: 2.5vw;
-  font-weight: 700;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-}
-
-.titleList-show {
-  display: "";
-}
-
-.titleList-hidden {
-  display: none;
-}
-
-#titleContainer li {
-  padding-left: auto;
-  padding-right: auto;
-}
-
-#titleList li::marker {
-  content: none;
-}
-
-#titleList li::before {
-  content: "💿";
-  position: relative;
-  padding-right: 1em;
-}
-
-#titleList ul {
-  color: white;
+.titleList {
+  height: fit-content;
   padding: 0;
-  list-style: none;
+  font-size: 0.5em;
+  display: none;
+  font-weight: bold;
+}
+
+.show {
+  display: block;
+}
+
+#title-Unorderedlist {
+  padding: 2%;
+  color: var(--dark-font-color);
+  font-size: inherit;
+}
+
+.text-5times {
+  font-size: 5rem;
+}
+
+#title-Unorderedlist li::marker {
+  content: none;
 }
