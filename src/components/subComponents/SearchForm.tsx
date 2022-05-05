@@ -205,7 +205,7 @@ const SearchInput = ({ setSearchInput }: searchInputProps): JSX.Element => {
       <div className="uk-form-controls">
         <input
           id="search-album"
-          className="uk-input uk-width-medium"
+          className="uk-input"
           type="text"
           placeholder="type artist or album title"
           onChange={(e) => setSearchInput(String(e.currentTarget.value))}
@@ -222,7 +222,7 @@ const SubmitButton = ({ onSubmission }: submitButtonProps): JSX.Element => {
   return (
     <button
       onClick={(e) => onSubmission()}
-      className="uk-button uk-button-default uk-width-1-3 uk-text-muted"
+      className="uk-button uk-button-default uk-margin-small uk-width-expand uk-text-muted"
     >
       Search
     </button>
@@ -237,10 +237,10 @@ const SearchForm = ({
   return (
     <div id="spotifySearchForm" className="uk-form-horizontal">
       <CountrySelection setCountry={setCountry} />
-      <div className="uk-flex uk-flex-between">
+      <div className="uk-flex uk-flex-start">
         <SearchInput setSearchInput={setSearchInput} />
-        <SubmitButton onSubmission={onSubmission} />
       </div>
+      <SubmitButton onSubmission={onSubmission} />
     </div>
   );
 };
