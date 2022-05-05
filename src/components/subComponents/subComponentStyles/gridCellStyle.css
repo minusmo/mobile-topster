@@ -1,0 +1,10 @@
+.gridCell {
+  padding: 2%;
+}
+
+.gridCell div {
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+  height: 100%;
+}

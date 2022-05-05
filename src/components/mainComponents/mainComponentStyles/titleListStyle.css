@@ -1,0 +1,25 @@
+.titleList {
+  height: fit-content;
+  padding: 0;
+  font-size: 0.5em;
+  display: none;
+  font-weight: bold;
+}
+
+.show {
+  display: block;
+}
+
+#title-Unorderedlist {
+  padding: 2%;
+  color: var(--dark-font-color);
+  font-size: inherit;
+}
+
+.text-5times {
+  font-size: 5rem;
+}
+
+#title-Unorderedlist li::marker {
+  content: none;
+}
