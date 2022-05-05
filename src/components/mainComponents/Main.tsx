@@ -17,7 +17,7 @@ import {
   changeBlankCellsToDefaultBackground,
   getGridContainerWidth,
 } from "../../models/topsterUtils";
-// import { GAID } from "./constants/credentials";
+import { GAID } from "./constants/credentials";
 
 function MobileTopsterMaker() {
   const [rows, setRows] = useState(10);
@@ -54,8 +54,8 @@ function MobileTopsterMaker() {
   };
 
   useEffect(() => {
-    // ReactGA.initialize(GAID);
-    // ReactGA.pageview(window.location.pathname);
+    ReactGA.initialize(GAID);
+    ReactGA.pageview(window.location.pathname);
 
     pictureContainer.current = document.getElementById(
       "picture-container"
@@ -132,7 +132,7 @@ function MobileTopsterMaker() {
     preSave();
     const userAgent = window.navigator.userAgent!;
     if (!pictureContainer.current) {
-      return
+      return;
     }
 
     const options = createSaveOptions(pictureContainer.current);
