@@ -84,6 +84,10 @@ function MobileTopsterMaker() {
         localStorage.getItem("isRoundedBorder") === "false" ? false : true
       );
     }
+    alert(
+      "현재 모바일 브라우저에서 이미지 저장기능이 제한되어 있습니다.\n스크린샷을 이용해 주시기 바랍니다. 죄송합니다."
+    );
+    alert("탑스터가 안보이시면 새로고침을 부탁드립니다.");
   }, []);
 
   useEffect(() => {

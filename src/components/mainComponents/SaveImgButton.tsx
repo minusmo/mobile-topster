@@ -6,13 +6,13 @@ const SaveImgButton = ({ save }: saveImgButtonProps) => {
     <div className="uk-button-group uk-align-center uk-margin-small">
       <button
         className="uk-button uk-button-default"
-        onClick={() => save("png")}
+        onClick={() => alert("현재 지원되지 않습니다.")}
       >
         Save Png
       </button>
       <button
         className="uk-button uk-button-default"
-        onClick={() => save("jpeg")}
+        onClick={() => alert("현재 지원되지 않습니다.")}
       >
         Save Jpeg
       </button>
