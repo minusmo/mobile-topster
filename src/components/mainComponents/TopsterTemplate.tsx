@@ -20,6 +20,7 @@ type gridContainerStyle = {
   height?: string;
   gridTemplateRows?: string;
   gridTemplateColumns?: string;
+  aspectRatio?: string;
 };
 
 const setGridContainerStyle = (
@@ -38,8 +39,9 @@ const setGridContainerStyle = (
   } else {
     gridContainerStyle = {
       backgroundColor: backgroundColor,
-      gridTemplateColumns: `repeat(${cols}, calc(100% / ${cols}))`,
-      gridTemplateRows: `repeat(${rows}, calc(${currentWidth}px / ${cols}))`,
+      gridTemplateColumns: `repeat(${cols}, 1fr)`,
+      gridTemplateRows: `repeat(${rows}, 1fr)`,
+      aspectRatio: `${cols} / ${rows}`,
     };
   }
   return gridContainerStyle;
