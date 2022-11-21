@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Qs from "querystring";
+import qs from "qs";
 import * as _ from "lodash";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import SearchForm from "../subComponents/SearchForm";
@@ -56,7 +56,7 @@ const createAuthConfig = (): AxiosRequestConfig => {
     headers: {
       "Content-Type": CONTENT_TYPE,
     },
-    data: Qs.stringify({ grant_type: "client_credentials" }),
+    data: qs.stringify({ grant_type: "client_credentials" }),
     auth: {
       username: username,
       password: password,
