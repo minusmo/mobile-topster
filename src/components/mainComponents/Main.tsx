@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from "react";
 import * as _ from "lodash";
 import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
-import SearchWindow from "./SearchWindow";
+import SearchWindow from "./SearchPanel";
 import TitleList from "./TitleList";
-import TopsterTemplate from "./TopsterTemplate";
+import {TopsterBoard} from "../mainComponents/TopsterBoard/TopsterBorad";
 import { createSquareGrid } from "../../models/Topster";
 import "./mainComponentStyles/Main.css";
 import ReactGA from "react-ga";
@@ -207,6 +207,7 @@ function MobileTopsterMaker() {
 
   return (
     <main id="main">
+      {/* 설정 */}
       <SettingsAccordion
         showOptions={showOptions}
         showAlbumTitle={showAlbumTitle}
@@ -221,46 +222,19 @@ function MobileTopsterMaker() {
         isRoundedBorder={isRoundedBorder}
         toggleBorder={toggleBorder}
       />
+      {/* 도움말 */}
       <HelpAccordion />
       <hr />
-      <div id="picture-container">
-        <div
-          id="topster-container"
-          className={topsterContainerClassname(isRoundedBorder, type)}
-          style={{
-            backgroundColor: backgroundColor,
-          }}
-        >
-          {/* 탑스터  */}
-          <TopsterTemplate
-            rows={rows}
-            cols={columns}
-            topsterType={type}
-            topster={topster}
-            backgroundColor={backgroundColor}
-            handleClickGridcell={handleClickGridcell}
-            isRoundedBorder={isRoundedBorder}
-            currentWidth={getGridContainerWidth(gridContainer.current)}
-          />
-        </div>
-        {/* 앨범 타이틀 목록 */}
-        <TitleList
-          rows={rows}
-          cols={columns}
-          showAlbumTitle={showAlbumTitle}
-          topsterRows={topster}
-          backgroundColor={backgroundColor}
-          isRoundedBorder={isRoundedBorder}
-        />
-      </div>
+      {/* 탑스터 */}
+      <TopsterBoard />
       {/* 검색창  */}
-      <SearchWindow
+      <SearchPanel
         onClickCancel={() => setShowSearch(false)}
         showSearch={showSearch}
         handleClickAlbum={handleClickAlbum}
       />
+      {/* 저장 버튼 */}
       <SaveImgButton save={handleSave} />
-      <Spinner classname={processingSave ? "show" : ""} />
     </main>
   );
 }
