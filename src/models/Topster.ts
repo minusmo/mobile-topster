@@ -1,5 +1,6 @@
 import { Cell, Grid } from "./modelTypes";
 import { Album } from "./Album";
+import { makeAutoObservable } from "mobx";
 
 const createCell = (src: string = "", alt: string = ""): Cell => {
   return {
@@ -38,10 +39,12 @@ class Topster {
   #gridGap: number = 1;
 
   constructor(albums: Array<Album> = [], backgroundColor: string = "#000", type: string = "42") {
+    makeAutoObservable(this);
     this.#albums = albums;
     this.#backgroundColor = backgroundColor;
     this.#type = "42";
   }
+
   getAlbums() { return this.#albums; }
   replaceAlbums(albums: Array<Album>) { this.#albums = albums; }
   getAlbumsIn(start: number, end: number) { return this.#albums.slice(start, end); }
@@ -50,6 +53,13 @@ class Topster {
   getAlbumTitles() { return this.#albums.map(album => album.title); }
   getAlbumArts() { return this.#albums.map(album => album.art); }
   getAlbumArtists() { return this.#albums.map(album => album.artist); }
+  getAlbumsAsATable() {
+    const table: Array<Array<Album>> = [];
+    for (let i=0;i<this.#rows;i++) {
+      table.push(this.#albums.slice(i,i+this.#rows));
+    }
+    return table;
+  }
 
   get backgroundColor(): string { return this.backgroundColor; }
   set backgroundColor(backgroundColor: string) { this.#backgroundColor = backgroundColor; }
