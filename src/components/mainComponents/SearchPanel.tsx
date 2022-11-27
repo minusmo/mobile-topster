@@ -8,9 +8,9 @@ import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
 import { getAlbumsByAlbumName } from "../../utils/httpUtils";
 import CancelButton from "../subComponents/CancelButton";
 import SpotifyAlbumImg from "../subComponents/SpotifyAlbumImg";
-import "./mainComponentStyles/searchWindowStyle.css";
+import "./mainComponentStyles/SearchPanelStyle.css";
 
-type searchWindowProps = {
+type SearchPanelProps = {
   onClickCancel: () => void;
   showSearch: boolean;
   handleClickAlbum: React.MouseEventHandler<HTMLImageElement>;
@@ -78,11 +78,11 @@ const createQueryConfig = (
   };
 };
 
-const SearchWindow = ({
+const SearchPanel = ({
   onClickCancel,
   showSearch,
   handleClickAlbum,
-}: searchWindowProps): JSX.Element => {
+}: SearchPanelProps): JSX.Element => {
   const [searchInput, setSearchInput] = useState<String>("");
   const [country, setCountry] = useState("us");
   const [searchResult, setSearchResult] = useState<Array<AlbumSearchResult>>(
@@ -188,4 +188,4 @@ const SearchWindow = ({
   );
 };
 
-export default SearchWindow;
+export default SearchPanel;
