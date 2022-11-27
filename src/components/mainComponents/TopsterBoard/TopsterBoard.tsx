@@ -1,11 +1,12 @@
 import React, { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import * as _ from "lodash";
-import "./mainComponentStyles/topsterBoardStyle.css";
 import { TopsterBoardProps, gridContainerStyle, setGridContainerStyle, setGridContainerClass } from "./utils";
 import { TopsterContext } from "../../../App";
 import { Grid } from "../../subComponents/Grid/Grid";
 import { Top42 } from "../../subComponents/Top42/Top42";
+import AlbumTitles from "../AlbumTitles/AlbumTitles";
+import "./mainComponentStyles/topsterBoardStyle.css";
 
 const TopsterBoard = observer(({
   handleClickGridcell,
@@ -43,7 +44,7 @@ const TopsterBoard = observer(({
         <Top42 albums={albums}/>  
       }
       </div>
-      {showTitles ? <AlbumTitles titles={topster.getAlbumTitles()}/> : null}
+      {showTitles ? <AlbumTitles albums={albums} isRoundedBorder={isRoundedBorder}/> : null}
     </div>
   );
 });
