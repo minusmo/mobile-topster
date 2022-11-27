@@ -7,13 +7,10 @@ import { TopsterContext } from "../../../App";
 import { Grid } from "../../subComponents/Grid/Grid";
 import { Top42 } from "../../subComponents/Top42/Top42";
 
-export const TopsterBoard = observer(({
-  rows,
-  cols,
-  topsterType,
-  backgroundColor,
+const TopsterBoard = observer(({
   handleClickGridcell,
   isRoundedBorder,
+  showTitles,
   currentWidth,
 }: TopsterBoardProps): JSX.Element => {
   const topster = useContext(TopsterContext);
@@ -23,27 +20,30 @@ export const TopsterBoard = observer(({
   let gridContainerClass: string;
 
   gridContainerStyle = setGridContainerStyle(
-    topsterType,
-    backgroundColor,
-    rows,
-    cols,
+    topster.type,
+    topster.backgroundColor,
+    topster.rows,
+    topster.cols,
     currentWidth
   );
 
-  gridContainerClass = setGridContainerClass(topsterType);
+  gridContainerClass = setGridContainerClass(topster.type);
   gridContainerClass = gridContainerClass + " border-rounded";
 
   return (
-    <div
+    <div id="screenshot-area">
+      <div
       id="grid-container"
       className={gridContainerClass}
       style={gridContainerStyle}
-    >
-    { topster.type === "Grid" ?
-      <Grid rows={topster.rows} albums={albums} /> 
-      :
-      <Top42 albums={albums}/>  
-    }
+      >
+      { topster.type === "Grid" ?
+        <Grid rows={topster.rows} albums={albums} /> 
+        :
+        <Top42 albums={albums}/>  
+      }
+      </div>
+      {showTitles ? <AlbumTitles titles={topster.getAlbumTitles()}/> : null}
     </div>
   );
 });
