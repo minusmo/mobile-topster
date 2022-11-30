@@ -1,33 +1,26 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as _ from "lodash";
-import { saveAs } from "file-saver";
 import * as htmlToImage from "html-to-image";
-import SearchWindow from "./SearchPanel";
-import TitleList from "./TitleList";
-import {TopsterBoard} from "../mainComponents/TopsterBoard/TopsterBorad";
+import { saveAs } from "file-saver";
+import SearchPanel from "./SearchPanel";
+import TopsterBoard from "./TopsterBoard/TopsterBoard";
 import { createSquareGrid } from "../../models/Topster";
 import "./mainComponentStyles/Main.css";
-import ReactGA from "react-ga";
 import SettingsAccordion from "./SettingAccordion";
 import SaveImgButton from "./SaveImgButton";
 import HelpAccordion from "./HelpAccordion";
-import Spinner from "../subComponents/Spinner";
 import {
   changeBlankCellsToBackgroundColor,
   changeBlankCellsToDefaultBackground,
   getGridContainerWidth,
 } from "../../models/topsterUtils";
+import ReactGA from "react-ga";
 import { GAID } from "../../constants/credentials";
 
 function MobileTopsterMaker() {
-  const [rows, setRows] = useState(10);
-  const [columns, setColumns] = useState(10);
-  const [topster, setTopster] = useState(createSquareGrid(10, 10));
-  const [type, setType] = useState("grid");
   const [selectedCell, setSelectedCell] = useState("");
-  const [backgroundColor, setBackgroundColor] = useState("#000");
   const [showSearch, setShowSearch] = useState(false);
-  const [showAlbumTitle, setShowAlbumTitle] = useState(false);
+  const [showTitles, setShowAlbumTitle] = useState(false);
   const [showOptions, setShowOptions] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
   const [isRoundedBorder, setIsRoundedBorder] = useState(true);
@@ -38,19 +31,6 @@ function MobileTopsterMaker() {
     setType(type);
     setRows(row);
     setColumns(col);
-  };
-
-  const saveTopster = () => {
-    localStorage.setItem("topster", JSON.stringify(topster));
-    localStorage.setItem("rows", rows.toString());
-    localStorage.setItem("columns", columns.toString());
-    localStorage.setItem("type", type);
-    localStorage.setItem("showSearch", String(showSearch));
-    localStorage.setItem("showAlbumTitle", String(showAlbumTitle));
-    localStorage.setItem("showOptions", String(showOptions));
-    localStorage.setItem("backgroundColor", backgroundColor);
-    localStorage.setItem("selectedCell", selectedCell);
-    localStorage.setItem("isRoundedBorder", String(isRoundedBorder));
   };
 
   useEffect(() => {
@@ -74,7 +54,7 @@ function MobileTopsterMaker() {
         localStorage.getItem("showSearch") === "false" ? false : true
       );
       setShowAlbumTitle(
-        localStorage.getItem("showAlbumTitle") === "false" ? false : true
+        localStorage.getItem("showTitles") === "false" ? false : true
       );
       setShowOptions(
         localStorage.getItem("showOptions") === "false" ? false : true
@@ -93,7 +73,7 @@ function MobileTopsterMaker() {
     backgroundColor,
     showSearch,
     showOptions,
-    showAlbumTitle,
+    showTitles,
     rows,
     columns,
   ]);
@@ -210,7 +190,7 @@ function MobileTopsterMaker() {
       {/* 설정 */}
       <SettingsAccordion
         showOptions={showOptions}
-        showAlbumTitle={showAlbumTitle}
+        showTitles={showTitles}
         setShowAlbumTitle={setShowAlbumTitle}
         backgroundColor={backgroundColor}
         setBackgroundColor={setBackgroundColor}
@@ -226,7 +206,7 @@ function MobileTopsterMaker() {
       <HelpAccordion />
       <hr />
       {/* 탑스터 */}
-      <TopsterBoard />
+      <TopsterBoard showTitles={showTitles}/>
       {/* 검색창  */}
       <SearchPanel
         onClickCancel={() => setShowSearch(false)}
