@@ -1,38 +1,63 @@
-import { Cell, Grid } from "./modelTypes";
 import { Album } from "./Album";
 import { makeAutoObservable } from "mobx";
+import { text } from "stream/consumers";
 
-const createCell = (src: string = "", alt: string = ""): Cell => {
-  return {
-    src: src,
-    alt: alt,
-  };
-};
+type FontStyleProps = {
+  fontFamily: string;
+  fontSize: string;
+  textColor: string;
+}
 
-const createGridRow = (col: number): Array<Cell> => {
-  let row: Array<Cell> = [];
-  for (let j: number = 0; j < col; j++) {
-    row.push(createCell());
+class FontStyle {
+  #fontFamily: string;
+  #fontSize: string;
+  #textColor: string;
+  constructor(fontFamily: string = "default", fontSize: string = "10px", textColor: string = "#fff") {
+    this.#fontFamily = fontFamily;
+    this.#fontSize = fontSize;
+    this.#textColor = textColor;
   }
-  return row;
-};
-
-const createSquareGrid = (row: number, col: number): Grid => {
-  let grid: Grid = [];
-  for (let i: number = 0; i < row; i++) {
-    grid.push(createGridRow(col));
+  
+  get fontFamily(): string { return this.#fontFamily; }
+  set fontFamily(fontFamily: string) { this.#fontFamily = fontFamily; }
+  
+  get fontSize(): string { return this.#fontSize; }
+  set fontSize(fontSize: string) { this.#fontSize = fontSize; }
+  
+  get textColor(): string { return this.#textColor; }
+  set textColor(textColor: string) { this.#textColor = textColor; }
+  
+  copyFrom(fontStyleProps: FontStyleProps): void {
+    this.#fontFamily = fontStyleProps.fontFamily;
+    this.#fontSize = fontStyleProps.fontSize;
+    this.#textColor = fontStyleProps.textColor;
   }
-  return grid;
-};
+
+  toString(): string { return JSON.stringify({
+    fontFamily: this.#fontFamily, 
+    fontSize: this.#fontSize, 
+    textColor: this.#textColor
+  });}
+}
+
+type TopsterProps = {
+  albums: Array<Album>;
+  backgroundColor: string;
+  backgroundImg: string;
+  type: string;
+  fontStyle: FontStyle;
+  order: boolean;
+  rows: number;
+  cols: number;
+  gridGap: number;
+}
 
 class Topster {
   #albums: Array<Album>;
   #backgroundColor: string = "#000";
   #backgroundImg: string = "";
   #type: string;
-  #fontFamily: string = "default";
-  #textColor: string = "#fff";
-  #fontSize: string = "10px";
+  #fontStyle: FontStyle = new FontStyle();
   #order: boolean = true;
   #rows: number = 7;
   #cols: number = 6;
@@ -43,6 +68,30 @@ class Topster {
     this.#albums = albums;
     this.#backgroundColor = backgroundColor;
     this.#type = "42";
+  }
+
+  toString(): string { return JSON.stringify({
+    albums: this.#albums.map(album => album.toString()),
+    backgroundColor: this.#backgroundColor,
+    backgroundImg: this.#backgroundImg,
+    type: this.#type,
+    fontStyle: this.#fontStyle.toString(),
+    order: this.#order,
+    rows: this.#rows,
+    cols: this.#cols,
+    gridGap: this.#gridGap,
+  })}
+
+  copyFrom(topsterProps: TopsterProps): void {
+    this.#albums = topsterProps.albums;
+    this.#backgroundColor = topsterProps.backgroundColor;
+    this.#backgroundImg = topsterProps.backgroundImg;
+    this.#fontStyle = topsterProps.fontStyle;
+    this.#type = topsterProps.type;
+    this.#rows = topsterProps.rows;
+    this.#cols = topsterProps.cols;
+    this.#type = topsterProps.type;
+    this.#gridGap = topsterProps.gridGap;
   }
 
   getAlbums() { return this.#albums; }
@@ -67,14 +116,22 @@ class Topster {
   get type() { return this.#type; }
   set type(type: string) { this.#type = type; }
 
-  get fontFamily() { return this.#fontFamily; }
-  set fontFamily(fontFamily: string) { this.#fontFamily = fontFamily; }
+  getFontStyle(): FontStyle {
+    return this.#fontStyle;
+  }
 
-  get textColor() { return this.#textColor; }
-  set textColor(textColor: string) { this.#textColor = textColor; }
+  setFontStyle(fontStyle: FontStyle): void {
+    this.#fontStyle = fontStyle;
+  }
 
-  get fontSize() { return this.#fontSize; }
-  set fontSize(fontSize: string) { this.#fontSize = fontSize; }
+  get fontFamily() { return this.#fontStyle.fontFamily; }
+  set fontFamily(fontFamily: string) { this.#fontStyle.fontFamily = fontFamily; }
+
+  get textColor() { return this.#fontStyle.textColor; }
+  set textColor(textColor: string) { this.#fontStyle.textColor = textColor; }
+
+  get fontSize() { return this.#fontStyle.fontSize; }
+  set fontSize(fontSize: string) { this.#fontStyle.fontSize = fontSize; }
 
   isOrdered(): boolean { return this.#order; }
   toggleOrdered() { this.#order = !this.#order; }
@@ -90,4 +147,4 @@ class Topster {
   set gridGap(gridGap: number) { this.#gridGap = gridGap; }
 }
 
-export { createSquareGrid, createCell, Topster };
+export { Topster };
