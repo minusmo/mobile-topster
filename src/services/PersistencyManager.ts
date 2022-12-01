@@ -1,21 +1,35 @@
-interface PersistencyManager {
-    save(serializedData: string): void;
-    retrieve(): any;
+abstract class  PersistencyManager {
+    static #storage: Storage;
+    static save(dataKey: string, serializedData: string): void {};
+    static retrieve(dataKey: string): string { return ""; };
+}
+
+class SessionPersistencyManager extends PersistencyManager {
+    static #storage: Storage = window.sessionStorage;
+    static save(dataKey:string, serializedData: string): void {
+        if (this.#storage) this.#storage.setItem(dataKey, serializedData);
+        else {
+            throw new Error("Local Storage is not initialized.");
+        }
+    }
+    static retrieve(dataKey: string): any {
+        if (this.#storage) return this.#storage.getItem(dataKey);
+        else return "";
+    }
 }
 
 class LocalPersistencyManager implements PersistencyManager {
-    #sessionStorage = window.sessionStorage;
-    save(serializedData: string): void {
-        if (this.#sessionStorage) this.#sessionStorage.setItem("cachedData", serializedData);
+    static #storage: Storage = window.localStorage;
+    static save(dataKey:string, serializedData: string): void {
+        if (this.#storage) this.#storage.setItem(dataKey, serializedData);
         else {
-            throw new Error("Local Storage is not initialized");
+            throw new Error("Local Storage is not initialized.");
         }
     }
-    retrieve(): any {
-        
-        throw new Error("Method not implemented.");
+    static retrieve(dataKey: string): any {
+        if (this.#storage) return this.#storage.getItem(dataKey);
+        else return "";
     }
 }
 
-
-export default LocalPersistencyManager;
+export{ SessionPersistencyManager, LocalPersistencyManager };
