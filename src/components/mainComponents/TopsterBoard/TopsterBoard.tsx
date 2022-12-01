@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { observer } from "mobx-react-lite";
-import * as _ from "lodash";
 import { TopsterBoardProps, gridContainerStyle, setGridContainerStyle, setGridContainerClass } from "./utils";
 import { TopsterContext } from "../../../App";
 import { Grid } from "../../subComponents/Grid/Grid";
