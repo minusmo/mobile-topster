@@ -7,4 +7,10 @@ export class Album {
         this.artist = artist;
         this.art = art;
     }
+
+    toString(): string { return JSON.stringify({
+        title: this.title,
+        artist: this.artist,
+        art: this.art,
+    });}
 }
