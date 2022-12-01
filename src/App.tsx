@@ -4,8 +4,13 @@ import Header from "./components/mainComponents/Header";
 import Footer from "./components/mainComponents/Footer";
 import { Topster } from "./models/Topster";
 import { createContext } from "react";
+import { LocalPersistencyManager } from "./services/PersistencyManager";
 
-export const TopsterContext = createContext<Topster>(new Topster());
+const topster: Topster = new Topster();
+const cachedTopster = JSON.parse(LocalPersistencyManager.retrieve("cachedTopster"));
+topster.copyFrom(cachedTopster);
+
+export const TopsterContext = createContext<Topster>(topster);
 
 const App = (): JSX.Element => {
   // existing topsteer will be fetched and provided by value for Provider on useEffect function
@@ -26,8 +31,8 @@ const App = (): JSX.Element => {
       <TopsterContext.Provider value={new Topster()}>
         <Header />
         <Main />
-        <Footer />
       </TopsterContext.Provider>
+      <Footer />
     </>
   );
 };
