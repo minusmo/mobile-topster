@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import * as _ from "lodash";
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import SearchPanel from "./SearchPanel";
 import TopsterBoard from "./TopsterBoard/TopsterBoard";
-import { createSquareGrid } from "../../models/Topster";
 import "./mainComponentStyles/Main.css";
 import SettingsAccordion from "./SettingAccordion";
 import SaveImgButton from "./SaveImgButton";
@@ -16,22 +15,21 @@ import {
 } from "../../models/topsterUtils";
 import ReactGA from "react-ga";
 import { GAID } from "../../constants/credentials";
+import { LocalPersistencyManager, SessionPersistencyManager } from "../../services/PersistencyManager";
+import { TopsterContext } from "../../App";
+import { observer } from "mobx-react-lite";
 
-function MobileTopsterMaker() {
+
+const  MobileTopsterMaker = observer((): JSX.Element => {
+  const topster = useContext(TopsterContext);
   const [selectedCell, setSelectedCell] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [showTitles, setShowAlbumTitle] = useState(false);
-  const [showOptions, setShowOptions] = useState(false);
+  const [showPreferences, setShowPreferences] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
   const [isRoundedBorder, setIsRoundedBorder] = useState(true);
   const pictureContainer = useRef(document.getElementById("picture-container"));
   const gridContainer = useRef(document.getElementById("grid-container"));
-
-  const updateTopster = (row: number, col: number, type: string) => {
-    setType(type);
-    setRows(row);
-    setColumns(col);
-  };
 
   useEffect(() => {
     ReactGA.initialize(GAID);
@@ -44,39 +42,16 @@ function MobileTopsterMaker() {
       "grid-container"
     )! as HTMLElement;
 
-    const savedTopster = localStorage.getItem("topster");
-    if (savedTopster) {
-      setTopster(JSON.parse(savedTopster));
-      setRows(Number.parseInt(localStorage.getItem("rows")!));
-      setColumns(Number.parseInt(localStorage.getItem("columns")!));
-      setType(localStorage.getItem("type")!);
-      setShowSearch(
-        localStorage.getItem("showSearch") === "false" ? false : true
-      );
-      setShowAlbumTitle(
-        localStorage.getItem("showTitles") === "false" ? false : true
-      );
-      setShowOptions(
-        localStorage.getItem("showOptions") === "false" ? false : true
-      );
-      setBackgroundColor(localStorage.getItem("backgroundColor")!);
-      setIsRoundedBorder(
-        localStorage.getItem("isRoundedBorder") === "false" ? false : true
-      );
-    }
-  }, []);
-
-  useEffect(() => {
-    saveTopster();
-  }, [
-    topster,
-    backgroundColor,
-    showSearch,
-    showOptions,
-    showTitles,
-    rows,
-    columns,
-  ]);
+    setShowAlbumTitle(
+      LocalPersistencyManager.retrieve("showTitles") === "false" ? false : true
+    );
+    setShowPreferences(
+      LocalPersistencyManager.retrieve("showPreferences") === "false" ? false : true
+    );
+    setIsRoundedBorder(
+      LocalPersistencyManager.retrieve("isRoundedBorder") === "false" ? false : true
+    );
+  }, [selectedCell]);
 
   const preSave = (): void => {
     setProcessingSave(true);
@@ -133,10 +108,10 @@ function MobileTopsterMaker() {
   };
 
   const handleShowOptions = (): void => {
-    if (showOptions) {
-      setShowOptions(false);
+    if (showPreferences) {
+      setShowPreferences(false);
     } else {
-      setShowOptions(true);
+      setShowPreferences(true);
     }
   };
 
@@ -189,7 +164,7 @@ function MobileTopsterMaker() {
     <main id="main">
       {/* 설정 */}
       <SettingsAccordion
-        showOptions={showOptions}
+        showPreferences={showPreferences}
         showTitles={showTitles}
         setShowAlbumTitle={setShowAlbumTitle}
         backgroundColor={backgroundColor}
@@ -217,6 +192,6 @@ function MobileTopsterMaker() {
       <SaveImgButton save={handleSave} />
     </main>
   );
-}
+});
 
 export default MobileTopsterMaker;
