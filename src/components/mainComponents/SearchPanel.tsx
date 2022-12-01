@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Qs from "querystring";
+import qs from "qs";
 import * as _ from "lodash";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import SearchForm from "../subComponents/SearchForm";
@@ -8,9 +8,9 @@ import { SPOTIFY_API, CONTENT_TYPE } from "../../constants/httpConstants";
 import { getAlbumsByAlbumName } from "../../utils/httpUtils";
 import CancelButton from "../subComponents/CancelButton";
 import SpotifyAlbumImg from "../subComponents/SpotifyAlbumImg";
-import "./mainComponentStyles/searchWindowStyle.css";
+import "./mainComponentStyles/SearchPanelStyle.css";
 
-type searchWindowProps = {
+type SearchPanelProps = {
   onClickCancel: () => void;
   showSearch: boolean;
   handleClickAlbum: React.MouseEventHandler<HTMLImageElement>;
@@ -56,7 +56,7 @@ const createAuthConfig = (): AxiosRequestConfig => {
     headers: {
       "Content-Type": CONTENT_TYPE,
     },
-    data: Qs.stringify({ grant_type: "client_credentials" }),
+    data: qs.stringify({ grant_type: "client_credentials" }),
     auth: {
       username: username,
       password: password,
@@ -78,11 +78,11 @@ const createQueryConfig = (
   };
 };
 
-const SearchWindow = ({
+const SearchPanel = ({
   onClickCancel,
   showSearch,
   handleClickAlbum,
-}: searchWindowProps): JSX.Element => {
+}: SearchPanelProps): JSX.Element => {
   const [searchInput, setSearchInput] = useState<String>("");
   const [country, setCountry] = useState("us");
   const [searchResult, setSearchResult] = useState<Array<AlbumSearchResult>>(
@@ -188,4 +188,4 @@ const SearchWindow = ({
   );
 };
 
-export default SearchWindow;
+export default SearchPanel;

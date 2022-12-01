@@ -10,6 +10,7 @@
   transition-property: top;
   transition-timing-function: ease-in;
   transition-duration: 500ms;
+  z-index: 2;
 }
 
 .show {
