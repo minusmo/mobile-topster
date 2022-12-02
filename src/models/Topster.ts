@@ -50,6 +50,7 @@ type TopsterProps = {
   rows: number;
   cols: number;
   gridGap: number;
+  borderRoundness: boolean;
 }
 
 class Topster {
@@ -62,6 +63,7 @@ class Topster {
   #rows: number = 7;
   #cols: number = 6;
   #gridGap: number = 1;
+  #borderRoundness: boolean = false;
 
   constructor(albums: Array<Album> = [], backgroundColor: string = "#000", type: string = "42") {
     makeAutoObservable(this);
@@ -92,6 +94,7 @@ class Topster {
     this.#cols = topsterProps.cols;
     this.#type = topsterProps.type;
     this.#gridGap = topsterProps.gridGap;
+    this.#borderRoundness = topsterProps.borderRoundness;
   }
 
   getAlbums() { return this.#albums; }
@@ -145,6 +148,9 @@ class Topster {
 
   get gridGap() { return this.#gridGap; }
   set gridGap(gridGap: number) { this.#gridGap = gridGap; }
+
+  get borderRoundness() { return this.#borderRoundness; }
+  set borderRoundness(borderRoundness: boolean) { this.#borderRoundness = borderRoundness; }
 }
 
 export { Topster };
