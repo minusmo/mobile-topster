@@ -5,14 +5,14 @@ import "./mainComponentStyles/titleListStyle.css";
 
 type TitleListProps = {
   albums: Array<Album>,
-  isRoundedBorder: boolean;
+  borderRoundness: boolean;
 };
 
 const AlbumTitles = ({
   albums,
-  isRoundedBorder,
+  borderRoundness,
 }: TitleListProps): JSX.Element => {
-  const albumTitleClass = isRoundedBorder ? "titleList" + " border-rounded-lower" : "titleList";
+  const albumTitleClass = borderRoundness ? "titleList" + " border-rounded-lower" : "titleList";
   return (
     <div id="albumtitles" className={albumTitleClass}>
       <ul

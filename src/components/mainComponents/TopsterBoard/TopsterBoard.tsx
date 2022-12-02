@@ -8,9 +8,7 @@ import AlbumTitles from "../AlbumTitles/AlbumTitles";
 import "./mainComponentStyles/topsterBoardStyle.css";
 
 const TopsterBoard = observer(({
-  handleClickGridcell,
-  isRoundedBorder,
-  showTitles,
+  showAlbumTitles,
   currentWidth,
 }: TopsterBoardProps): JSX.Element => {
   const topster = useContext(TopsterContext);
@@ -37,13 +35,14 @@ const TopsterBoard = observer(({
       className={gridContainerClass}
       style={gridContainerStyle}
       >
-      { topster.type === "Grid" ?
+      { 
+        topster.type === "Grid" ?
         <Grid rows={topster.rows} albums={albums} /> 
         :
         <Top42 albums={albums}/>  
       }
       </div>
-      {showTitles ? <AlbumTitles albums={albums} isRoundedBorder={isRoundedBorder}/> : null}
+      {showAlbumTitles ? <AlbumTitles albums={albums} borderRoundness={topster.borderRoundness}/> : null}
     </div>
   );
 });
