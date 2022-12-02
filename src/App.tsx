@@ -9,11 +9,12 @@ import { LocalPersistencyManager } from "./services/PersistencyManager";
 const topster: Topster = new Topster();
 const cachedTopster = JSON.parse(LocalPersistencyManager.retrieve("cachedTopster"));
 topster.copyFrom(cachedTopster);
-
+const userSelection = {"selection": -1};
 export const TopsterContext = createContext<Topster>(topster);
+export const SelectionContext = createContext(userSelection);
 
 const App = (): JSX.Element => {
-  // existing topsteer will be fetched and provided by value for Provider on useEffect function
+  // existing topster will be fetched and provided by value for Provider on useEffect function
 
   return (
     <>
@@ -28,9 +29,11 @@ const App = (): JSX.Element => {
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.14.1/dist/js/uikit.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.14.1/dist/js/uikit-icons.min.js"></script>
       </Helmet>
-      <TopsterContext.Provider value={new Topster()}>
+      <TopsterContext.Provider value={topster}>
         <Header />
-        <Main />
+        <SelectionContext.Provider value={userSelection}>
+          <Main />
+        </SelectionContext.Provider>
       </TopsterContext.Provider>
       <Footer />
     </>
