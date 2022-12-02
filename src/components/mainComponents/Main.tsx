@@ -2,12 +2,12 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import * as _ from "lodash";
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
-import SearchPanel from "./SearchPanel";
+import SearchPanel from "./SearchPanel/SearchPanel";
 import TopsterBoard from "./TopsterBoard/TopsterBoard";
 import "./mainComponentStyles/Main.css";
-import SettingsAccordion from "./SettingAccordion";
+import Preferences from "../mainComponents/Preferences";
 import SaveImgButton from "./SaveImgButton";
-import HelpAccordion from "./HelpAccordion";
+import HelpMessages from "../mainComponents/HelpMessages";
 import {
   changeBlankCellsToBackgroundColor,
   changeBlankCellsToDefaultBackground,
@@ -16,18 +16,14 @@ import {
 import ReactGA from "react-ga";
 import { GAID } from "../../constants/credentials";
 import { LocalPersistencyManager, SessionPersistencyManager } from "../../services/PersistencyManager";
-import { TopsterContext } from "../../App";
 import { observer } from "mobx-react-lite";
 
-
-const  MobileTopsterMaker = observer((): JSX.Element => {
-  const topster = useContext(TopsterContext);
+const Main = observer((): JSX.Element => {
   const [selectedCell, setSelectedCell] = useState("");
-  const [showSearch, setShowSearch] = useState(false);
-  const [showTitles, setShowAlbumTitle] = useState(false);
+  const [showAlbumTitles, setShowAlbumTitle] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
+  const [showSearchPanel, setShowSearchPanel] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
-  const [isRoundedBorder, setIsRoundedBorder] = useState(true);
   const pictureContainer = useRef(document.getElementById("picture-container"));
   const gridContainer = useRef(document.getElementById("grid-container"));
 
@@ -43,13 +39,10 @@ const  MobileTopsterMaker = observer((): JSX.Element => {
     )! as HTMLElement;
 
     setShowAlbumTitle(
-      LocalPersistencyManager.retrieve("showTitles") === "false" ? false : true
+      LocalPersistencyManager.retrieve("showAlbumTitles") === "false" ? false : true
     );
     setShowPreferences(
       LocalPersistencyManager.retrieve("showPreferences") === "false" ? false : true
-    );
-    setIsRoundedBorder(
-      LocalPersistencyManager.retrieve("isRoundedBorder") === "false" ? false : true
     );
   }, [selectedCell]);
 
@@ -107,43 +100,12 @@ const  MobileTopsterMaker = observer((): JSX.Element => {
     }
   };
 
-  const handleShowOptions = (): void => {
+  const handleShowPreferences = (): void => {
     if (showPreferences) {
       setShowPreferences(false);
     } else {
       setShowPreferences(true);
     }
-  };
-
-  const handleClickGridcell = (e: React.MouseEvent<HTMLDivElement>): void => {
-    e.preventDefault();
-    const gridCell = e.target as HTMLDivElement;
-    if (showSearch === false) {
-      setShowSearch(true);
-      setSelectedCell(gridCell.id);
-    }
-  };
-
-  const handleClickAlbum = (e: React.MouseEvent<HTMLImageElement>): void => {
-    const targetImg = e.target as HTMLImageElement;
-    if (selectedCell) {
-      let selectedRow: number = Number.parseInt(selectedCell.split("-")[0]);
-      let selectedCol: number = Number.parseInt(selectedCell.split("-")[1]);
-
-      let updatedTopster = _.cloneDeep(topster);
-      updatedTopster[selectedRow][selectedCol].src = targetImg.src;
-      updatedTopster[selectedRow][selectedCol].alt = targetImg.alt;
-
-      setTopster(updatedTopster);
-
-      setSelectedCell("");
-      setShowSearch(false);
-      e.preventDefault();
-    }
-  };
-
-  const toggleBorder = (): void => {
-    setIsRoundedBorder(!isRoundedBorder);
   };
 
   const topsterContainerClassname = (
@@ -163,30 +125,20 @@ const  MobileTopsterMaker = observer((): JSX.Element => {
   return (
     <main id="main">
       {/* 설정 */}
-      <SettingsAccordion
+      <Preferences
         showPreferences={showPreferences}
-        showTitles={showTitles}
+        showAlbumTitles={showAlbumTitles}
         setShowAlbumTitle={setShowAlbumTitle}
-        backgroundColor={backgroundColor}
-        setBackgroundColor={setBackgroundColor}
-        rows={rows}
-        setRows={setRows}
-        columns={columns}
-        setColumns={setColumns}
-        updateTopster={updateTopster}
-        isRoundedBorder={isRoundedBorder}
-        toggleBorder={toggleBorder}
       />
       {/* 도움말 */}
-      <HelpAccordion />
+      <HelpMessages />
       <hr />
       {/* 탑스터 */}
-      <TopsterBoard showTitles={showTitles}/>
+      <TopsterBoard showAlbumTitles={showAlbumTitles}/>
       {/* 검색창  */}
       <SearchPanel
-        onClickCancel={() => setShowSearch(false)}
-        showSearch={showSearch}
-        handleClickAlbum={handleClickAlbum}
+        showUp={showSearchPanel}
+        onClickCancel={() => setShowSearchPanel(false)}
       />
       {/* 저장 버튼 */}
       <SaveImgButton save={handleSave} />
@@ -194,4 +146,4 @@ const  MobileTopsterMaker = observer((): JSX.Element => {
   );
 });
 
-export default MobileTopsterMaker;
+export default Main;
