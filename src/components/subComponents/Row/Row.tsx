@@ -1,10 +1,11 @@
-import { repeat } from "lodash";
-import {Cell} from "../Cell/Cell";
+import { Cell } from "../Cell/Cell";
 
 type RowProps = {
+    key: number;
     items: Array<any>;
 }
 export const Row = ({
+    key,
     items,
 }: RowProps): JSX.Element => {
     const rowStyle = {
@@ -13,7 +14,7 @@ export const Row = ({
     };
     return (
     <div className="row" style={rowStyle}>
-        {items.map(item => <Cell item={item}/>)}
+        {items.map((item, idx) => <Cell rows={key * items.length} col={idx} item={item}/>)}
     </div>
     )
 }
