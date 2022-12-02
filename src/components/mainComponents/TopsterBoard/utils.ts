@@ -1,9 +1,8 @@
 import { Grid } from "../../../models/modelTypes";
 
 export type TopsterBoardProps = {
-    handleClickGridcell: (e: React.MouseEvent<HTMLDivElement>) => void;
-    isRoundedBorder: boolean;
-    showTitles: boolean;
+    cellClickHandler: (e: React.MouseEvent<HTMLDivElement>) => void;
+    showAlbumTitles: boolean;
     currentWidth: number | undefined;
   };
   
