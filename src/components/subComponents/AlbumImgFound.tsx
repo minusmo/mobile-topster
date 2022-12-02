@@ -1,13 +1,14 @@
-type spotifyAlbumImgProps = {
+type AlbumImgProps = {
   id: string;
   imgUrl: string;
   altText: string;
-  handleClickAlbum: React.MouseEventHandler<HTMLImageElement>;
+  clickHandler: React.MouseEventHandler<HTMLImageElement>;
 };
 
 type albumImgStyle = {
   backgroundColor?: string;
 }
+
 const setAlbumImgStyle = (imgUrl: string): albumImgStyle => {
   let albumImgStyle: albumImgStyle = {};
   if (!imgUrl) {
@@ -15,12 +16,13 @@ const setAlbumImgStyle = (imgUrl: string): albumImgStyle => {
   }
   return albumImgStyle;
 };
-const SpotifyAlbumImg = ({
+
+const AlbumImgFound = ({
   id,
   imgUrl,
   altText,
-  handleClickAlbum,
-}: spotifyAlbumImgProps): JSX.Element => {
+  clickHandler,
+}: AlbumImgProps): JSX.Element => {
   const albumImgStyle = setAlbumImgStyle(imgUrl);
   return (
     <img
@@ -30,9 +32,9 @@ const SpotifyAlbumImg = ({
       src={imgUrl ? imgUrl : undefined}
       style={albumImgStyle}
       alt={altText}
-      onClick={handleClickAlbum}
+      onClick={clickHandler}
     />
   );
 };
 
-export default SpotifyAlbumImg;
+export default AlbumImgFound;
