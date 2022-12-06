@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import * as _ from "lodash";
-import SearchForm from "../../subComponents/SearchForm";
+import SearchForm from "./SearchForm";
 import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
 import CancelButton from "../../subComponents/CancelButton";
 import AlbumImgFound from "../../subComponents/AlbumImgFound";
@@ -10,6 +10,8 @@ import { SelectionContext, TopsterContext } from "../../../App";
 import { Album } from "../../../models/Album";
 import { SearchPanelProps, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
+import { IconButton } from "../../subComponents/IconButton";
+import { XCircleIcon } from "@heroicons/react/24/outline";
 
 const SearchPanel = ({
   onClickCancel,
@@ -57,20 +59,22 @@ const SearchPanel = ({
     }
   };
 
-  let classname = "uk-modal-container searchBoxContainer";
+  let classname = "searchBoxContainer";
 
   return (
     <div className={classname}>
-      <div className="uk-margin-auto-vertical">
-        <CancelButton onClickCancel={onClickCancel} />
-        <div className="uk-container uk-padding">
+      <div className="">
+        <IconButton onClick={onClickCancel}>
+          <XCircleIcon />
+        </IconButton>
+        <div className="">
           <SearchForm
             setCountry={setCountry}
             setSearchInput={setSearchInput}
             onSubmission={queryAlbums}
           />
         </div>
-        <div className="uk-container">
+        <div className="">
           {searchResult.length !== 0 ? (
             searchResult.map((collection) => {
               const imgUrl: string = collection.images[0].url;
