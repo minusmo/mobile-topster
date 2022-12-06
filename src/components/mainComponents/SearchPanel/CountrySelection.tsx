@@ -1,27 +1,21 @@
-type searchFormProps = {
-  onSubmission: () => Promise<void>;
-  setCountry: (country: string) => void;
-  setSearchInput: (searchInput: String) => void;
-};
-
-type countrySelectionProps = {
+type PCountrySelection = {
   setCountry: (country: string) => void;
 };
 
-const CountrySelection = ({
+export const CountrySelection = ({
   setCountry,
-}: countrySelectionProps): JSX.Element => {
+}: PCountrySelection): JSX.Element => {
   return (
-    <div className="uk-margin uk-flex uk-flex-left uk-flex-middle">
+    <div className="">
       <label
-        className="uk-form-label uk-text-muted uk-margin-small-right"
+        className=""
         htmlFor="select-country"
       >
         Country
       </label>
-      <div className="uk-form-controls">
+      <div className="">
         <select
-          className="uk-select"
+          className=""
           name="country"
           id="select-country"
           onChange={(e) => setCountry(e.currentTarget.value)}
@@ -188,61 +182,3 @@ const CountrySelection = ({
     </div>
   );
 };
-
-type searchInputProps = {
-  setSearchInput: (searchInput: String) => void;
-};
-
-const SearchInput = ({ setSearchInput }: searchInputProps): JSX.Element => {
-  return (
-    <div className="uk-flex uk-flex-left uk-flex-middle">
-      <label
-        className="uk-form-label uk-text-muted uk-margin-small-right"
-        htmlFor="search-album"
-      >
-        Artist/AlbumTitle
-      </label>
-      <div className="uk-form-controls">
-        <input
-          id="search-album"
-          className="uk-input"
-          type="text"
-          placeholder="type artist or album title"
-          onChange={(e) => setSearchInput(String(e.currentTarget.value))}
-        />
-      </div>
-    </div>
-  );
-};
-
-type submitButtonProps = {
-  onSubmission: () => Promise<void>;
-};
-const SubmitButton = ({ onSubmission }: submitButtonProps): JSX.Element => {
-  return (
-    <button
-      onClick={(e) => onSubmission()}
-      className="uk-button uk-button-default uk-margin-small uk-width-expand uk-text-muted"
-    >
-      Search
-    </button>
-  );
-};
-
-const SearchForm = ({
-  onSubmission,
-  setCountry,
-  setSearchInput,
-}: searchFormProps): JSX.Element => {
-  return (
-    <div id="spotifySearchForm" className="uk-form-horizontal">
-      <CountrySelection setCountry={setCountry} />
-      <div className="uk-flex uk-flex-start">
-        <SearchInput setSearchInput={setSearchInput} />
-      </div>
-      <SubmitButton onSubmission={onSubmission} />
-    </div>
-  );
-};
-
-export default SearchForm;
