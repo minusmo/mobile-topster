@@ -3,7 +3,7 @@ const Footer = () => {
   return (
     <footer id="footer">
       <p id="footer-text">
-        Powered by Spotify and UIKit.
+        Powered by Spotify.
       </p>
     </footer>
   );
