@@ -1,6 +1,5 @@
 import { Album } from "./Album";
 import { makeAutoObservable } from "mobx";
-import { text } from "stream/consumers";
 
 type FontStyleProps = {
   fontFamily: string;
@@ -46,7 +45,7 @@ type TopsterProps = {
   backgroundImg: string;
   type: string;
   fontStyle: FontStyle;
-  order: boolean;
+  ordered: boolean;
   rows: number;
   cols: number;
   gridGap: number;
@@ -59,7 +58,7 @@ class Topster {
   #backgroundImg: string = "";
   #type: string;
   #fontStyle: FontStyle = new FontStyle();
-  #order: boolean = true;
+  #ordered: boolean = true;
   #rows: number = 7;
   #cols: number = 6;
   #gridGap: number = 1;
@@ -78,7 +77,7 @@ class Topster {
     backgroundImg: this.#backgroundImg,
     type: this.#type,
     fontStyle: this.#fontStyle.toString(),
-    order: this.#order,
+    ordered: this.#ordered,
     rows: this.#rows,
     cols: this.#cols,
     gridGap: this.#gridGap,
@@ -136,9 +135,9 @@ class Topster {
   get fontSize() { return this.#fontStyle.fontSize; }
   set fontSize(fontSize: string) { this.#fontStyle.fontSize = fontSize; }
 
-  isOrdered(): boolean { return this.#order; }
-  toggleOrdered() { this.#order = !this.#order; }
-  setOrdered(order: boolean) { this.#order = order; }
+  isOrdered(): boolean { return this.#ordered; }
+  toggleOrdered() { this.#ordered = !this.#ordered; }
+  setOrdered(ordered: boolean) { this.#ordered = ordered; }
 
   get rows() { return this.#rows; }
   set rows(rows: number) { this.#rows = rows; }
