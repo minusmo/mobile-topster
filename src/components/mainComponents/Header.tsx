@@ -1,6 +1,6 @@
 const Header = (): JSX.Element => {
   return (
-    <header data-uk-navbar>
+    <header>
       <p id="header-text">Mobile Topster</p>
     </header>
   );
