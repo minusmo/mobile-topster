@@ -1,42 +1,37 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import ReactGA from "react-ga";
+import { observer } from "mobx-react-lite";
 import * as _ from "lodash";
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import SearchPanel from "./SearchPanel/SearchPanel";
 import TopsterBoard from "./TopsterBoard/TopsterBoard";
-import "./mainComponentStyles/Main.css";
-import Preferences from "../mainComponents/Preferences";
-import SaveImgButton from "./SaveImgButton";
-import HelpMessages from "../mainComponents/HelpMessages";
+import Preferences from "./Preferences/Preferences";
+import SaveButton from "../mainComponents/SaveButton";
+import HelpMessages from "../mainComponents/HelpMessages/HelpMessages";
 import {
   changeBlankCellsToBackgroundColor,
   changeBlankCellsToDefaultBackground,
   getGridContainerWidth,
 } from "../../models/topsterUtils";
-import ReactGA from "react-ga";
 import { GAID } from "../../constants/credentials";
 import { LocalPersistencyManager, SessionPersistencyManager } from "../../services/PersistencyManager";
-import { observer } from "mobx-react-lite";
+import "./mainComponentStyles/Main.css";
 
 const Main = observer((): JSX.Element => {
-  const [selectedCell, setSelectedCell] = useState("");
   const [showAlbumTitles, setShowAlbumTitle] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
+  const [showHelpMessages, setShowHelpMessages] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
-  const pictureContainer = useRef(document.getElementById("picture-container"));
-  const gridContainer = useRef(document.getElementById("grid-container"));
+  const [selectedCell, setSelectedCell] = useState("");
+  const screenshotArea = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     ReactGA.initialize(GAID);
     ReactGA.pageview(window.location.pathname);
-
-    pictureContainer.current = document.getElementById(
-      "picture-container"
-    )! as HTMLElement;
-    gridContainer.current = document.getElementById(
-      "grid-container"
-    )! as HTMLElement;
+    
+    screenshotArea.current = document.querySelector("#screenshot-area") as HTMLElement;
 
     setShowAlbumTitle(
       LocalPersistencyManager.retrieve("showAlbumTitles") === "false" ? false : true
@@ -44,7 +39,12 @@ const Main = observer((): JSX.Element => {
     setShowPreferences(
       LocalPersistencyManager.retrieve("showPreferences") === "false" ? false : true
     );
-  }, [selectedCell]);
+
+    return () => {
+      LocalPersistencyManager.save("showAlbumTitles", JSON.stringify(showAlbumTitles));
+      LocalPersistencyManager.save("showPreferences", JSON.stringify(showPreferences));
+    };
+  }, []);
 
   const preSave = (): void => {
     setProcessingSave(true);
@@ -61,15 +61,13 @@ const Main = observer((): JSX.Element => {
   };
 
   const createSaveOptions = (
-    pictureContainer: HTMLElement | null
+    screenshotArea: HTMLElement | null
   ): optionsType => {
-    if (!pictureContainer) {
+    if (!screenshotArea) {
       return {};
     }
     let options = {
       pixelRatio: 1,
-      canvasWidth: getGridContainerWidth(gridContainer.current) * 3,
-      canvasHeight: pictureContainer.clientHeight * 3,
     };
     return options;
   };
@@ -77,16 +75,16 @@ const Main = observer((): JSX.Element => {
   const handleSave = async (imgType: string): Promise<void> => {
     preSave();
     const userAgent = window.navigator.userAgent!;
-    if (!pictureContainer.current) {
+    if (!screenshotArea.current) {
       return;
     }
 
-    const options = createSaveOptions(pictureContainer.current);
+    const options = createSaveOptions(screenshotArea.current);
     const browser = window.navigator.userAgent;
 
     try {
       const blob: Blob | null = await htmlToImage.toBlob(
-        pictureContainer.current,
+        screenshotArea.current,
         options
       );
       if (blob) {
@@ -124,24 +122,24 @@ const Main = observer((): JSX.Element => {
 
   return (
     <main id="main">
+      {/* 탑스터 */}
+      <TopsterBoard showAlbumTitles={showAlbumTitles} />
       {/* 설정 */}
       <Preferences
+        setShowPreferences={setShowPreferences}
         showPreferences={showPreferences}
         showAlbumTitles={showAlbumTitles}
         setShowAlbumTitle={setShowAlbumTitle}
       />
       {/* 도움말 */}
-      <HelpMessages />
-      <hr />
-      {/* 탑스터 */}
-      <TopsterBoard showAlbumTitles={showAlbumTitles}/>
+      <HelpMessages setShowHelpMessages={setShowHelpMessages} />
       {/* 검색창  */}
       <SearchPanel
         showUp={showSearchPanel}
         onClickCancel={() => setShowSearchPanel(false)}
       />
       {/* 저장 버튼 */}
-      <SaveImgButton save={handleSave} />
+      <SaveButton save={handleSave} />
     </main>
   );
 });
