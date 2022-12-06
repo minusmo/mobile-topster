@@ -1,10 +1,4 @@
 import { Grid } from "../../../models/modelTypes";
-
-export type TopsterBoardProps = {
-    cellClickHandler: (e: React.MouseEvent<HTMLDivElement>) => void;
-    showAlbumTitles: boolean;
-    currentWidth: number | undefined;
-  };
   
 export  type gridContainerStyle = {
     backgroundColor: string;
