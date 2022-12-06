@@ -3,7 +3,6 @@ import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import * as _ from "lodash";
 import SearchForm from "./SearchForm";
 import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
-import CancelButton from "../../subComponents/CancelButton";
 import AlbumImgFound from "../../subComponents/AlbumImgFound";
 import "./mainComponentStyles/SearchPanelStyle.css";
 import { SelectionContext, TopsterContext } from "../../../App";
