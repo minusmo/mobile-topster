@@ -1,7 +1,7 @@
 import qs from "qs";
 import { AxiosRequestConfig } from "axios";
-import { SPOTIFY_API, CONTENT_TYPE } from "../../../constants/httpConstants";
-import { username, password } from "../../../constants/credentials";
+import { SPOTIFY_API, CONTENT_TYPE } from "../../../configs/httpConstants";
+import { username, password } from "../../../configs/credentials";
 import { promptReturn, AlbumSearchResult } from "./types";
 
 export const userIsAddingAlbumManually = (trimmedSearchInput: String): boolean => {

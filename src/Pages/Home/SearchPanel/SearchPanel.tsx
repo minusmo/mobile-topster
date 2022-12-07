@@ -3,13 +3,13 @@ import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import * as _ from "lodash";
 import SearchForm from "./SearchForm";
 import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
-import AlbumImgFound from "../../subComponents/AlbumImgFound";
-import "./mainComponentStyles/SearchPanelStyle.css";
-import { SelectionContext, TopsterContext } from "../../../App";
+import AlbumImgFound from "./ResultImg";
+import { SelectionContext } from "../../../contexts/SelectionContext";
+import { TopsterContext } from "../../../contexts/TopsterContext";
 import { Album } from "../../../models/Album";
 import { SearchPanelProps, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
-import { IconButton } from "../../subComponents/IconButton";
+import { IconButton } from "../../../components/subComponents/IconButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
 const SearchPanel = ({

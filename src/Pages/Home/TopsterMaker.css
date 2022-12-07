@@ -1,10 +1,10 @@
-#main {
+#topster-maker {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-#picture-container {
+/* #picture-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -12,7 +12,7 @@
 
 #topster-container {
   height: fit-content;
-}
+} */
 
 .border-rounded {
   border-radius: 2.5px;

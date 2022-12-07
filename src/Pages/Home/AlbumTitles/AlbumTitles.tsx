@@ -1,7 +1,6 @@
 import * as _ from "lodash";
 import { Album } from "../../../models/Album";
 import AlbumTitle from "./AlbumTitle/AlbumTitle";
-import "./mainComponentStyles/titleListStyle.css";
 
 type PTitleList = {
   albums: Array<Album>,
