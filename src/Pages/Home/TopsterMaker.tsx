@@ -1,24 +1,22 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import ReactGA from "react-ga";
 import { observer } from "mobx-react-lite";
-import * as _ from "lodash";
+import _ from "lodash";
 import * as htmlToImage from "html-to-image";
 import { saveAs } from "file-saver";
 import SearchPanel from "./SearchPanel/SearchPanel";
 import TopsterBoard from "./TopsterBoard/TopsterBoard";
 import Preferences from "./Preferences/Preferences";
-import SaveButton from "../mainComponents/SaveButton";
-import HelpMessages from "../mainComponents/HelpMessages/HelpMessages";
+import SaveButton from "./SaveButton";
+import HelpMessages from "./HelpMessages/HelpMessages";
 import {
   changeBlankCellsToBackgroundColor,
   changeBlankCellsToDefaultBackground,
   getGridContainerWidth,
 } from "../../models/topsterUtils";
-import { GAID } from "../../constants/credentials";
-import { LocalPersistencyManager, SessionPersistencyManager } from "../../services/PersistencyManager";
+import { LocalPersistency } from "../../services/Persistency";
 import "./mainComponentStyles/Main.css";
 
-const Main = observer((): JSX.Element => {
+const TopsterMaker = observer((): JSX.Element => {
   const [showAlbumTitles, setShowAlbumTitle] = useState(false);
   const [showPreferences, setShowPreferences] = useState(false);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
@@ -28,21 +26,18 @@ const Main = observer((): JSX.Element => {
   const screenshotArea = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    ReactGA.initialize(GAID);
-    ReactGA.pageview(window.location.pathname);
-    
     screenshotArea.current = document.querySelector("#screenshot-area") as HTMLElement;
 
     setShowAlbumTitle(
-      LocalPersistencyManager.retrieve("showAlbumTitles") === "false" ? false : true
+      LocalPersistency.retrieve("showAlbumTitles") === "false" ? false : true
     );
     setShowPreferences(
-      LocalPersistencyManager.retrieve("showPreferences") === "false" ? false : true
+      LocalPersistency.retrieve("showPreferences") === "false" ? false : true
     );
 
     return () => {
-      LocalPersistencyManager.save("showAlbumTitles", JSON.stringify(showAlbumTitles));
-      LocalPersistencyManager.save("showPreferences", JSON.stringify(showPreferences));
+      LocalPersistency.save("showAlbumTitles", JSON.stringify(showAlbumTitles));
+      LocalPersistency.save("showPreferences", JSON.stringify(showPreferences));
     };
   }, []);
 
@@ -121,7 +116,7 @@ const Main = observer((): JSX.Element => {
   };
 
   return (
-    <main id="main">
+    <div id="topster-maker">
       {/* 탑스터 */}
       <TopsterBoard showAlbumTitles={showAlbumTitles} />
       {/* 설정 */}
@@ -140,8 +135,8 @@ const Main = observer((): JSX.Element => {
       />
       {/* 저장 버튼 */}
       <SaveButton save={handleSave} />
-    </main>
+    </div>
   );
 });
 
-export default Main;
+export default TopsterMaker;

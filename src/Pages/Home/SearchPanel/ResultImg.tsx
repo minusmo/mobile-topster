@@ -1,4 +1,4 @@
-type AlbumImgProps = {
+type PResultImg = {
   id: string;
   imgUrl: string;
   altText: string;
@@ -17,12 +17,12 @@ const setAlbumImgStyle = (imgUrl: string): albumImgStyle => {
   return albumImgStyle;
 };
 
-const AlbumImgFound = ({
+const ResultImg = ({
   id,
   imgUrl,
   altText,
   clickHandler,
-}: AlbumImgProps): JSX.Element => {
+}: PResultImg): JSX.Element => {
   const albumImgStyle = setAlbumImgStyle(imgUrl);
   return (
     <img
@@ -37,4 +37,4 @@ const AlbumImgFound = ({
   );
 };
 
-export default AlbumImgFound;
+export default ResultImg;

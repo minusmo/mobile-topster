@@ -1,4 +1,3 @@
-import "./mainComponentStyles/footerStyle.css";
 const Footer = () => {
   return (
     <footer id="footer">
