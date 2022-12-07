@@ -1,10 +1,10 @@
-abstract class  PersistencyManager {
+abstract class Persistency {
     static #storage: Storage;
     static save(dataKey: string, serializedData: string): void {};
     static retrieve(dataKey: string): string { return ""; };
 }
 
-class SessionPersistencyManager extends PersistencyManager {
+class SessionPersistency extends Persistency {
     static #storage: Storage = window.sessionStorage;
     static save(dataKey:string, serializedData: string): void {
         if (this.#storage) this.#storage.setItem(dataKey, serializedData);
@@ -18,7 +18,7 @@ class SessionPersistencyManager extends PersistencyManager {
     }
 }
 
-class LocalPersistencyManager implements PersistencyManager {
+class LocalPersistency implements Persistency {
     static #storage: Storage = window.localStorage;
     static save(dataKey:string, serializedData: string): void {
         if (this.#storage) this.#storage.setItem(dataKey, serializedData);
@@ -32,4 +32,4 @@ class LocalPersistencyManager implements PersistencyManager {
     }
 }
 
-export{ SessionPersistencyManager, LocalPersistencyManager };
+export{ SessionPersistency, LocalPersistency };
