@@ -9,7 +9,7 @@ import { TopsterContext } from "../../../contexts/TopsterContext";
 import { Album } from "../../../models/Album";
 import { SearchPanelProps, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
-import { IconButton } from "../../../components/subComponents/IconButton";
+import { IconButton } from "../../../components/IconButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
 
 const SearchPanel = ({
