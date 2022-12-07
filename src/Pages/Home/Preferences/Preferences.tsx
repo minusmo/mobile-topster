@@ -1,10 +1,10 @@
 import { useContext } from "react";
 import { observer } from "mobx-react-lite";
 import { TopsterContext } from "../../../contexts/TopsterContext";
-import { Input } from "../../../components/subComponents/Input";
-import { Toggle } from "../../../components/subComponents/Toggle";
-import { Button } from "../../../components/subComponents/Button";
-import { Selection } from "../../../components/subComponents/Selection";
+import { Input } from "../../../components/Input";
+import { Toggle } from "../../../components/Toggle";
+import { Button } from "../../../components/Button";
+import { Selection } from "../../../components/Selection";
 import { PreferencesFAB } from "./PreferencesFAB";
 import { action } from "mobx";
 import { TopsterType } from "../../../models/Topster";
