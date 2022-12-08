@@ -1,20 +1,36 @@
 import { Album } from "../../../../models/Album";
-import { Row } from "./Row/Row";
+import { Row } from "../Row/Row";
 import * as _ from "lodash";
+import styled from "styled-components";
+import { Container } from "../../../../components/Container";
+import { useMemo } from "react";
 
 type PGrid = {
     rows: number;
+    cols: number;
     albums: Array<Album>;
 }
 
 export const Grid = ({
     rows,
+    cols,
     albums
 }: PGrid): JSX.Element => {
-    const grid: Array<Array<Album>> = Array(rows).map((row, idx) => [...albums.slice(idx+rows)]);
+    const grid = useMemo(() => {
+        const sliced = albums.slice(0, rows * cols);
+        const grid: Array<Array<Album>> = Array(rows)
+        .fill(0)
+        .map((row, idx) => {
+            const startIdx: number = idx * cols;
+            const endIdx: number = startIdx + cols;
+            return sliced.slice(startIdx, endIdx);
+        });
+        return grid;
+    }, [rows, cols])
+
     return (
-        <div id="grid">
+        <Container>
             {grid.map((row, idx) => <Row key={idx} row={idx} items={row}/>)}
-        </div>
+        </Container>
     )
 }
