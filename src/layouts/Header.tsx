@@ -1,8 +1,21 @@
+import styled from "styled-components";
+
+const SHeader = styled.header`
+  background-color: lightgrey;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const STitle = styled.span`
+  padding: 1rem;
+`
 const Header = (): JSX.Element => {
   return (
-    <header>
-      <p id="header-text">Mobile Topster</p>
-    </header>
+    <SHeader>
+      <STitle id="header-title">Mobile Topster</STitle>
+    </SHeader>
   );
 };
 
