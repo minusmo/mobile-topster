@@ -1,11 +1,11 @@
-import React, { useEffect }  from "react";
+import { useEffect }  from "react";
 import { GAID } from "../../configs/credentials";
 import ReactGA from "react-ga";
 import { Helmet } from "react-helmet";
 import TopsterMaker from "./TopsterMaker";
 import Header from "../../layouts/Header";
 import Main from "../../layouts/Main";
-import Footer from "../../layouts/Footer/Footer";
+import Footer from "../../layouts/Footer";
 import { Topster } from "../../models/Topster";
 import { TopsterContext } from "../../contexts/TopsterContext";
 import { SelectionContext, userSelection } from "../../contexts/SelectionContext";
@@ -21,7 +21,7 @@ const Home = () => {
           <Helmet>
             <meta charSet="utf-8" />
             <meta name="description" content="TopsterMaker for mobile first" />
-            <title>Topsters</title>
+            <title>Topsters for Mobile</title>
           </Helmet>
           <TopsterContext.Provider value={topster}>
             <Header />
