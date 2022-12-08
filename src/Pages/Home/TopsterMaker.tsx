@@ -14,7 +14,6 @@ import {
   getGridContainerWidth,
 } from "../../models/topsterUtils";
 import { LocalPersistency } from "../../services/Persistency";
-import "./mainComponentStyles/Main.css";
 
 const TopsterMaker = observer((): JSX.Element => {
   const [showAlbumTitles, setShowAlbumTitle] = useState(false);

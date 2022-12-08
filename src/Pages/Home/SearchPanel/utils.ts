@@ -1,6 +1,6 @@
 import qs from "qs";
 import { AxiosRequestConfig } from "axios";
-import { SPOTIFY_API, CONTENT_TYPE } from "../../../configs/httpConstants";
+import { SPOTIFY_API, CONTENT_TYPE } from "../../../configs/credentials";
 import { username, password } from "../../../configs/credentials";
 import { promptReturn, AlbumSearchResult } from "./types";
 

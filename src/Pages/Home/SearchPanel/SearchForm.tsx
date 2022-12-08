@@ -1,4 +1,4 @@
-import { Button } from "../../../components/subComponents/Button";
+import { Button } from "../../../components/Button";
 import { CountrySelection } from "./CountrySelection";
 
 type PSearchForm = {

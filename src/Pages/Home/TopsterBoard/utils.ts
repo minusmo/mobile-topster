@@ -1,5 +1,3 @@
-import { Grid } from "../../../models/modelTypes";
-  
 export  type gridContainerStyle = {
     backgroundColor: string;
     height?: string;
