@@ -1,12 +1,13 @@
 import { observable } from 'mobx';
 import { makeObservable } from 'mobx';
+import whitesquare from "../assets/images/white_square.jpg";
 
 export class Album {
     title: string;
     artist: string;
     art: string;
 
-    constructor(title: string = "", artist: string = "", art: string = "") {
+    constructor(title: string = "", artist: string = "", art: string = whitesquare) {
         makeObservable(this, {
             title: observable,
             artist: observable,
