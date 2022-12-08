@@ -3,10 +3,8 @@ import styled from "styled-components";
 const SMain = styled.main`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
     justify-content: flex-start;
-
-    padding: 1%;
 `
 
 type PMain = {
