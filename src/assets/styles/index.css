@@ -27,12 +27,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-#div-root {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  height: 100vh;
-  max-width: 950px;
-  padding: 2%;
-  margin: 0 auto;
-}
