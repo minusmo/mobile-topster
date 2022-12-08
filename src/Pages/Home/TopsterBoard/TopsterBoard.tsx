@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { TopsterType } from "../../../models/Topster";
 import { gridContainerStyle, setGridContainerClass } from "./utils";
@@ -17,33 +18,25 @@ const TopsterBoard = observer(({
   const topster = useContext(TopsterContext);
   const albums = topster.albums;
 
-  let gridContainerStyle: gridContainerStyle;
-  let gridContainerClass: string;
 
-  // gridContainerStyle = setGridContainerStyle(
-  //   topster.type,
-  //   topster.backgroundColor,
-  //   topster.rows,
-  //   topster.cols,
-  // );
-
-  // gridContainerClass = setGridContainerClass(topster.type);
-  // gridContainerClass = gridContainerClass + " border-rounded";
+  const BoardArea = styled.div`
+    @media (max-width: 1000px) {
+      width: 100%;
+      height: fit-content;
+      background-color: ${topster.backgroundColor};
+    }
+  `
 
   return (
     <div id="screenshot-area">
-      <div
-      id="grid-container"
-      className={""}
-      // style={gridContainerStyle}
-      >
+      <BoardArea>
       { 
         topster.type === TopsterType.Grid ?
-        <Grid rows={topster.rows} albums={albums} /> 
+        <Grid rows={topster.rows} cols={topster.cols} albums={albums} /> 
         :
         <Top42 albums={albums}/>  
       }
-      </div>
+      </BoardArea>
       {showAlbumTitles
        ? 
        <AlbumTitles albums={albums} borderRoundness={topster.borderRoundness}/> 
