@@ -1,0 +1,29 @@
+#topster-maker {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* #picture-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#topster-container {
+  height: fit-content;
+} */
+
+.border-rounded {
+  border-radius: 2.5px;
+}
+
+.border-rounded-upper {
+  border-top-left-radius: 2.5px;
+  border-top-right-radius: 2.5px;
+}
+
+.border-rounded-lower {
+  border-bottom-left-radius: 2.5px;
+  border-bottom-right-radius: 2.5px;
+}

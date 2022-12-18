@@ -1,93 +1,141 @@
-import { Cell, Grid } from "./modelTypes";
+import { makeObservable, observable, action } from "mobx";
 import { Album } from "./Album";
-import { makeAutoObservable } from "mobx";
+import { FontStyle } from './FontStyle';
 
-const createCell = (src: string = "", alt: string = ""): Cell => {
-  return {
-    src: src,
-    alt: alt,
-  };
-};
+type TopsterProps = {
+  albums: Array<Album>;
+  backgroundColor: string;
+  backgroundImg: string;
+  type: TopsterType;
+  fontStyle: FontStyle;
+  ordered: boolean;
+  rows: number;
+  cols: number;
+  gridGap: number;
+  borderRoundness: boolean;
+}
 
-const createGridRow = (col: number): Array<Cell> => {
-  let row: Array<Cell> = [];
-  for (let j: number = 0; j < col; j++) {
-    row.push(createCell());
-  }
-  return row;
-};
+export enum TopsterType {
+    Top42,
+    Grid,
+}
 
-const createSquareGrid = (row: number, col: number): Grid => {
-  let grid: Grid = [];
-  for (let i: number = 0; i < row; i++) {
-    grid.push(createGridRow(col));
-  }
-  return grid;
-};
+const defaultAlbums: Album[] = Array(100).fill(0).map((val) => new Album());
+const defaultColor: string = "#000000";
+const defaultType: TopsterType = TopsterType.Top42;
 
 class Topster {
-  #albums: Array<Album>;
-  #backgroundColor: string = "#000";
-  #backgroundImg: string = "";
-  #type: string;
-  #fontFamily: string = "default";
-  #textColor: string = "#fff";
-  #fontSize: string = "10px";
-  #order: boolean = true;
-  #rows: number = 7;
-  #cols: number = 6;
-  #gridGap: number = 1;
+  albums: Array<Album>;
+  backgroundColor: string = "#000";
+  backgroundImg: string = "";
+  type: TopsterType;
+  fontStyle: FontStyle = new FontStyle();
+  ordered: boolean = true;
+  rows: number = 10;
+  cols: number = 10;
+  gridGap: number = 1;
+  borderRoundness: boolean = false;
 
-  constructor(albums: Array<Album> = [], backgroundColor: string = "#000", type: string = "42") {
-    makeAutoObservable(this);
-    this.#albums = albums;
-    this.#backgroundColor = backgroundColor;
-    this.#type = "42";
+  constructor(albums: Array<Album> = defaultAlbums, backgroundColor: string = "#000", type: TopsterType = TopsterType.Grid) {
+    makeObservable(this, {
+      albums: observable,
+      backgroundColor: observable,
+      backgroundImg: observable,
+      type: observable,
+      fontStyle: observable,
+      ordered: observable,
+      rows: observable,
+      cols: observable,
+      gridGap: observable,
+      borderRoundness: observable,
+      copyFrom: action,
+      replaceAlbums: action,
+      replaceAlbumAt: action,
+    });
+    this.albums = albums; 
+    this.backgroundColor = backgroundColor;
+    this.type = type;
   }
 
-  getAlbums() { return this.#albums; }
-  replaceAlbums(albums: Array<Album>) { this.#albums = albums; }
-  getAlbumsIn(start: number, end: number) { return this.#albums.slice(start, end); }
-  getAlbumAt(idx: number) { return this.#albums.at(idx); }
-  replaceAlbumAt(idx: number, album: Album) { this.#albums[idx] = album; }
-  getAlbumTitles() { return this.#albums.map(album => album.title); }
-  getAlbumArts() { return this.#albums.map(album => album.art); }
-  getAlbumArtists() { return this.#albums.map(album => album.artist); }
+  toString(): string { 
+    return JSON.stringify({
+    albums: this.albums.map(album => album.toString()),
+    backgroundColor: this.backgroundColor,
+    backgroundImg: this.backgroundImg,
+    type: this.type,
+    fontStyle: this.fontStyle.toString(),
+    ordered: this.ordered,
+    rows: this.rows,
+    cols: this.cols,
+    gridGap: this.gridGap,
+  })}
+
+  // geAlbums() { return this.albums; }
+  replaceAlbums(albums: Array<Album>) { this.albums = albums; }
+  getAlbumsIn(start: number, end: number) { return this.albums.slice(start, end); }
+  getAlbumAt(idx: number) { return this.albums.at(idx); }
+  replaceAlbumAt(idx: number, album: Album) { this.albums[idx] = album; }
+  getAlbumTitles() { return this.albums.map(album => album.title); }
+  getAlbumArts() { return this.albums.map(album => album.art); }
+  getAlbumArtists() { return this.albums.map(album => album.artist); }
   getAlbumsAsATable() {
     const table: Array<Array<Album>> = [];
-    for (let i=0;i<this.#rows;i++) {
-      table.push(this.#albums.slice(i,i+this.#rows));
+    for (let i=0;i<this.rows;i++) {
+      table.push(this.albums.slice(i,i+this.rows));
     }
     return table;
   }
 
-  get backgroundColor(): string { return this.backgroundColor; }
-  set backgroundColor(backgroundColor: string) { this.#backgroundColor = backgroundColor; }
+  copyFrom(topsterProps: TopsterProps) {
+    this.albums = topsterProps.albums;
+    this.backgroundColor = topsterProps.backgroundColor;
+    this.backgroundImg = topsterProps.backgroundImg;
+    this.fontStyle = topsterProps.fontStyle;
+    this.type = topsterProps.type;
+    this.rows = topsterProps.rows;
+    this.cols = topsterProps.cols;
+    this.gridGap = topsterProps.gridGap;
+    this.borderRoundness = topsterProps.borderRoundness;
+  }
 
-  get type() { return this.#type; }
-  set type(type: string) { this.#type = type; }
+  // getbackgroundColor(): string { return this.backgroundColor; }
+  // setbackgroundColor(backgroundColor: string) { this.backgroundColor = backgroundColor; }
 
-  get fontFamily() { return this.#fontFamily; }
-  set fontFamily(fontFamily: string) { this.#fontFamily = fontFamily; }
+  // get type() { return this.type; }
+  // set type(type: string) { this.type = type; }
 
-  get textColor() { return this.#textColor; }
-  set textColor(textColor: string) { this.#textColor = textColor; }
+  // getFontStyle(): FontStyle {
+  //   return this.fontStyle;
+  // }
 
-  get fontSize() { return this.#fontSize; }
-  set fontSize(fontSize: string) { this.#fontSize = fontSize; }
+  // setFontStyle(fontStyle: FontStyle): void {
+  //   this.fontStyle = fontStyle;
+  // }
 
-  isOrdered(): boolean { return this.#order; }
-  toggleOrdered() { this.#order = !this.#order; }
-  setOrdered(order: boolean) { this.#order = order; }
+  // get fontFamily() { return this.fontStyle.fontFamily; }
+  // set fontFamily(fontFamily: string) { this.fontStyle.fontFamily = fontFamily; }
 
-  get rows() { return this.#rows; }
-  set rows(rows: number) { this.#rows = rows; }
+  // get textColor() { return this.fontStyle.textColor; }
+  // set textColor(textColor: string) { this.fontStyle.textColor = textColor; }
 
-  get cols() { return this.#cols; }
-  set cols(cols: number) { this.#cols = cols; }
+  // get fontSize() { return this.fontStyle.fontSize; }
+  // set fontSize(fontSize: string) { this.fontStyle.fontSize = fontSize; }
 
-  get gridGap() { return this.#gridGap; }
-  set gridGap(gridGap: number) { this.#gridGap = gridGap; }
+  // isOrdered(): boolean { return this.ordered; }
+  // toggleOrdered() { this.ordered = !this.ordered; }
+  // setOrdered(ordered: boolean) { this.ordered = ordered; }
+
+  // get rows() { return this.rows; }
+  // set rows(rows: number) { this.rows = rows; }
+
+  // get cols() { return this.cols; }
+  // set cols(cols: number) { this.cols = cols; }
+
+  // get gridGap() { return this.gridGap; }
+  // set gridGap(gridGap: number) { this.gridGap = gridGap; }
+
+  // get borderRoundness() { return this.borderRoundness; }
+  // set borderRoundness(borderRoundness: boolean) { this.borderRoundness = borderRoundness; }
 }
 
-export { createSquareGrid, createCell, Topster };
+export { Topster };
