@@ -1,18 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
-import { observer } from "mobx-react-lite";
 import _ from "lodash";
 import * as htmlToImage from "html-to-image";
+import { useState, useEffect, useRef } from "react";
+import { observer } from "mobx-react-lite";
 import { saveAs } from "file-saver";
 import SearchPanel from "./SearchPanel/SearchPanel";
 import TopsterBoard from "./TopsterBoard/TopsterBoard";
 import Preferences from "./Preferences/Preferences";
 import SaveButton from "./SaveButton";
 import HelpMessages from "./HelpMessages/HelpMessages";
-import {
-  changeBlankCellsToBackgroundColor,
-  changeBlankCellsToDefaultBackground,
-  getGridContainerWidth,
-} from "../../models/topsterUtils";
 import { LocalPersistency } from "../../services/Persistency";
 
 const TopsterMaker = observer((): JSX.Element => {
