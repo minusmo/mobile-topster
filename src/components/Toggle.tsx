@@ -1,4 +1,4 @@
-type PToggle = {
+type IToggle = {
   label: string;
   value: boolean;
   ontoggle: (value: boolean) => void;
@@ -8,7 +8,7 @@ export const Toggle = ({
   label,
   value, 
   ontoggle,
-}: PToggle): JSX.Element => {
+}: IToggle): JSX.Element => {
   return (
     <div className="">
       <label className="" htmlFor="">

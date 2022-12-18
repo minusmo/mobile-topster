@@ -1,23 +1,23 @@
 import styled from "styled-components";
 
-const SMain = styled.main`
+const StyledMain = styled.main`
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
 `
 
-type PMain = {
+type IMain = {
     children: JSX.Element[] | JSX.Element;
 }
 
 const Main = ({
     children
-}: PMain): JSX.Element => {
+}: IMain): JSX.Element => {
     return (
-        <SMain>
+        <StyledMain>
             {children}    
-        </SMain>
+        </StyledMain>
     );
 }
 

@@ -1,4 +1,4 @@
-export type SearchPanelProps = {
+export type ISearchPanel = {
     onClickCancel: () => void;
     showUp: boolean;
 };

@@ -1,8 +1,8 @@
-type PsaveImgButton = {
+type ISaveImgButton = {
   save: (imgType: string) => void;
 };
 
-const SaveButton = ({ save }: PsaveImgButton) => {
+const SaveButton = ({ save }: ISaveImgButton) => {
   return (
     <div className="">
       <button

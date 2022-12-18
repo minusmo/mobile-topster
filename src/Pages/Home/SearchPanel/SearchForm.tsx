@@ -1,17 +1,17 @@
 import { Button } from "../../../components/Button";
 import { CountrySelection } from "./CountrySelection";
 
-type PSearchForm = {
+type ISearchForm = {
   onSubmission: () => Promise<void>;
   setCountry: (country: string) => void;
   setSearchInput: (searchInput: String) => void;
 };
 
-type searchInputProps = {
+type ISearchInput = {
   setSearchInput: (searchInput: String) => void;
 };
 
-const SearchInput = ({ setSearchInput }: searchInputProps): JSX.Element => {
+const SearchInput = ({ setSearchInput }: ISearchInput): JSX.Element => {
   return (
     <div className="">
       <label
@@ -37,7 +37,7 @@ const SearchForm = ({
   onSubmission,
   setCountry,
   setSearchInput,
-}: PSearchForm): JSX.Element => {
+}: ISearchForm): JSX.Element => {
   return (
     <div id="spotifySearchForm" className="">
       <CountrySelection setCountry={setCountry} />

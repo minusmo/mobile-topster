@@ -8,13 +8,13 @@ const SHeader = styled.header`
   justify-content: space-between;
 `;
 
-const STitle = styled.span`
+const Title = styled.span`
   padding: 1rem;
 `
 const Header = (): JSX.Element => {
   return (
     <SHeader>
-      <STitle id="header-title">Mobile Topster</STitle>
+      <Title id="header-title">Mobile Topster</Title>
     </SHeader>
   );
 };

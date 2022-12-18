@@ -9,7 +9,7 @@ import { PreferencesFAB } from "./PreferencesFAB";
 import { action } from "mobx";
 import { TopsterType } from "../../../models/Topster";
 
-type PPreferences = {
+type IPreferences = {
   showPreferences: boolean;
   setShowPreferences: (showPrefrences: boolean) => void;
   showAlbumTitles: boolean;
@@ -21,7 +21,7 @@ const Preferences = observer(({
   setShowPreferences,
   showAlbumTitles,
   setShowAlbumTitle,
-}: PPreferences): JSX.Element => {
+}: IPreferences): JSX.Element => {
   const topster = useContext(TopsterContext);
   return (
     <div>

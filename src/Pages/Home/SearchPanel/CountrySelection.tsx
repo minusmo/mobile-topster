@@ -1,10 +1,10 @@
-type PCountrySelection = {
+type ICountrySelection = {
   setCountry: (country: string) => void;
 };
 
 export const CountrySelection = ({
   setCountry,
-}: PCountrySelection): JSX.Element => {
+}: ICountrySelection): JSX.Element => {
   return (
     <div className="">
       <label

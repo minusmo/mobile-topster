@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
-const SFooter = styled.footer`
+// need to be refactored to base component "Row"
+
+const StyledFooter = styled.footer`
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
@@ -15,17 +17,17 @@ const SFooter = styled.footer`
   background-color: lightgrey;
 `
 
-const SSupportInfo = styled.span`
+const SupportInfo = styled.span`
   font-weight: bold;
   padding: 1rem;
 `
 const Footer = () => {
   return (
-    <SFooter>
-      <SSupportInfo>
+    <StyledFooter>
+      <SupportInfo>
         Powered by Spotify.
-      </SSupportInfo>
-    </SFooter>
+      </SupportInfo>
+    </StyledFooter>
   );
 };
 

@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import { Cell } from "../Cell/Cell";
 import styled from "styled-components";
 
-const SRow = styled.div`
+const StyledRow = styled.div`
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -10,7 +10,7 @@ const SRow = styled.div`
     justify-content: space-evenly;
 `
 
-type RowProps = {
+type IRow = {
     row: number;
     items: Array<any>;
 }
@@ -18,10 +18,10 @@ type RowProps = {
 export const Row = ({
     row,
     items,
-}: RowProps): JSX.Element => {
+}: IRow): JSX.Element => {
     return (
-    <SRow>
+    <StyledRow>
         {items.map((item, idx) => <Cell key={_.uniqueId()} rows={row * items.length} col={idx} item={item}/>)}
-    </SRow>
+    </StyledRow>
     )
 }

@@ -1,4 +1,4 @@
-type PButton = {
+type IButton = {
   label: string;
   onClick: () => void;
 };
@@ -6,7 +6,7 @@ type PButton = {
 export const Button = ({
   label,
   onClick,
-}: PButton): JSX.Element => {
+}: IButton): JSX.Element => {
   return (
     <button
       className=""

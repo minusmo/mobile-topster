@@ -3,13 +3,13 @@ import { Album } from "../../../../models/Album"
 import { Row } from "../Row/Row"
 import { Container } from "../../../../components/Container";
 
-type Top42Props = {
+type ITop42 = {
     albums: Array<Album>
 }
 
 export const Top42 = ({
     albums
-}: Top42Props): JSX.Element => {
+}: ITop42): JSX.Element => {
     return (
         <Container>
             <Row key={_.uniqueId()} row={0} items={albums.slice(0,5)}/>

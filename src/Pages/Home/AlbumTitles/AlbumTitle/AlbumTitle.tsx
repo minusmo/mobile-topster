@@ -1,12 +1,12 @@
 import { Album } from "../../../../models/Album";
 
-type PAlbumTitle = {
+type IAlbumTitle = {
     album: Album;
 }
 
 const AlbumTitle = ({
     album,
-}: PAlbumTitle): JSX.Element => {
+}: IAlbumTitle): JSX.Element => {
     const description = album.title + " - " + album.artist;
     return <li>{description}</li>;
 }

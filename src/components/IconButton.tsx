@@ -1,4 +1,4 @@
-type PIconButton = {
+type IIconButton = {
     onClick: () => void;
     children: JSX.Element;
 };
@@ -6,7 +6,7 @@ type PIconButton = {
 export const IconButton = ({
   onClick,
   children
-}: PIconButton): JSX.Element => {
+}: IIconButton): JSX.Element => {
   return (
     <button
       className=""
