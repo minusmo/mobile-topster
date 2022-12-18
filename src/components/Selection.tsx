@@ -1,6 +1,6 @@
 import * as _ from "lodash";
 
-type selectionProps = {
+type ISelection = {
   valueLabel: string;
   value: number;
   onSelection: (val: number) => void;
@@ -10,7 +10,7 @@ export const Selection = ({
   valueLabel, 
   value, 
   onSelection 
-}: selectionProps): JSX.Element => {
+}: ISelection): JSX.Element => {
   const idxRange: number[] = _.range(0,11);
   return (
     <div className="">

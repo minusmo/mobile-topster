@@ -1,13 +1,13 @@
 import { InformationCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 
-type PHelpFAB = {
+type IHelpFAB = {
   setShowHelpMesages: (showHelpMessages: boolean) => void;
 };
 
 export const HelpFAB = ({
   setShowHelpMesages
-}: PHelpFAB): JSX.Element => {
+}: IHelpFAB): JSX.Element => {
   const [toggled, setToggled] = useState(false);
   return (
     <button onClick={() => { setToggled(!toggled); setShowHelpMesages(!toggled); }}>

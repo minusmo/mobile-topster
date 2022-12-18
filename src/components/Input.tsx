@@ -1,4 +1,4 @@
-type PInput = {
+type IInput = {
   label: string;
   value: string;
   onchange: (value: string) => void;
@@ -8,7 +8,7 @@ export const Input = ({
   label,
   value, 
   onchange,
-}: PInput): JSX.Element => {
+}: IInput): JSX.Element => {
   return (
     <div className="">
       <label

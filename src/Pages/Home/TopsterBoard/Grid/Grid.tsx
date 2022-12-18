@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Container } from "../../../../components/Container";
 import { useMemo } from "react";
 
-type PGrid = {
+type IGrid = {
     rows: number;
     cols: number;
     albums: Array<Album>;
@@ -15,7 +15,7 @@ export const Grid = ({
     rows,
     cols,
     albums
-}: PGrid): JSX.Element => {
+}: IGrid): JSX.Element => {
     const grid = useMemo(() => {
         const sliced = albums.slice(0, rows * cols);
         const grid: Array<Array<Album>> = Array(rows)

@@ -7,7 +7,7 @@ import AlbumImgFound from "./ResultImg";
 import { SelectionContext } from "../../../contexts/SelectionContext";
 import { TopsterContext } from "../../../contexts/TopsterContext";
 import { Album } from "../../../models/Album";
-import { SearchPanelProps, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
+import { ISearchPanel, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
 import { IconButton } from "../../../components/IconButton";
 import { XCircleIcon } from "@heroicons/react/24/outline";
@@ -15,7 +15,7 @@ import { XCircleIcon } from "@heroicons/react/24/outline";
 const SearchPanel = ({
   onClickCancel,
   showUp,
-}: SearchPanelProps): JSX.Element => {
+}: ISearchPanel): JSX.Element => {
   const topster = useContext(TopsterContext);
   const userSelection = useContext(SelectionContext);
   const [searchInput, setSearchInput] = useState<String>("");

@@ -2,7 +2,7 @@ import * as _ from "lodash";
 import { Album } from "../../../models/Album";
 import AlbumTitle from "./AlbumTitle/AlbumTitle";
 
-type PTitleList = {
+type ITitleList = {
   albums: Array<Album>,
   borderRoundness: boolean;
 };
@@ -10,7 +10,7 @@ type PTitleList = {
 const AlbumTitles = ({
   albums,
   borderRoundness,
-}: PTitleList): JSX.Element => {
+}: ITitleList): JSX.Element => {
   const albumTitleClass = borderRoundness ? "titleList" + " border-rounded-lower" : "titleList";
   return (
     <div id="albumtitles" className={albumTitleClass}>

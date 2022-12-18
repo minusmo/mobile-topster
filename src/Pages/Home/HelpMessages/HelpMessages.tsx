@@ -1,13 +1,13 @@
 import Help from "./Help";
 import { HelpFAB } from "./HelpFAB";
 
-type PHelpMessages = {
+type IHelpMessages = {
   setShowHelpMessages: (showHelpMessages: boolean) => void;
 }
 
 const HelpMessages = ({
   setShowHelpMessages,
-}: PHelpMessages) => {
+}: IHelpMessages) => {
   return (
     <div>
       <HelpFAB setShowHelpMesages={setShowHelpMessages}/>

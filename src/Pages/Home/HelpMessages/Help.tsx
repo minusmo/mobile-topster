@@ -1,8 +1,8 @@
-type PHelp = {
+type IHelp = {
   classname: string;
 };
 
-const Help = ({ classname }: PHelp): JSX.Element => {
+const Help = ({ classname }: IHelp): JSX.Element => {
   return (
     <div id="manual" className={classname}>
       <p>이미지를 클릭하면 새로운 앨범을 검색하고 추가할 수 있습니다.</p>
