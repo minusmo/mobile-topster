@@ -31,12 +31,12 @@ class Topster {
   type: TopsterType;
   fontStyle: FontStyle = new FontStyle();
   ordered: boolean = true;
-  rows: number = 7;
-  cols: number = 6;
+  rows: number = 10;
+  cols: number = 10;
   gridGap: number = 1;
   borderRoundness: boolean = false;
 
-  constructor(albums: Array<Album> = defaultAlbums, backgroundColor: string = "#000", type: TopsterType = TopsterType.Top42) {
+  constructor(albums: Array<Album> = defaultAlbums, backgroundColor: string = "#000", type: TopsterType = TopsterType.Grid) {
     makeObservable(this, {
       albums: observable,
       backgroundColor: observable,
