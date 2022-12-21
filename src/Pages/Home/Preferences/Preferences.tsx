@@ -11,8 +11,6 @@ import { action } from "mobx";
 import { TopsterType } from "../../../models/Topster";
 
 type IPreferences = {
-  showPreferences: boolean;
-  setShowPreferences: (showPrefrences: boolean) => void;
   showAlbumTitles: boolean;
   setShowAlbumTitle: (showAlbumTitles: boolean) => void;
 };
@@ -26,8 +24,6 @@ const PreferenceForm = styled.form`
 `;
 
 const Preferences = observer(({
-  showPreferences,
-  setShowPreferences,
   showAlbumTitles,
   setShowAlbumTitle,
 }: IPreferences): JSX.Element => {
@@ -36,12 +32,7 @@ const Preferences = observer(({
   
   return (
     <div>
-      <PreferencesFAB setShowPreferences={() => {
-          if (PDialog?.current) {
-            const preferencesDialog = PDialog.current as HTMLDialogElement;
-            preferencesDialog.showModal();
-          }
-        }}/>
+      <PreferencesFAB showPreferences={() => showPreferences(PDialog.current)}/>
       <PreferenceDialog ref={PDialog} id={"preferences"}>
         <PreferenceForm method="dialog">
           <Toggle label={"Titles"} value={showAlbumTitles} ontoggle={setShowAlbumTitle} />
@@ -59,3 +50,12 @@ const Preferences = observer(({
 });
 
 export default Preferences;
+function showPreferences(PDialog: HTMLDialogElement | null): () => void {
+  return () => {
+    if (PDialog) {
+      const preferencesDialog = PDialog as HTMLDialogElement;
+      preferencesDialog.showModal();
+    }
+  };
+}
+
