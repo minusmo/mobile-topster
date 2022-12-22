@@ -2,15 +2,15 @@ import { AdjustmentsVerticalIcon, XCircleIcon } from "@heroicons/react/24/outlin
 import { useState } from "react";
 
 type IPreferencesFAB = {
-  showPreferences: () => void;
+  togglePreferences: () => void;
 }
 
 export const PreferencesFAB = ({
-  showPreferences,
+  togglePreferences,
 }: IPreferencesFAB) => {
   const [toggled, setToggled] = useState(false);
   return (
-    <button onClick={() => { setToggled(!toggled); showPreferences();}}>
+    <button onClick={() => { setToggled(!toggled); togglePreferences();}}>
       {
         toggled ?
         <XCircleIcon />

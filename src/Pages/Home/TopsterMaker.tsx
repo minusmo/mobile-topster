@@ -115,8 +115,6 @@ const TopsterMaker = observer((): JSX.Element => {
       <TopsterBoard showAlbumTitles={showAlbumTitles} />
       {/* 설정 */}
       <Preferences
-        setShowPreferences={setShowPreferences}
-        showPreferences={showPreferences}
         showAlbumTitles={showAlbumTitles}
         setShowAlbumTitle={setShowAlbumTitle}
       />
