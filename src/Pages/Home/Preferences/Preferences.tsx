@@ -11,14 +11,23 @@ import { action } from "mobx";
 import { TopsterType } from "../../../models/Topster";
 
 type IPreferences = {
-  showPreferences: boolean;
-  setShowPreferences: (showPrefrences: boolean) => void;
   showAlbumTitles: boolean;
   setShowAlbumTitle: (showAlbumTitles: boolean) => void;
 };
 
 const PreferenceDialog = styled.dialog`
+  position: fixed;
+  bottom: 20vh;
+  right: 50px;
 
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+
+  padding: 1rem;
+  border-radius: 5%;
+  overflow: scroll;
 `;
 
 const PreferenceForm = styled.form`
@@ -26,8 +35,6 @@ const PreferenceForm = styled.form`
 `;
 
 const Preferences = observer(({
-  showPreferences,
-  setShowPreferences,
   showAlbumTitles,
   setShowAlbumTitle,
 }: IPreferences): JSX.Element => {
@@ -36,12 +43,7 @@ const Preferences = observer(({
   
   return (
     <div>
-      <PreferencesFAB setShowPreferences={() => {
-          if (PDialog?.current) {
-            const preferencesDialog = PDialog.current as HTMLDialogElement;
-            preferencesDialog.showModal();
-          }
-        }}/>
+      <PreferencesFAB togglePreferences={() => {togglePreferences(PDialog.current)}}/>
       <PreferenceDialog ref={PDialog} id={"preferences"}>
         <PreferenceForm method="dialog">
           <Toggle label={"Titles"} value={showAlbumTitles} ontoggle={setShowAlbumTitle} />
@@ -59,3 +61,12 @@ const Preferences = observer(({
 });
 
 export default Preferences;
+function togglePreferences(PDialog: HTMLDialogElement | null): void {
+    if (PDialog && !PDialog.open) {
+      PDialog.showModal();
+    }
+    else if (PDialog && PDialog.open) {
+      PDialog.close();
+    }
+}
+
