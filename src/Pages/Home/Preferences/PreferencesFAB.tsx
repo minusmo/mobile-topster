@@ -1,22 +1,27 @@
-import { AdjustmentsVerticalIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/outline";
+import { IconButton } from '../../../components/IconButton';
+import styled from "styled-components";
 
 type IPreferencesFAB = {
   togglePreferences: () => void;
 }
 
+const RightFloatFAB = styled(IconButton)`
+  position: fixed;
+  bottom: 20vh;
+  right: 5px;
+
+  &:hover {
+    background-color: lime;
+  }
+`;
+
 export const PreferencesFAB = ({
   togglePreferences,
 }: IPreferencesFAB) => {
-  const [toggled, setToggled] = useState(false);
   return (
-    <button onClick={() => { setToggled(!toggled); togglePreferences();}}>
-      {
-        toggled ?
-        <XCircleIcon />
-        :
-        <AdjustmentsVerticalIcon />
-      }
-    </button>
+    <RightFloatFAB onClick={() => {togglePreferences();}}>
+        <AdjustmentsHorizontalIcon width={'5vw'} height={'5vw'}/>
+    </RightFloatFAB>
   );
 };
