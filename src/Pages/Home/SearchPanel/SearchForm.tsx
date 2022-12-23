@@ -1,4 +1,4 @@
-import { Button } from "../../../components/Button";
+import { TextButton } from "../../../components/TextButton";
 import { CountrySelection } from "./CountrySelection";
 
 type ISearchForm = {
@@ -44,7 +44,7 @@ const SearchForm = ({
       <div className="">
         <SearchInput setSearchInput={setSearchInput} />
       </div>
-      <Button label={"Search"} onClick={onSubmission} />
+      <TextButton label={"Search"} onClick={onSubmission} />
     </div>
   );
 };
