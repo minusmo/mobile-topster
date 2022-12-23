@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Album } from "../../../../models/Album";
+import { Album } from "../../../../data/models/Album";
 import { SelectionContext } from "../../../../contexts/SelectionContext";
 import styled from "styled-components";
 import { TopsterContext } from "../../../../contexts/TopsterContext";

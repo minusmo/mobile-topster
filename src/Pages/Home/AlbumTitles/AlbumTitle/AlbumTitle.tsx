@@ -1,4 +1,4 @@
-import { Album } from "../../../../models/Album";
+import { Album } from "../../../../data/models/Album";
 
 type IAlbumTitle = {
     album: Album;
