@@ -1,4 +1,4 @@
-type PResultImg = {
+type IResultImg = {
   id: string;
   imgUrl: string;
   altText: string;
@@ -22,7 +22,7 @@ const ResultImg = ({
   imgUrl,
   altText,
   clickHandler,
-}: PResultImg): JSX.Element => {
+}: IResultImg): JSX.Element => {
   const albumImgStyle = setAlbumImgStyle(imgUrl);
   return (
     <img
