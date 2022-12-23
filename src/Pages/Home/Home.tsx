@@ -6,7 +6,7 @@ import TopsterMaker from "./TopsterMaker";
 import Header from "../../layouts/Header";
 import Main from "../../layouts/Main";
 import Footer from "../../layouts/Footer";
-import { Topster } from "../../models/Topster";
+import { Topster } from "../../data/models/Topster";
 import { TopsterContext } from "../../contexts/TopsterContext";
 import { SelectionContext, userSelection } from "../../contexts/SelectionContext";
 

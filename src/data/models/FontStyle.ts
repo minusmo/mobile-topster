@@ -1,14 +1,16 @@
 import { makeAutoObservable } from "mobx";
 
-type FontStyleProps = {
+type IFontStyle = {
   fontFamily: string;
   fontSize: string;
   textColor: string;
 };
+
 export class FontStyle {
   fontFamily: string;
   fontSize: string;
   textColor: string;
+
   constructor(fontFamily: string = "default", fontSize: string = "10px", textColor: string = "#fff") {
     makeAutoObservable(this);
     this.fontFamily = fontFamily;
@@ -16,16 +18,10 @@ export class FontStyle {
     this.textColor = textColor;
   }
 
-  // get fontFamily(): string { return this.#fontFamily; }
-  // set fontFamily(fontFamily: string) { this.#fontFamily = fontFamily; }
-  // get fontSize(): string { return this.#fontSize; }
-  // set fontSize(fontSize: string) { this.#fontSize = fontSize; }
-  // get textColor(): string { return this.#textColor; }
-  // set textColor(textColor: string) { this.#textColor = textColor; }
-  copyFrom(fontStyleProps: FontStyleProps): void {
-    this.fontFamily = fontStyleProps.fontFamily;
-    this.fontSize = fontStyleProps.fontSize;
-    this.textColor = fontStyleProps.textColor;
+  fromJson(fontStyleObject: IFontStyle): void {
+    this.fontFamily = fontStyleObject.fontFamily;
+    this.fontSize = fontStyleObject.fontSize;
+    this.textColor = fontStyleObject.textColor;
   }
 
   toString(): string {

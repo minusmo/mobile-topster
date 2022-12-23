@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
-import { TopsterType } from "../../../models/Topster";
+import { TopsterType } from "../../../data/models/Topster";
 import { gridContainerStyle, setGridContainerClass } from "./utils";
 import { TopsterContext } from "../../../contexts/TopsterContext";
 import { Grid } from "./Grid/Grid";

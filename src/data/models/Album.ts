@@ -1,6 +1,11 @@
-import { observable } from 'mobx';
-import { makeObservable } from 'mobx';
+import { observable, makeObservable } from 'mobx';
 import whitesquare from "../assets/images/white_square.jpg";
+
+interface JsonAlbum {
+    title: string;
+    artist: string;
+    art: string;
+}
 
 export class Album {
     title: string;
@@ -23,5 +28,12 @@ export class Album {
             title: this.title,
             artist: this.artist,
             art: this.art,
-    });}
+        });
+    }
+
+    fromJson(json: JsonAlbum) {
+        this.title = json.title;
+        this.artist = json.artist;
+        this.art = json.art;
+    }
 }
