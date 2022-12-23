@@ -6,7 +6,7 @@ import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
 import AlbumImgFound from "./ResultImg";
 import { SelectionContext } from "../../../contexts/SelectionContext";
 import { TopsterContext } from "../../../contexts/TopsterContext";
-import { Album } from "../../../models/Album";
+import { Album } from "../../../data/models/Album";
 import { ISearchPanel, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
 import { IconButton } from "../../../components/IconButton";

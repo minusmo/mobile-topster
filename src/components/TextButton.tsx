@@ -1,15 +1,14 @@
-type IButton = {
+type ITextButton = {
   label: string;
   onClick: () => void;
 };
 
-export const Button = ({
+export const TextButton = ({
   label,
   onClick,
-}: IButton): JSX.Element => {
+}: ITextButton): JSX.Element => {
   return (
     <button
-      className=""
       type="button"
       onClick={() => onClick()}
     >

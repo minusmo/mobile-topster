@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import { Album } from "../../../../models/Album";
+import { Album } from "../../../../data/models/Album";
 import { SelectionContext } from "../../../../contexts/SelectionContext";
 import styled from "styled-components";
 import { TopsterContext } from "../../../../contexts/TopsterContext";
 
 
-type CellProps = {
+type ICell = {
     rows: number;
     col: number;
     item: Album;
@@ -15,7 +15,7 @@ export const Cell = ({
     rows,
     col,
     item,
-}: CellProps): JSX.Element => {
+}: ICell): JSX.Element => {
     const userSelection = useContext(SelectionContext);
     const topster = useContext(TopsterContext);
 

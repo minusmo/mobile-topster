@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { Album } from "../../../models/Album";
+import { Album } from "../../../data/models/Album";
 import AlbumTitle from "./AlbumTitle/AlbumTitle";
 
 type ITitleList = {

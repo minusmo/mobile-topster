@@ -1,4 +1,4 @@
-import { Album } from "../models/Album";
+import { Album } from "../data/models/Album";
 
 abstract class Search<T> {
     abstract search(query: string): Promise<Array<T>>;
