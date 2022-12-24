@@ -8,7 +8,7 @@ type SelectedPosition = {
 }
 
 export default class TopsterStore {
-    topster: Topster | undefined;
+    topster: Topster = new Topster();
     selectedPosition: SelectedPosition = {
         row: 0,
         col: 0,
@@ -16,7 +16,7 @@ export default class TopsterStore {
 
     constructor() {
         makeAutoObservable(this);
-        this.initializeTopster();
+        // this.initializeTopster();
     }
 
     private saveLocally(): void {
@@ -38,12 +38,12 @@ export default class TopsterStore {
         this.topster = topster;
     }
 
-    private effect = reaction(
-        () => (this.topster),
-        topster => {
-            this.saveLocally();
-        }
-    )
+    // private effect = reaction(
+    //     () => (this.topster),
+    //     topster => {
+    //         this.saveLocally();
+    //     }
+    // )
 
     public getSelectedIdx(): number {
         return this.selectedPosition.row + this.selectedPosition.col;
