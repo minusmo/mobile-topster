@@ -2,6 +2,7 @@ abstract class Persistency {
     static #storage: Storage;
     static save(dataKey: string, serializedData: string): void {};
     static retrieve(dataKey: string): string { return ""; };
+    static clearData(): void {};
 }
 
 class SessionPersistency extends Persistency {
@@ -15,6 +16,9 @@ class SessionPersistency extends Persistency {
     static retrieve(dataKey: string): any {
         if (this.#storage) return this.#storage.getItem(dataKey);
         else return "";
+    }
+    static clearData(): void {
+        this.#storage.clear();
     }
 }
 
@@ -30,6 +34,9 @@ class LocalPersistency implements Persistency {
         if (this.#storage) return this.#storage.getItem(dataKey);
         else return "";
     }
+    static clearData(): void {
+        this.#storage.clear();
+    }
 }
 
-export{ SessionPersistency, LocalPersistency };
+export { SessionPersistency, LocalPersistency };
