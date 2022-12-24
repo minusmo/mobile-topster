@@ -1,3 +1,6 @@
+import styled from "styled-components";
+import Box from '@mui/material/Box'
+
 type IInput = {
   type: string;
   label: string;
@@ -14,19 +17,20 @@ export const Input = ({
   placeholder,
 }: IInput): JSX.Element => {
   return (
-    <div>
+    <Box sx={{
+      display: 'flex'
+    }}>
       <label
         htmlFor="input-value"
       >
         {label}
       </label>
-      <div>
-        <input
-          type={type}
-          placeholder={placeholder}
-          value={value}
-          onChange={(e) => onchange(e.target.value)} />
-      </div>
-    </div>
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onchange(e.target.value)} 
+      />
+    </Box>
   );
 };
