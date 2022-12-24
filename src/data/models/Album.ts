@@ -1,5 +1,5 @@
 import { observable, makeObservable } from 'mobx';
-import whitesquare from "../assets/images/white_square.jpg";
+import whitesquare from "../../assets/images/white_square.jpg";
 
 interface JsonAlbum {
     title: string;
