@@ -1,16 +1,16 @@
-import { useContext, useRef } from "react";
+import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
-import styled from "styled-components";
-import { TopsterContext } from "../../../contexts/TopsterContext";
+import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { Input } from "../../../components/Input";
 import { Toggle } from "../../../components/Toggle";
 import { TextButton } from "../../../components/TextButton";
-import { SubmitButton } from "../../../components/SubmitButton";
-import { Selection } from "../../../components/Selection";
+import { SelectSlider } from "../../../components/SelectSlider";
 import { PreferencesFAB } from "./PreferencesFAB";
 import { action } from "mobx";
 import { TopsterType } from "../../../data/models/Topster";
-import { Button, ButtonProps, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { Button, ButtonProps, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
+import { ToggleSwitch } from "../../../components/ToggleSwitch";
+import { LocalPersistency } from "../../../services/Persistency";
 
 type IPreferences = {
   showAlbumTitles: boolean;
@@ -25,40 +25,78 @@ const Preferences = observer(({
   showAlbumTitles,
   setShowAlbumTitle,
 }: IPreferences): JSX.Element => {
-  const topster = useContext(TopsterContext);
-  const PDialog = useRef(null);
+  const topsterStore = useContext(TopsterStoreContext);
+  const topster = topsterStore.topster!;
+  const [opened, setOpened] = useState(false);
   
   return (
     <>
-      <PreferencesFAB onClick={() => {togglePreferences(PDialog.current)}}/>
-      <Dialog open={opened} onClose={hideDialog}>
+      <PreferencesFAB onClick={() => {setOpened(true)}}/>
+      <Dialog open={opened} onClose={() => {setOpened(false)}}>
         <DialogTitle>Preferences</DialogTitle>
         <DialogContent>
-          <Toggle label={"Titles"} value={showAlbumTitles} onChange={setShowAlbumTitle} />
-          <Input label={"Background"} value={topster.backgroundColor} onchange={action((val: string) => {topster.backgroundColor = val;})}/>
-          <Selection valueLabel={"Row"} value={topster.rows} onSelection={action((val: number) => {topster.rows = val;})} />
-          <Selection valueLabel={"Col"} value={topster.cols} onSelection={action((val: number) => {topster.cols = val;})} />
-          <TextButton label={"SetGrid"} onClick={action(() => {topster.type = TopsterType.Grid})}/>
-          <TextButton label={"SetTop42"} onClick={action(() => {topster.type = TopsterType.Top42})} />
-          <TextButton label={"ClearCache"} onClick={() => {window.localStorage.clear()}} />
-          <Toggle label={"Border"} value={topster.borderRoundness} ontoggle={action(() => {topster.borderRoundness = !topster.borderRoundness;})}/>
+          <Toggle 
+            label={"Titles"} 
+            value={showAlbumTitles} 
+            onChange={toggleTitles} 
+            control={<ToggleSwitch/>} />
+          <Input 
+            type={"color"} 
+            label={"Background"} 
+            value={topster.backgroundColor} 
+            onchange={action((val: string) => {topster.backgroundColor = val;})} 
+          />
+          <SelectSlider 
+            label={"Row"} 
+            topsterType={topster.type} 
+            onSelection={action((val: number) => {topster.rows = val;})} 
+            sliderProps={{value: topster.rows}} 
+          />
+          <SelectSlider 
+            label={"Col"} 
+            topsterType={topster.type} 
+            onSelection={action((val: number) => {topster.cols = val;})} 
+            sliderProps={{value: topster.cols}} 
+          />
+          <Button 
+            variant={"contained"} 
+            onClick={action(() => {topster.type = TopsterType.Grid})}
+          >
+            GridType
+          </Button>
+          <Button 
+            variant={"contained"} 
+            onClick={action(() => {topster.type = TopsterType.Top42})}
+          >
+            Top42Type
+          </Button>
+          <TextButton 
+            label={"ClearCache"} 
+            onClick={() => {LocalPersistency.clearData()}} 
+          />
+          <Toggle
+            label={"Border"} 
+            value={topster.borderRoundness} 
+            onChange={action(() => {topster.borderRoundness = !topster.borderRoundness;})} 
+            control={<ToggleSwitch/>} 
+          />
         </DialogContent>
         <DialogActions>
-          <SubmitButton>{"Confirm"}</SubmitButton>
-          <CancelButton>{"Cancel"}</CancelButton>
+          <Button 
+            variant={"contained"} 
+            onClick={() => {setOpened(false)}}
+          >
+            Confirm
+          </Button>
         </DialogActions>
       </Dialog>
     </>
   );
+
+  function toggleTitles(event: React.SyntheticEvent) {
+    const toggleSwitch = event.target as HTMLInputElement;
+    setShowAlbumTitle(toggleSwitch.checked);
+  }
 });
 
 export default Preferences;
-function togglePreferences(PDialog: HTMLDialogElement | null): void {
-    if (PDialog && !PDialog.open) {
-      PDialog.showModal();
-    }
-    else if (PDialog && PDialog.open) {
-      PDialog.close();
-    }
-}
-
