@@ -6,10 +6,7 @@ import TopsterMaker from "./TopsterMaker";
 import Header from "../../layouts/Header";
 import Main from "../../layouts/Main";
 import Footer from "../../layouts/Footer";
-import { TopsterStoreContext } from "../../contexts/TopsterStoreContext";
-import TopsterStore from "../../data/datastores/TopsterStore";
-
-export const topsterStore: TopsterStore = new TopsterStore();
+import { TopsterStoreContext, topsterStore } from "../../contexts/TopsterStoreContext";
 
 const Home = () => {
     useEffect(() => {
