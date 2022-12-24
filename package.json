@@ -3,6 +3,8 @@
   "version": "2.6.10",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
     "@heroicons/react": "^2.0.13",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",

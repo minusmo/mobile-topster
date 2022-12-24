@@ -11,6 +11,7 @@ import { TopsterType } from "../../../data/models/Topster";
 import { Button, ButtonProps, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import { ToggleSwitch } from "../../../components/ToggleSwitch";
 import { LocalPersistency } from "../../../services/Persistency";
+import { Box } from "@mui/system";
 
 type IPreferences = {
   showAlbumTitles: boolean;
@@ -35,11 +36,20 @@ const Preferences = observer(({
       <Dialog open={opened} onClose={() => {setOpened(false)}}>
         <DialogTitle>Preferences</DialogTitle>
         <DialogContent>
-          <Toggle 
-            label={"Titles"} 
-            value={showAlbumTitles} 
-            onChange={toggleTitles} 
-            control={<ToggleSwitch/>} />
+          <Box sx={{
+            display: "flex",
+          }}>
+            <Toggle 
+              label={"Titles"}
+              value={showAlbumTitles}
+              control={<ToggleSwitch onChange={toggleTitles}/>}
+            />
+            <Toggle
+              label={"Border"} 
+              value={topster.borderRoundness}
+              control={<ToggleSwitch onChange={action(() => {topster.borderRoundness = !topster.borderRoundness;})}/>} 
+            />
+          </Box>
           <Input 
             type={"color"} 
             label={"Background"} 
@@ -70,16 +80,12 @@ const Preferences = observer(({
           >
             Top42Type
           </Button>
-          <TextButton 
-            label={"ClearCache"} 
+          <Button 
+            variant={"contained"}
             onClick={() => {LocalPersistency.clearData()}} 
-          />
-          <Toggle
-            label={"Border"} 
-            value={topster.borderRoundness} 
-            onChange={action(() => {topster.borderRoundness = !topster.borderRoundness;})} 
-            control={<ToggleSwitch/>} 
-          />
+          >
+            ClearCache
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button 
@@ -93,9 +99,8 @@ const Preferences = observer(({
     </>
   );
 
-  function toggleTitles(event: React.SyntheticEvent) {
-    const toggleSwitch = event.target as HTMLInputElement;
-    setShowAlbumTitle(toggleSwitch.checked);
+  function toggleTitles(event: React.SyntheticEvent, checked: boolean) {
+    setShowAlbumTitle(checked);
   }
 });
 
