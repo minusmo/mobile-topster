@@ -1,5 +1,5 @@
-import { Switch } from "@mui/material";
+import { Switch, SwitchProps } from "@mui/material";
 
-export const ToggleSwitch = (): JSX.Element => (
-    <Switch color={"primary"}/>
+export const ToggleSwitch = (props: SwitchProps): JSX.Element => (
+    <Switch color={"primary"} {...props} />
 )
