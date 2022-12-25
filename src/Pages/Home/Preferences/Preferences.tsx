@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
-import { Input } from "../../../components/Input";
 import { Toggle } from "../../../components/Toggle";
-import { TextButton } from "../../../components/TextButton";
 import { SelectSlider } from "../../../components/SelectSlider";
 import { PreferencesFAB } from "./PreferencesFAB";
 import { action } from "mobx";
@@ -100,10 +98,6 @@ const Preferences = observer(({
 
   function toggleTitles(event: React.SyntheticEvent, checked: boolean) {
     setShowAlbumTitle(checked);
-  }
-
-  function showColorPicker() {
-
   }
 });
 
