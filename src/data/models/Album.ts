@@ -1,3 +1,4 @@
+import { info } from 'console';
 import { observable, makeObservable } from 'mobx';
 import whitesquare from "../../assets/images/white_square.jpg";
 
@@ -21,6 +22,10 @@ export class Album {
         this.title = title;
         this.artist = artist;
         this.art = art;
+    }
+    
+    info(): string {
+        return `${this.title} - ${this.artist}`;
     }
 
     toString(): string { 
