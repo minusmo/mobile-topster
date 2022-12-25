@@ -4,8 +4,7 @@ import * as _ from "lodash";
 import SearchForm from "./SearchForm";
 import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
 import AlbumImgFound from "./ResultImg";
-import { SelectionContext } from "../../../contexts/SelectionContext";
-import { TopsterContext } from "../../../contexts/TopsterContext";
+import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { Album } from "../../../data/models/Album";
 import { ISearchPanel, queryResponseData, AlbumSearchResult, authResponseData } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
@@ -16,8 +15,8 @@ const SearchPanel = ({
   onClickCancel,
   showUp,
 }: ISearchPanel): JSX.Element => {
-  const topster = useContext(TopsterContext);
-  const userSelection = useContext(SelectionContext);
+  const topsterStore = useContext(TopsterStoreContext);
+  const topster = topsterStore.topster!;
   const [searchInput, setSearchInput] = useState<String>("");
   const [country, setCountry] = useState("us");
   const [searchResult, setSearchResult] = useState<Array<AlbumSearchResult>>([]);
@@ -86,7 +85,11 @@ const SearchPanel = ({
                   id={collection.id}
                   imgUrl={imgUrl}
                   altText={altText}
-                  clickHandler={() => { topster.replaceAlbumAt(userSelection.selection, new Album(albumTitle, artist, imgUrl)) }}
+                  clickHandler={() => { 
+                    topster.replaceAlbumAt(
+                      topsterStore.getSelectedIdx(),
+                      new Album(albumTitle, artist, imgUrl)) 
+                  }}
                 />
               );
             })

@@ -2,8 +2,7 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { observer } from "mobx-react-lite";
 import { TopsterType } from "../../../data/models/Topster";
-import { gridContainerStyle, setGridContainerClass } from "./utils";
-import { TopsterContext } from "../../../contexts/TopsterContext";
+import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { Grid } from "./Grid/Grid";
 import { Top42 } from "./Top42/Top42";
 import AlbumTitles from "../AlbumTitles/AlbumTitles";
@@ -15,7 +14,8 @@ type PTopsterBoard = {
 const TopsterBoard = observer(({
   showAlbumTitles,
 }: PTopsterBoard): JSX.Element => {
-  const topster = useContext(TopsterContext);
+  const topsterStore = useContext(TopsterStoreContext);
+  const topster = topsterStore.topster;
   const albums = topster.albums;
 
 

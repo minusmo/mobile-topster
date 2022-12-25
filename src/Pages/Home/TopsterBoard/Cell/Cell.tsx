@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Album } from "../../../../data/models/Album";
-import { SelectionContext } from "../../../../contexts/SelectionContext";
 import styled from "styled-components";
-import { TopsterContext } from "../../../../contexts/TopsterContext";
+import { TopsterStoreContext } from "../../../../contexts/TopsterStoreContext";
+import { action } from "mobx";
 
 
 type ICell = {
@@ -16,8 +16,8 @@ export const Cell = ({
     col,
     item,
 }: ICell): JSX.Element => {
-    const userSelection = useContext(SelectionContext);
-    const topster = useContext(TopsterContext);
+    const topsterStore = useContext(TopsterStoreContext);
+    const topster = topsterStore.topster!;
 
     const ImgContainer = styled.div`
         width: 100%;
@@ -36,7 +36,10 @@ export const Cell = ({
             <Img 
                 src={item.art} 
                 alt={`${item.title}-${item.artist}`} 
-                onClick={() => { userSelection.selection = rows + col; }}
+                onClick={action(() => {
+                    topsterStore.selectedPosition.row = rows;
+                    topsterStore.selectedPosition.col = col;
+                })}
             />
         </ImgContainer>
     );

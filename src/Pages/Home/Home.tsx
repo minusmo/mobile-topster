@@ -6,16 +6,13 @@ import TopsterMaker from "./TopsterMaker";
 import Header from "../../layouts/Header";
 import Main from "../../layouts/Main";
 import Footer from "../../layouts/Footer";
-import { Topster } from "../../data/models/Topster";
-import { TopsterContext } from "../../contexts/TopsterContext";
-import { SelectionContext, userSelection } from "../../contexts/SelectionContext";
+import { TopsterStoreContext, topsterStore } from "../../contexts/TopsterStoreContext";
 
-export const topster: Topster = new Topster();
 const Home = () => {
     useEffect(() => {
         ReactGA.initialize(GAID);
         ReactGA.pageview(window.location.pathname);
-    }, [])
+    }, []);
     return (
         <>
           <Helmet>
@@ -23,14 +20,12 @@ const Home = () => {
             <meta name="description" content="TopsterMaker for mobile first" />
             <title>Topsters for Mobile</title>
           </Helmet>
-          <TopsterContext.Provider value={topster}>
+          <TopsterStoreContext.Provider value={topsterStore}>
             <Header />
-            <SelectionContext.Provider value={userSelection}>
               <Main>
                 <TopsterMaker/>
               </Main>
-            </SelectionContext.Provider>
-          </TopsterContext.Provider>
+          </TopsterStoreContext.Provider>
           <Footer />
         </>
     )

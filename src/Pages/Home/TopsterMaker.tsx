@@ -10,24 +10,19 @@ import SaveButton from "./SaveButton";
 import HelpMessages from "./HelpMessages/HelpMessages";
 import { LocalPersistency } from "../../services/Persistency";
 
+const savedTitlesState = JSON.parse(LocalPersistency.retrieve("showAlbumTitles")) ? true : false;
+const savedPreferenceState = JSON.parse(LocalPersistency.retrieve("showPreferences")) ? true : false;
+
 const TopsterMaker = observer((): JSX.Element => {
-  const [showAlbumTitles, setShowAlbumTitle] = useState(false);
-  const [showPreferences, setShowPreferences] = useState(false);
+  const [showAlbumTitles, setShowAlbumTitle] = useState(savedTitlesState);
+  const [showPreferences, setShowPreferences] = useState(savedPreferenceState);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
   const [showHelpMessages, setShowHelpMessages] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
-  const [selectedCell, setSelectedCell] = useState("");
   const screenshotArea = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     screenshotArea.current = document.querySelector("#screenshot-area") as HTMLElement;
-
-    setShowAlbumTitle(
-      LocalPersistency.retrieve("showAlbumTitles") === "false" ? false : true
-    );
-    setShowPreferences(
-      LocalPersistency.retrieve("showPreferences") === "false" ? false : true
-    );
 
     return () => {
       LocalPersistency.save("showAlbumTitles", JSON.stringify(showAlbumTitles));
@@ -112,14 +107,18 @@ const TopsterMaker = observer((): JSX.Element => {
   return (
     <div id="topster-maker">
       {/* 탑스터 */}
-      <TopsterBoard showAlbumTitles={showAlbumTitles} />
+      <TopsterBoard 
+        showAlbumTitles={showAlbumTitles} 
+      />
       {/* 설정 */}
       <Preferences
         showAlbumTitles={showAlbumTitles}
         setShowAlbumTitle={setShowAlbumTitle}
       />
       {/* 도움말 */}
-      <HelpMessages setShowHelpMessages={setShowHelpMessages} />
+      <HelpMessages 
+        setShowHelpMessages={setShowHelpMessages} 
+      />
       {/* 검색창  */}
       <SearchPanel
         showUp={showSearchPanel}
