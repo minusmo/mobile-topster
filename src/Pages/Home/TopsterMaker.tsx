@@ -17,7 +17,6 @@ const TopsterMaker = observer((): JSX.Element => {
   const [showAlbumTitles, setShowAlbumTitle] = useState(savedTitlesState);
   const [showPreferences, setShowPreferences] = useState(savedPreferenceState);
   const [showSearchPanel, setShowSearchPanel] = useState(false);
-  const [showHelpMessages, setShowHelpMessages] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
   const screenshotArea = useRef<HTMLElement | null>(null);
 
@@ -116,9 +115,7 @@ const TopsterMaker = observer((): JSX.Element => {
         setShowAlbumTitle={setShowAlbumTitle}
       />
       {/* 도움말 */}
-      <HelpMessages 
-        setShowHelpMessages={setShowHelpMessages} 
-      />
+      <HelpMessages />
       {/* 검색창  */}
       <SearchPanel
         showUp={showSearchPanel}
