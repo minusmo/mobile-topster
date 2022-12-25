@@ -2,10 +2,6 @@ import { useState } from "react";
 import { HelpFAB } from "./HelpFAB";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from "@mui/material";
 
-type IHelpMessages = {
-  showHelpMessages: () => void;
-}
-
 const HelpMessages = () => {
   const [opened, setOpened] = useState(false);
   return (
