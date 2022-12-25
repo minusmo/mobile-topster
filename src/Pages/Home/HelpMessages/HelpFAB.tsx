@@ -1,22 +1,19 @@
-import { InformationCircleIcon, XCircleIcon } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { Fab, FabProps } from "@mui/material";
+import HelpIcon from '@mui/icons-material/Help';
 
-type IHelpFAB = {
-  setShowHelpMesages: (showHelpMessages: boolean) => void;
-};
-
-export const HelpFAB = ({
-  setShowHelpMesages
-}: IHelpFAB): JSX.Element => {
-  const [toggled, setToggled] = useState(false);
+export const HelpFAB = (props: FabProps) => {
+  const { onClick } = props;
   return (
-    <button onClick={() => { setToggled(!toggled); setShowHelpMesages(!toggled); }}>
-      {
-      toggled ?
-      <XCircleIcon />
-      :
-      <InformationCircleIcon />
-      }
-    </button>
+    <Fab
+      sx={{
+        position: 'fixed',
+        right: '10px',
+        bottom: 'calc(20vh - 64px)',
+      }}
+      onClick={onClick} 
+      size={"large"}
+    >
+      <HelpIcon />
+    </Fab>
   );
-};
+}
