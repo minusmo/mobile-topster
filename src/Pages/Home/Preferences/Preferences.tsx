@@ -12,6 +12,7 @@ import { Button, ButtonProps, Dialog, DialogActions, DialogContent, DialogTitle 
 import { ToggleSwitch } from "../../../components/ToggleSwitch";
 import { LocalPersistency } from "../../../services/Persistency";
 import { Box } from "@mui/system";
+import { ColorPicker } from "./ColorPicker";
 
 type IPreferences = {
   showAlbumTitles: boolean;
@@ -27,7 +28,7 @@ const Preferences = observer(({
   setShowAlbumTitle,
 }: IPreferences): JSX.Element => {
   const topsterStore = useContext(TopsterStoreContext);
-  const topster = topsterStore.topster!;
+  const topster = topsterStore.topster;
   const [opened, setOpened] = useState(false);
   
   return (
@@ -50,11 +51,8 @@ const Preferences = observer(({
               control={<ToggleSwitch onChange={action(() => {topster.borderRoundness = !topster.borderRoundness;})}/>} 
             />
           </Box>
-          <Input 
-            type={"color"} 
-            label={"Background"} 
-            value={topster.backgroundColor} 
-            onchange={action((val: string) => {topster.backgroundColor = val;})} 
+          <ColorPicker
+            onPick={action((color: string) => {topster.backgroundColor = color;})}
           />
           <SelectSlider 
             label={"Row"} 
@@ -69,26 +67,27 @@ const Preferences = observer(({
             sliderProps={{value: topster.cols}} 
           />
           <Button 
-            variant={"contained"} 
+            variant={"outlined"} 
             onClick={action(() => {topster.type = TopsterType.Grid})}
           >
             GridType
           </Button>
           <Button 
-            variant={"contained"} 
+            variant={"outlined"} 
             onClick={action(() => {topster.type = TopsterType.Top42})}
           >
             Top42Type
           </Button>
           <Button 
-            variant={"contained"}
+            variant={"outlined"}
             onClick={() => {LocalPersistency.clearData()}} 
           >
             ClearCache
           </Button>
         </DialogContent>
         <DialogActions>
-          <Button 
+          <Button
+            color={"success"}
             variant={"contained"} 
             onClick={() => {setOpened(false)}}
           >
@@ -101,6 +100,10 @@ const Preferences = observer(({
 
   function toggleTitles(event: React.SyntheticEvent, checked: boolean) {
     setShowAlbumTitle(checked);
+  }
+
+  function showColorPicker() {
+
   }
 });
 
