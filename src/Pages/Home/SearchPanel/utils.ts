@@ -1,59 +1,38 @@
 import qs from "qs";
 import { AxiosRequestConfig } from "axios";
-import { SPOTIFY_API, CONTENT_TYPE } from "../../../configs/credentials";
-import { username, password } from "../../../configs/credentials";
-import { promptReturn, AlbumSearchResult } from "./types";
+import { API, UserInfo } from "../../../configs/credentials";
 
-export const userIsAddingAlbumManually = (trimmedSearchInput: String): boolean => {
-    return trimmedSearchInput.slice(0, 4) === "http" ? true : false;
-};
-  
+
+abstract class SpotifyQueryConfig {
+  static CONTENT_TYPE: string = "application/x-www-form-urlencoded";
+  static GRANT_TYPE: string = "client_credentials";
+}
+
 export const createAuthConfig = (): AxiosRequestConfig => {
   return {
-    method: "post",
-    url: SPOTIFY_API,
+    method: "POST",
+    url: API.SPOTIFY_API,
     headers: {
-      "Content-Type": CONTENT_TYPE,
+      "Content-Type": SpotifyQueryConfig.CONTENT_TYPE,
     },
-    data: qs.stringify({ grant_type: "client_credentials" }),
+    data: qs.stringify({ grant_type: SpotifyQueryConfig.GRANT_TYPE}),
     auth: {
-      username: username,
-      password: password,
+      username: UserInfo.username,
+      password: UserInfo.password,
     },
     withCredentials: true,
   };
 };
 
 export const createQueryConfig = (
-  getAlbums: string,
+  albumQueryAPI: string,
   access_token: string
 ): AxiosRequestConfig => {
   return {
-    method: "get",
-    url: getAlbums,
+    method: "GET",
+    url: albumQueryAPI,
     headers: {
       Authorization: `Bearer ${access_token}`,
     },
   };
-};
-
-export const returnUsersAlbum = (trimmedSearchInput: String): Array<AlbumSearchResult> => {
-    const artists: promptReturn = window.prompt("아티스트명을 입력해주세요.");
-    const albumName: promptReturn = window.prompt("앨범명을 입력해주세요.");
-
-    const usersAlbum: Array<AlbumSearchResult> = [
-      {
-        artists: [{ name: "" }],
-        name: "",
-        images: [{ url: "" }],
-        id: "00000",
-      },
-      {
-        artists: [{ name: artists ? artists.toString() : "" }],
-        name: albumName ? albumName.toString() : "",
-        images: [{ url: trimmedSearchInput.toString() }],
-        id: "99999",
-      },
-    ];
-    return usersAlbum;
 };
