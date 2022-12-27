@@ -1,52 +1,43 @@
-import { TextButton } from "../../../components/TextButton";
+import { Button, TextField } from "@mui/material";
+import { Box } from "@mui/system";
 import { CountrySelection } from "./CountrySelection";
 
 type ISearchForm = {
-  onSubmission: () => Promise<void>;
+  onSubmission: () => void;
   setCountry: (country: string) => void;
-  setSearchInput: (searchInput: String) => void;
+  setQuery: (query: string) => void;
 };
 
 type ISearchInput = {
-  setSearchInput: (searchInput: String) => void;
+  setSearchInput: (searchInput: string) => void;
 };
 
 const SearchInput = ({ setSearchInput }: ISearchInput): JSX.Element => {
   return (
-    <div className="">
-      <label
-        className=""
-        htmlFor="search-album"
-      >
-        Artist/AlbumTitle
-      </label>
-      <div className="">
-        <input
-          id="search-album"
-          className=""
-          type="text"
-          placeholder="type artist or album title"
-          onChange={(e) => setSearchInput(String(e.currentTarget.value))}
-        />
-      </div>
-    </div>
+      <TextField
+        id={'textfield-search'}
+        label={'Search'}
+        helperText={'Type album title or artist here'}
+        defaultValue={'The Beatles'}
+        onChange={(e) => setSearchInput(String(e.currentTarget.value))}
+      />
   );
 };
 
 const SearchForm = ({
   onSubmission,
   setCountry,
-  setSearchInput,
-}: ISearchForm): JSX.Element => {
-  return (
-    <div id="spotifySearchForm" className="">
-      <CountrySelection setCountry={setCountry} />
-      <div className="">
-        <SearchInput setSearchInput={setSearchInput} />
-      </div>
-      <TextButton label={"Search"} onClick={onSubmission} />
-    </div>
-  );
-};
+  setQuery,
+}: ISearchForm): JSX.Element => (
+  <Box id="spotifySearchForm">
+    <SearchInput setSearchInput={setQuery} />
+    <CountrySelection setCountry={setCountry} />
+    <Button
+      type={'submit'}
+      onClick={onSubmission}>
+      Search
+    </Button>
+  </Box>
+);
 
 export default SearchForm;
