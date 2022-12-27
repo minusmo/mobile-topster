@@ -1,13 +1,14 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
 import { Album } from "../../../data/models/Album";
-import { QueryResponseData, SpotifyAlbumData, AuthResponse } from "./types";
+import { queryResponseData, SpotifyAlbumData, AuthResponse } from "./types";
 import { createAuthConfig, createQueryConfig } from "./utils";
+import WhiteSqure from '../../../assets/images/white_square.jpg';
 
 const DEFAULT_RESULT = {
   artists: [{ name: "" }],
   name: "",
-  images: [{ url: "" }],
+  images: [{ url: WhiteSqure }],
   id: "00000",
 };
 
@@ -24,9 +25,7 @@ export const queryAlbumsToSpotify = async (query: string, country: string): Prom
     const queryConfig: AxiosRequestConfig = createQueryConfig(getAlbumsFrom,access_token);
     const queryResponse: AxiosResponse = await axios(queryConfig);
 
-    const {
-      albums: { items },
-    }: QueryResponseData = queryResponse.data;
+    const { albums: { items } }: queryResponseData = queryResponse.data;
 
     return searchResult.concat(items).map(
       (spotifyAlbumData) => new Album(

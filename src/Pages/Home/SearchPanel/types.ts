@@ -17,6 +17,8 @@ export type AuthResponse = {
   access_token: string;
 };
 
-export type QueryResponseData = {
-  albums: SpotifyAlbumData[];
+export type queryResponseData = {
+  albums: {
+    items: SpotifyAlbumData[]
+  };
 };
