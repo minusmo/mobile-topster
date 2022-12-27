@@ -16,7 +16,6 @@ const savedPreferenceState = JSON.parse(LocalPersistency.retrieve("showPreferenc
 const TopsterMaker = observer((): JSX.Element => {
   const [showAlbumTitles, setShowAlbumTitle] = useState(savedTitlesState);
   const [showPreferences, setShowPreferences] = useState(savedPreferenceState);
-  const [showSearchPanel, setShowSearchPanel] = useState(false);
   const [processingSave, setProcessingSave] = useState(false);
   const screenshotArea = useRef<HTMLElement | null>(null);
 
@@ -117,10 +116,7 @@ const TopsterMaker = observer((): JSX.Element => {
       {/* 도움말 */}
       <HelpMessages />
       {/* 검색창  */}
-      <SearchPanel
-        showUp={showSearchPanel}
-        onClickCancel={() => setShowSearchPanel(false)}
-      />
+      <SearchPanel />
       {/* 저장 버튼 */}
       <SaveButton save={handleSave} />
     </div>
