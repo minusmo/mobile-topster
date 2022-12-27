@@ -97,7 +97,6 @@ export const COUNTRY_CODES = [
     {"name": "Kazakhstan", "alpha2Code": "KZ", "alpha3Code": "KAZ"},
     {"name": "Kenya", "alpha2Code": "KE", "alpha3Code": "KEN"},
     {"name": "Kiribati", "alpha2Code": "KI", "alpha3Code": "KIR"},
-    {"name": "Korea", "alpha2Code": "KP", "alpha3Code": "PRK"},
     {"name": "Korea", "alpha2Code": "KR", "alpha3Code": "KOR"},
     {"name": "Kuwait", "alpha2Code": "KW", "alpha3Code": "KWT"},
     {"name": "Kyrgyzstan", "alpha2Code": "KG", "alpha3Code": "KGZ"},
