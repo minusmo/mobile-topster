@@ -21,7 +21,7 @@ export const Row = ({
 }: IRow): JSX.Element => {
     return (
     <StyledRow>
-        {items.map((item, idx) => <Cell key={_.uniqueId()} rows={row * items.length} col={idx} item={item}/>)}
+        {items.map((item, idx) => <Cell key={_.uniqueId()} rowItemsPassed={row * items.length} colItemsPassed={idx} item={item}/>)}
     </StyledRow>
     )
 }

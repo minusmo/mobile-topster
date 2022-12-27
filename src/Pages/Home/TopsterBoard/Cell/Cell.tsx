@@ -6,14 +6,14 @@ import { action } from "mobx";
 
 
 type ICell = {
-    rows: number;
-    col: number;
+    rowItemsPassed: number;
+    colItemsPassed: number;
     item: Album;
 }
 
 export const Cell = ({
-    rows,
-    col,
+    rowItemsPassed,
+    colItemsPassed,
     item,
 }: ICell): JSX.Element => {
     const topsterStore = useContext(TopsterStoreContext);
@@ -37,8 +37,7 @@ export const Cell = ({
                 src={item.art} 
                 alt={`${item.title}-${item.artist}`} 
                 onClick={action(() => {
-                    topsterStore.selectedPosition.row = rows;
-                    topsterStore.selectedPosition.col = col;
+                    topsterStore.selectedIdx = rowItemsPassed + colItemsPassed;
                 })}
             />
         </ImgContainer>
