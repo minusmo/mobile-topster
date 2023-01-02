@@ -2,12 +2,13 @@ import * as _ from "lodash";
 import { Album } from "../../../../data/models/Album"
 import { Row } from "../Row/Row"
 import { Container } from "../../../../components/Container";
+import { observer } from "mobx-react-lite";
 
 type ITop42 = {
     albums: Array<Album>
 }
 
-export const Top42 = ({
+export const Top42 = observer(({
     albums
 }: ITop42): JSX.Element => {
     return (
@@ -20,4 +21,4 @@ export const Top42 = ({
             <Row key={_.uniqueId()} row={5} items={albums.slice(32,42)}/>
         </Container>
     )
-}
+})
