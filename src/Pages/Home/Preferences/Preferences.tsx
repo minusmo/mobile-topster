@@ -48,33 +48,37 @@ const Preferences = observer(({
               <Toggle
                 label={"Border"} 
                 value={topster.borderRoundness}
-                control={<ToggleSwitch onChange={action(() => {topster.borderRoundness = !topster.borderRoundness;})}/>} 
+                control={
+                  <ToggleSwitch 
+                    onChange={action('toggleBorderRoundness', () => {topster.borderRoundness = !topster.borderRoundness;})}
+                  />
+                } 
                 />
             </Box>
             <ColorPicker
-              onPick={action((color: string) => {topster.backgroundColor = color;})}
+              onPick={action('setBackgroundColor', (color: string) => {topster.backgroundColor = color;})}
               />
             <SelectSlider 
               label={"Row"} 
               topsterType={topster.type} 
-              onSelection={action((val: number) => {topster.rows = val;})} 
+              onSelection={action('setRows', (val: number) => {topster.rows = val;})} 
               sliderProps={{value: topster.rows}} 
               />
             <SelectSlider 
               label={"Col"} 
               topsterType={topster.type} 
-              onSelection={action((val: number) => {topster.cols = val;})} 
+              onSelection={action('setCols', (val: number) => {topster.cols = val;})} 
               sliderProps={{value: topster.cols}} 
               />
             <Button 
               variant={"outlined"} 
-              onClick={action(() => {topster.type = TopsterType.Grid})}
+              onClick={action('change type to Grid', () => {topster.type = TopsterType.Grid})}
               >
               GridType
             </Button>
             <Button 
               variant={"outlined"} 
-              onClick={action(() => {topster.type = TopsterType.Top42})}
+              onClick={action('change type to Top42', () => {topster.type = TopsterType.Top42})}
               >
               Top42Type
             </Button>
