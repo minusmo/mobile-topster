@@ -1,53 +1,68 @@
-import React, { useState, useContext } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { SwipeableDrawer } from "@mui/material";
-import Skeleton from "@mui/material/Skeleton";
+import { useContext } from "react";
 import { action } from "mobx";
+import { observer } from "mobx-react-lite";
+import { SwipeableDrawer, useMediaQuery } from "@mui/material";
+import Skeleton from "@mui/material/Skeleton";
+import { useTheme } from "@mui/material/styles";
+import { Box } from "@mui/system";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { TopsterStore } from "../../../data/datastores/TopsterStore";
 import { Album } from "../../../data/models/Album";
-import { queryAlbumsToSpotify } from "./queryAlbumsToSpotify";
 import SearchForm from "./SearchForm";
 import { ImgList } from "./ImgList";
 import { Topster } from "../../../data/models/Topster";
-import { observer } from "mobx-react-lite";
-import { Puller } from "./Puller";
+import { useAlbumSearch } from './useAlbumSearch';
 
 const SearchPanel = observer((): JSX.Element => {
   const topsterStore: TopsterStore = useContext(TopsterStoreContext);
   const topster: Topster = topsterStore.topster;
-  const [query, setQuery] = useState("");
-  const [country, setCountry] = useState("us");
-  const [searchResult, setSearchResult] = useState<Array<Album>>([]);
-  const {isError, isLoading, isSuccess, refetch} = useQuery({
-    queryKey: ['album', query, country],
-    queryFn: () => {queryAlbumsToSpotify(query, country)},
-    enabled: false,
-  });
-  
+  const {
+    searchResult,
+    queryState: {
+      isError,
+      isSuccess,
+      isLoading,
+    },
+    updateSearchQuery,
+    updateSearchResult,
+  } = useAlbumSearch();
+
+  const theme = useTheme();
+  const largerThanMd = theme.breakpoints.up('md');
+  const whenLargerThanMd = useMediaQuery(largerThanMd);
+
   return (
     <SwipeableDrawer
       anchor={'left'}
       open={topsterStore.selectedIdx === -1 ? false : true}
-      onClose={action(() => topsterStore.selectedIdx = -1)}
+      onClose={action('resetSelectedIdx', () => topsterStore.selectedIdx = -1)}
       onOpen={() => {}}
+      PaperProps={{
+        sx: {
+          width: whenLargerThanMd ? '60%' : '90%',
+        }
+      }}
     >
-      <Puller />
-      <SearchForm
-        setCountry={setCountry}
-        setQuery={setQuery}
-        onSubmission={() => {refetch()}}
-      />
-      {isLoading ?
-        <Skeleton
-          variant={'rectangular'}
+      <Box
+        sx={{
+          padding: '20px',
+        }}
+      >
+        <SearchForm
+          onFormDataChange={updateSearchQuery}
+          onSubmission={() => {updateSearchResult()}}
         />
-        :
-        <ImgList 
-          albums={searchResult}
-          addAlbum={addAlbum}
-        />
-      }
+        {isLoading ?
+          <Skeleton
+            variant={'rectangular'}
+          />
+          :
+          <ImgList 
+            albums={searchResult}
+            addAlbum={addAlbum}
+          />
+        }
+      </Box>
     </SwipeableDrawer>
   );
 
