@@ -3,7 +3,7 @@ import { Album } from "./Album";
 import { FontStyle } from './FontStyle';
 
 type ITopster = {
-  albums: Array<Album>;
+  albums: Album[];
   backgroundColor: string;
   backgroundImg: string;
   type: TopsterType;
@@ -20,13 +20,13 @@ export enum TopsterType {
     Grid,
 }
 
-const defaultAlbums: Album[] = Array(100).fill(0).map((val) => new Album());
+const defaultAlbums: Album[] = observable(Array(100).fill(0).map((val) => new Album()));
 const defaultColor: string = "#000000";
 const defaultType: TopsterType = TopsterType.Top42;
 
 export class Topster {
   id: string = crypto.randomUUID();
-  albums: Array<Album>;
+  albums: Album[];
   backgroundColor: string = "#000";
   backgroundImg: string = "";
   type: TopsterType;
@@ -37,7 +37,7 @@ export class Topster {
   gridGap: number = 1;
   borderRoundness: boolean = false;
 
-  constructor(albums: Array<Album> = defaultAlbums, backgroundColor: string = defaultColor, type: TopsterType = TopsterType.Grid) {
+  constructor(albums: Album[] = defaultAlbums, backgroundColor: string = defaultColor, type: TopsterType = TopsterType.Grid) {
     makeObservable(this, {
       albums: observable,
       backgroundColor: observable,
@@ -59,7 +59,7 @@ export class Topster {
   }
 
   
-  replaceAlbums(albums: Array<Album>) { this.albums = albums; }
+  replaceAlbums(albums: Album[]) { this.albums = albums; }
   getAlbumsIn(start: number, end: number) { return this.albums.slice(start, end); }
   getAlbumAt(idx: number) { return this.albums.at(idx); }
   replaceAlbumAt(idx: number, album: Album) { this.albums[idx] = album; }
@@ -67,7 +67,7 @@ export class Topster {
   getAlbumArts() { return this.albums.map(album => album.art); }
   getAlbumArtists() { return this.albums.map(album => album.artist); }
   getAlbumsAsATable() {
-    const table: Array<Array<Album>> = [];
+    const table: Array<Album[]> = [];
     for (let i=0;i<this.rows;i++) {
       table.push(this.albums.slice(i,i+this.rows));
     }
