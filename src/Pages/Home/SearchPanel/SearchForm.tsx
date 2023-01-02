@@ -1,43 +1,38 @@
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import { CountrySelection } from "./CountrySelection";
+import Grid from "@mui/system/Unstable_Grid";
+import { SearchInput } from "./SearchInput";
 
-type ISearchForm = {
+interface ISearchForm {
   onSubmission: () => void;
-  setCountry: (country: string) => void;
-  setQuery: (query: string) => void;
-};
-
-type ISearchInput = {
-  setSearchInput: (searchInput: string) => void;
-};
-
-const SearchInput = ({ setSearchInput }: ISearchInput): JSX.Element => {
-  return (
-      <TextField
-        id={'textfield-search'}
-        label={'Search'}
-        helperText={'Type album title or artist here'}
-        defaultValue={'The Beatles'}
-        onChange={(e) => setSearchInput(String(e.currentTarget.value))}
-      />
-  );
+  onFormDataChange: (query?: string, country?: string) => void;
 };
 
 const SearchForm = ({
   onSubmission,
-  setCountry,
-  setQuery,
+  onFormDataChange,
 }: ISearchForm): JSX.Element => (
-  <Box id="spotifySearchForm">
-    <SearchInput setSearchInput={setQuery} />
-    <CountrySelection setCountry={setCountry} />
-    <Button
-      type={'submit'}
-      onClick={onSubmission}>
-      Search
-    </Button>
-  </Box>
+  <Grid container spacing={1} >
+    <Grid xs={6}>
+      <SearchInput setSearchInput={onFormDataChange} />
+    </Grid>
+    <Grid xs={6}>
+      <CountrySelection setCountry={onFormDataChange} />
+    </Grid>
+    <Grid xs={12}>
+      <Button
+        variant={'contained'}
+        type={'submit'}
+        onClick={onSubmission}
+        sx={{
+          width: '100%'
+        }}
+      >
+        Search
+      </Button>
+    </Grid>
+  </Grid>
 );
 
 export default SearchForm;
