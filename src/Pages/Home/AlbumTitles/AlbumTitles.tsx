@@ -1,4 +1,4 @@
-import * as _ from "lodash";
+import { observer } from "mobx-react-lite";
 import { Album } from "../../../data/models/Album";
 import AlbumTitle from "./AlbumTitle/AlbumTitle";
 
@@ -7,7 +7,7 @@ type ITitleList = {
   borderRoundness: boolean;
 };
 
-const AlbumTitles = ({
+const AlbumTitles = observer(({
   albums,
   borderRoundness,
 }: ITitleList): JSX.Element => {
@@ -16,12 +16,11 @@ const AlbumTitles = ({
     <div id="albumtitles" className={albumTitleClass}>
       <ul
         id="title-Unorderedlist"
-        className=""
       >
         {albums.map(album => <AlbumTitle album={album}/>)}
       </ul>
     </div>
   );
-};
+});
 
 export default AlbumTitles;

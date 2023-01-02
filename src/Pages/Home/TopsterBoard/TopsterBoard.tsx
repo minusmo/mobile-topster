@@ -6,25 +6,34 @@ import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { Grid } from "./Grid/Grid";
 import { Top42 } from "./Top42/Top42";
 import AlbumTitles from "../AlbumTitles/AlbumTitles";
+import { useTheme } from "@mui/material/styles";
+import { useMediaQuery } from "@mui/material";
 
-type PTopsterBoard = {
+interface ITopsterBoard {
   showAlbumTitles: boolean;
 };
 
+const styleForSmallerView = `
+    width: 100%;
+`;
+
+const styleForLargerView = `
+    width: calc(900px + (100vw - 900px) * 0.1);
+`;
+
 const TopsterBoard = observer(({
   showAlbumTitles,
-}: PTopsterBoard): JSX.Element => {
+}: ITopsterBoard): JSX.Element => {
   const topsterStore = useContext(TopsterStoreContext);
   const topster = topsterStore.topster;
-  const albums = topster.albums;
-
-
+  const theme = useTheme();
+  const largerThanMd = theme.breakpoints.up('md');
+  const whenLargerThanMd = useMediaQuery(largerThanMd);
+  
   const BoardArea = styled.div`
-    @media (max-width: 1000px) {
-      width: 100%;
-      height: fit-content;
-      background-color: ${topster.backgroundColor};
-    }
+    ${whenLargerThanMd ? styleForLargerView : styleForSmallerView}
+    height: fit-content;
+    background-color: ${topster.backgroundColor};
   `
 
   return (
@@ -32,14 +41,14 @@ const TopsterBoard = observer(({
       <BoardArea>
       { 
         topster.type === TopsterType.Grid ?
-        <Grid rows={topster.rows} cols={topster.cols} albums={albums} /> 
+        <Grid rows={topster.rows} cols={topster.cols} albums={topster.albums} /> 
         :
-        <Top42 albums={albums}/>  
+        <Top42 albums={topster.albums}/>  
       }
       </BoardArea>
       {showAlbumTitles
        ? 
-       <AlbumTitles albums={albums} borderRoundness={topster.borderRoundness}/> 
+       <AlbumTitles albums={topster.albums} borderRoundness={topster.borderRoundness}/> 
        : 
        null}
     </div>

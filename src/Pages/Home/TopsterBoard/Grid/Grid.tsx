@@ -1,9 +1,10 @@
+import { observer } from "mobx-react-lite";
+import { useMemo } from "react";
+import { Stack } from "@mui/system";
 import { Album } from "../../../../data/models/Album";
 import { Row } from "../Row/Row";
-import * as _ from "lodash";
-import styled from "styled-components";
 import { Container } from "../../../../components/Container";
-import { useMemo } from "react";
+import { convertToGrid } from "./utils";
 
 type IGrid = {
     rows: number;
@@ -11,26 +12,18 @@ type IGrid = {
     albums: Array<Album>;
 }
 
-export const Grid = ({
+export const Grid = observer(({
     rows,
     cols,
     albums
 }: IGrid): JSX.Element => {
-    const grid = useMemo(() => {
-        const sliced = albums.slice(0, rows * cols);
-        const grid: Array<Array<Album>> = Array(rows)
-        .fill(0)
-        .map((row, idx) => {
-            const startIdx: number = idx * cols;
-            const endIdx: number = startIdx + cols;
-            return sliced.slice(startIdx, endIdx);
-        });
-        return grid;
-    }, [rows, cols])
+    const grid = convertToGrid(albums, rows, cols);
 
     return (
         <Container>
+          <Stack spacing={0}>
             {grid.map((row, idx) => <Row key={idx} row={idx} items={row}/>)}
+          </Stack>
         </Container>
     )
-}
+})
