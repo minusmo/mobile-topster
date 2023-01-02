@@ -1,8 +1,8 @@
 import { TextField } from "@mui/material";
 import { COUNTRY_CODES, CountryCode } from "./countryCodes";
 
-type ICountrySelection = {
-  setCountry: (country: string) => void;
+interface ICountrySelection {
+  setCountry: (query?: string, country?: string) => void;
 };
 
 export const CountrySelection = ({
@@ -19,6 +19,10 @@ export const CountrySelection = ({
         SelectProps={{
           native: true
         }}
+        sx={{
+          width: '100%'
+        }}
+        onChange={(e) => {setCountry(undefined, e.target.value)}}
       >
         {COUNTRY_CODES.map((countryCode: CountryCode) => (
           <option
