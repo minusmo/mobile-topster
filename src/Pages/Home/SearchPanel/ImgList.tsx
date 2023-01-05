@@ -25,7 +25,7 @@ export const ImgList = ({
                     <ImageListItem key={album.art}>
                         <img
                             src={album.art}
-                            alt={album.info()}
+                            alt={album.getInfo()}
                             loading={'lazy'}
                         />
                         <ImageListItemBar
