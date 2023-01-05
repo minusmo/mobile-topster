@@ -5,9 +5,10 @@ import { TopsterType } from "../../../data/models/Topster";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { Grid } from "./Grid/Grid";
 import { Top42 } from "./Top42/Top42";
-import AlbumTitles from "../AlbumTitles/AlbumTitles";
+import HorizontalAlbumTitles from "../AlbumTitles/HorizontalAlbumTitles";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
+import { AlbumTitles } from "../AlbumTitles/AlbumTitles";
 
 interface ITopsterBoard {
   showAlbumTitles: boolean;
@@ -48,7 +49,11 @@ const TopsterBoard = observer(({
       </BoardArea>
       {showAlbumTitles
        ? 
-       <AlbumTitles albums={topster.albums} borderRoundness={topster.borderRoundness}/> 
+       <AlbumTitles
+          albums={topster.getAlbumsBetween(0,topster.rows * topster.cols)} 
+          borderRoundness={topster.borderRoundness}
+          shouldBeHorizontal={!whenLargerThanMd}
+        /> 
        : 
        null}
     </div>
