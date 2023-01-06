@@ -28,6 +28,10 @@ export class Album {
         return `${this.title} - ${this.artist}`;
     }
 
+    isEmpty(): boolean {
+        return this.title === '';
+    }
+
     toString(): string { 
         return JSON.stringify({
             title: this.title,
