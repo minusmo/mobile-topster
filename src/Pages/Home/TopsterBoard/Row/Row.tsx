@@ -1,6 +1,8 @@
 import * as _ from "lodash";
 import { Cell } from "../Cell/Cell";
 import styled from "styled-components";
+import { useTheme } from "@mui/material/styles";
+import { observer } from "mobx-react-lite";
 
 const StyledRow = styled.div`
     width: 100%;
@@ -15,13 +17,18 @@ type IRow = {
     items: Array<any>;
 }
 
-export const Row = ({
+export const Row = observer(({
     row,
     items,
 }: IRow): JSX.Element => {
+    const theme = useTheme();
+    const columnSpacing = theme.spacing(0);
+    const EquallySpacedRow = styled(StyledRow)`
+        column-gap: ${columnSpacing};
+    `;
     return (
     <StyledRow>
-        {items.map((item, idx) => <Cell key={_.uniqueId()} rows={row * items.length} col={idx} item={item}/>)}
+        {items.map((item, idx) => <Cell key={_.uniqueId()} rowItemsPassed={row * items.length} colItemsPassed={idx} item={item}/>)}
     </StyledRow>
     )
-}
+})

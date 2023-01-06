@@ -2,17 +2,9 @@ import { makeAutoObservable, reaction } from 'mobx';
 import { LocalPersistency } from "../../services/Persistency";
 import { Topster } from "../models/Topster";
 
-type SelectedPosition = {
-    row: number;
-    col: number;
-}
-
-export default class TopsterStore {
+export class TopsterStore {
     topster: Topster = new Topster();
-    selectedPosition: SelectedPosition = {
-        row: 0,
-        col: 0,
-    };
+    selectedIdx: number = -1;
 
     constructor() {
         makeAutoObservable(this);
@@ -45,7 +37,4 @@ export default class TopsterStore {
     //     }
     // )
 
-    public getSelectedIdx(): number {
-        return this.selectedPosition.row + this.selectedPosition.col;
-    }
 }

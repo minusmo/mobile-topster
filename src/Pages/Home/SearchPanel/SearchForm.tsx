@@ -1,52 +1,38 @@
-import { TextButton } from "../../../components/TextButton";
+import { Button } from "@mui/material";
+import { Box } from "@mui/system";
 import { CountrySelection } from "./CountrySelection";
+import Grid from "@mui/system/Unstable_Grid";
+import { SearchInput } from "./SearchInput";
 
-type ISearchForm = {
-  onSubmission: () => Promise<void>;
-  setCountry: (country: string) => void;
-  setSearchInput: (searchInput: String) => void;
-};
-
-type ISearchInput = {
-  setSearchInput: (searchInput: String) => void;
-};
-
-const SearchInput = ({ setSearchInput }: ISearchInput): JSX.Element => {
-  return (
-    <div className="">
-      <label
-        className=""
-        htmlFor="search-album"
-      >
-        Artist/AlbumTitle
-      </label>
-      <div className="">
-        <input
-          id="search-album"
-          className=""
-          type="text"
-          placeholder="type artist or album title"
-          onChange={(e) => setSearchInput(String(e.currentTarget.value))}
-        />
-      </div>
-    </div>
-  );
+interface ISearchForm {
+  onSubmission: () => void;
+  onFormDataChange: (query?: string, country?: string) => void;
 };
 
 const SearchForm = ({
   onSubmission,
-  setCountry,
-  setSearchInput,
-}: ISearchForm): JSX.Element => {
-  return (
-    <div id="spotifySearchForm" className="">
-      <CountrySelection setCountry={setCountry} />
-      <div className="">
-        <SearchInput setSearchInput={setSearchInput} />
-      </div>
-      <TextButton label={"Search"} onClick={onSubmission} />
-    </div>
-  );
-};
+  onFormDataChange,
+}: ISearchForm): JSX.Element => (
+  <Grid container spacing={1} >
+    <Grid xs={6}>
+      <SearchInput setSearchInput={onFormDataChange} />
+    </Grid>
+    <Grid xs={6}>
+      <CountrySelection setCountry={onFormDataChange} />
+    </Grid>
+    <Grid xs={12}>
+      <Button
+        variant={'contained'}
+        type={'submit'}
+        onClick={onSubmission}
+        sx={{
+          width: '100%'
+        }}
+      >
+        Search
+      </Button>
+    </Grid>
+  </Grid>
+);
 
 export default SearchForm;

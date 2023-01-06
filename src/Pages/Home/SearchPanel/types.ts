@@ -1,8 +1,3 @@
-export type ISearchPanel = {
-    onClickCancel: () => void;
-    showUp: boolean;
-};
-
 export type AlbumArtist = {
   name: string;
 };
@@ -11,23 +6,19 @@ export type AlbumImg = {
   url: string;
 };
 
-export type AlbumSearchResult = {
+export type SpotifyAlbumData = {
   artists: Array<AlbumArtist>;
   name: string;
   images: Array<AlbumImg>;
   id: string;
 };
 
-export type promptReturn = string | null;
-
-export type authResponseData = {
+export type AuthResponse = {
   access_token: string;
 };
 
-export type albumItems = {
-  items: Array<AlbumSearchResult>;
-};
-
 export type queryResponseData = {
-  albums: albumItems;
+  albums: {
+    items: SpotifyAlbumData[]
+  };
 };

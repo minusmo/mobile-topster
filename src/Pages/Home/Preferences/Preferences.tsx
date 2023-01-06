@@ -1,9 +1,7 @@
 import React, { useContext, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
-import { Input } from "../../../components/Input";
 import { Toggle } from "../../../components/Toggle";
-import { TextButton } from "../../../components/TextButton";
 import { SelectSlider } from "../../../components/SelectSlider";
 import { PreferencesFAB } from "./PreferencesFAB";
 import { action } from "mobx";
@@ -13,6 +11,7 @@ import { ToggleSwitch } from "../../../components/ToggleSwitch";
 import { LocalPersistency } from "../../../services/Persistency";
 import { Box } from "@mui/system";
 import { ColorPicker } from "./ColorPicker";
+import Stack from "@mui/material/Stack";
 
 type IPreferences = {
   showAlbumTitles: boolean;
@@ -37,53 +36,59 @@ const Preferences = observer(({
       <Dialog open={opened} onClose={() => {setOpened(false)}}>
         <DialogTitle>Preferences</DialogTitle>
         <DialogContent>
-          <Box sx={{
-            display: "flex",
-          }}>
-            <Toggle 
-              label={"Titles"}
-              value={showAlbumTitles}
-              control={<ToggleSwitch onChange={toggleTitles}/>}
-            />
-            <Toggle
-              label={"Border"} 
-              value={topster.borderRoundness}
-              control={<ToggleSwitch onChange={action(() => {topster.borderRoundness = !topster.borderRoundness;})}/>} 
-            />
-          </Box>
-          <ColorPicker
-            onPick={action((color: string) => {topster.backgroundColor = color;})}
-          />
-          <SelectSlider 
-            label={"Row"} 
-            topsterType={topster.type} 
-            onSelection={action((val: number) => {topster.rows = val;})} 
-            sliderProps={{value: topster.rows}} 
-          />
-          <SelectSlider 
-            label={"Col"} 
-            topsterType={topster.type} 
-            onSelection={action((val: number) => {topster.cols = val;})} 
-            sliderProps={{value: topster.cols}} 
-          />
-          <Button 
-            variant={"outlined"} 
-            onClick={action(() => {topster.type = TopsterType.Grid})}
-          >
-            GridType
-          </Button>
-          <Button 
-            variant={"outlined"} 
-            onClick={action(() => {topster.type = TopsterType.Top42})}
-          >
-            Top42Type
-          </Button>
-          <Button 
-            variant={"outlined"}
-            onClick={() => {LocalPersistency.clearData()}} 
-          >
-            ClearCache
-          </Button>
+        <Stack>
+            <Box sx={{
+              display: "flex",
+            }}>
+              <Toggle 
+                label={"Titles"}
+                value={showAlbumTitles}
+                control={<ToggleSwitch onChange={toggleTitles}/>}
+                />
+              <Toggle
+                label={"Border"} 
+                value={topster.borderRoundness}
+                control={
+                  <ToggleSwitch 
+                    onChange={action('toggleBorderRoundness', () => {topster.borderRoundness = !topster.borderRoundness;})}
+                  />
+                } 
+                />
+            </Box>
+            <ColorPicker
+              onPick={action('setBackgroundColor', (color: string) => {topster.backgroundColor = color;})}
+              />
+            <SelectSlider 
+              label={"Row"} 
+              topsterType={topster.type} 
+              onSelection={action('setRows', (val: number) => {topster.rows = val;})} 
+              sliderProps={{value: topster.rows}} 
+              />
+            <SelectSlider 
+              label={"Col"} 
+              topsterType={topster.type} 
+              onSelection={action('setCols', (val: number) => {topster.cols = val;})} 
+              sliderProps={{value: topster.cols}} 
+              />
+            <Button 
+              variant={"outlined"} 
+              onClick={action('change type to Grid', () => {topster.type = TopsterType.Grid})}
+              >
+              GridType
+            </Button>
+            <Button 
+              variant={"outlined"} 
+              onClick={action('change type to Top42', () => {topster.type = TopsterType.Top42})}
+              >
+              Top42Type
+            </Button>
+            <Button 
+              variant={"outlined"}
+              onClick={() => {LocalPersistency.clearData()}} 
+              >
+              ClearCache
+            </Button>
+          </Stack>
         </DialogContent>
         <DialogActions>
           <Button
@@ -100,10 +105,6 @@ const Preferences = observer(({
 
   function toggleTitles(event: React.SyntheticEvent, checked: boolean) {
     setShowAlbumTitle(checked);
-  }
-
-  function showColorPicker() {
-
   }
 });
 
