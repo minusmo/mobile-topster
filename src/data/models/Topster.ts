@@ -58,7 +58,7 @@ export class Topster {
     this.type = type;
   }
 
-  
+  removeAlbumAt(idx: number) { this.albums[idx] = new Album(); }
   replaceAlbums(albums: Album[]) { this.albums = albums; }
   getAlbumsBetween(start: number = 0, end: number) { return this.albums.slice(start, end); }
   getAlbumAt(idx: number) { return this.albums.at(idx); }
