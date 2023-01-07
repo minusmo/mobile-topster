@@ -15,7 +15,12 @@ export function AlbumList({
 }: IAlbumList): JSX.Element {
   return (
     <List>
-      {albums.slice(start, end).map((album, idx) => <AlbumTitle key={idx} album={album} />)}
+      {albums
+      .slice(start, end)
+      .map(
+        (album, idx) => album.isEmpty() ? null : <AlbumTitle key={idx} album={album} />
+        )
+      }
     </List>
   );
 }
