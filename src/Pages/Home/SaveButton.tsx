@@ -1,23 +1,22 @@
+import { SaveAlt } from "@mui/icons-material";
+import { Fab } from "@mui/material";
+
 type ISaveImgButton = {
-  save: (imgType: string) => void;
+  imgSaveHandler: (imgType?: string) => void;
 };
 
-const SaveButton = ({ save }: ISaveImgButton) => {
+const SaveButton = ({ imgSaveHandler }: ISaveImgButton) => {
   return (
-    <div className="">
-      <button
-        className=""
-        onClick={() => alert("준비중입니다.")}
+      <Fab sx={{
+        position: 'fixed',
+        right: '10px',
+        bottom: 'calc(20vh - 128px)',
+      }}
+      size={'large'}
+      onClick={() => imgSaveHandler()}
       >
-        Save Png
-      </button>
-      <button
-        className=""
-        onClick={() => alert("준비중입니다.")}
-      >
-        Save Jpeg
-      </button>
-    </div>
+        <SaveAlt />
+      </Fab>
   );
 };
 
