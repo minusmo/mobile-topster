@@ -7,7 +7,7 @@ import { Grid } from "./Grid/Grid";
 import { Top42 } from "./Top42/Top42";
 import HorizontalAlbumTitles from "../AlbumTitles/HorizontalAlbumTitles";
 import { useTheme } from "@mui/material/styles";
-import { useMediaQuery } from "@mui/material";
+import { Stack, useMediaQuery } from "@mui/material";
 import { AlbumTitles } from "../AlbumTitles/AlbumTitles";
 
 interface ITopsterBoard {
@@ -38,9 +38,9 @@ const TopsterBoard = observer(({
   `
 
   return (
-    <div id="screenshot-area">
+    <Stack id="screenshot-area" direction={whenLargerThanMd ? 'row' : 'column'} spacing={0}>
       <BoardArea>
-      { 
+      {
         topster.type === TopsterType.Grid ?
         <Grid rows={topster.rows} cols={topster.cols} albums={topster.albums} /> 
         :
@@ -56,7 +56,7 @@ const TopsterBoard = observer(({
         /> 
        : 
        null}
-    </div>
+    </Stack>
   );
 });
 
