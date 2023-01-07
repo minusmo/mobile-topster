@@ -1,6 +1,5 @@
 import { Fab, FabProps } from "@mui/material";
 import TuneIcon from '@mui/icons-material/Tune';
-import styled from "styled-components";
 
 export const PreferencesFAB = (props: FabProps) => {
   const { onClick } = props;
