@@ -2,7 +2,17 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { Album } from "../../../data/models/Album";
 import { AlbumList } from "./AlbumList";
 
-export function SlicedList(albums: Album[], idx: number, size: number) {
+interface ISlicedList {
+  albums: Album[];
+  idx: number;
+  size: number;
+}
+
+export function SlicedList({
+  albums,
+  idx,
+  size 
+}: ISlicedList): JSX.Element {
   const start = idx * size;
   const end = (idx * size) + size;
   return (
