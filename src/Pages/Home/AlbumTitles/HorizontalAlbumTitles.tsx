@@ -4,7 +4,7 @@ import { Album } from "../../../data/models/Album";
 import { SlicedList } from "./SlicedList";
 
 type IHorizontalAlbumTitles = {
-  albums: Array<Album>,
+  albums: Album[],
   sliceSize?: number;
   borderRoundness: boolean;
 };
@@ -14,9 +14,8 @@ const HorizontalAlbumTitles = observer(({
   sliceSize = 5,
   borderRoundness,
 }: IHorizontalAlbumTitles): JSX.Element => {
-  // const albumTitleClass = borderRoundness ? "titleList" + " border-rounded-lower" : "titleList";
   const columns = Math.ceil(albums.length / sliceSize);
-  const listInColumns = Array(columns).fill(0).map((val, idx) => SlicedList(albums, idx, sliceSize));
+  const listInColumns = Array(columns).fill(0).map((val, idx) => <SlicedList albums={albums} idx={idx} size={sliceSize} />);
 
   return (
     <Grid container>
