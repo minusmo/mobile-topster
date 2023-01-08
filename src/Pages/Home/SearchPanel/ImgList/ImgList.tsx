@@ -1,5 +1,5 @@
 import { IconButton, ImageList, ImageListItem, ImageListItemBar, ListSubheader } from "@mui/material";
-import { Album } from "../../../data/models/Album";
+import { Album } from "../../../../data/models/Album";
 import AddIcon from '@mui/icons-material/Add';
 import { Box } from "@mui/system";
 import { action } from "mobx";
