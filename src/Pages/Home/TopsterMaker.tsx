@@ -54,7 +54,7 @@ const TopsterMaker = observer((): JSX.Element => {
     return options;
   };
 
-  const handleSave = async (imgType: string): Promise<void> => {
+  const handleSave = async (imgType: string = 'jpeg'): Promise<void> => {
     preSave();
     const userAgent = window.navigator.userAgent!;
     if (!screenshotArea.current) {
@@ -118,7 +118,7 @@ const TopsterMaker = observer((): JSX.Element => {
       {/* 검색창  */}
       <SearchPanel />
       {/* 저장 버튼 */}
-      <SaveButton save={handleSave} />
+      <SaveButton imgSaveHandler={handleSave} />
     </div>
   );
 });
