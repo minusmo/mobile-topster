@@ -8,7 +8,7 @@ const StyledFooter = styled.footer`
   align-items: center;
   justify-content: space-around;
 
-  width: 30%;
+  width: 100%;
   
   position: fixed;
   bottom: 0px;
@@ -25,7 +25,7 @@ const Footer = () => {
   return (
     <StyledFooter>
       <SupportInfo>
-        Powered by Spotify.
+        Powered by Spotify
       </SupportInfo>
     </StyledFooter>
   );
