@@ -7,18 +7,18 @@ export type AlbumImg = {
 };
 
 export type SpotifyAlbumData = {
-  artists: Array<AlbumArtist>;
   name: string;
-  images: Array<AlbumImg>;
   id: string;
+  artists: AlbumArtist[];
+  images: AlbumImg[];
 };
 
 export type AuthResponse = {
   access_token: string;
 };
 
-export type queryResponseData = {
+export type QueryResponseData = {
   albums: {
-    items: SpotifyAlbumData[]
+    items: SpotifyAlbumData[];
   };
 };
