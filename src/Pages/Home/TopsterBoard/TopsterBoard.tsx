@@ -5,10 +5,10 @@ import { TopsterType } from "../../../data/models/Topster";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { Grid } from "./Grid/Grid";
 import { Top42 } from "./Top42/Top42";
-import HorizontalAlbumTitles from "../AlbumTitles/HorizontalAlbumTitles";
 import { useTheme } from "@mui/material/styles";
 import { Stack, useMediaQuery } from "@mui/material";
-import { AlbumTitles } from "../AlbumTitles/AlbumTitles";
+import AlbumTitles from "../AlbumTitles/AlbumTitles";
+import { Box } from "@mui/system";
 
 interface ITopsterBoard {
   showAlbumTitles: boolean;
@@ -38,25 +38,25 @@ const TopsterBoard = observer(({
   `
 
   return (
-    <Stack id="screenshot-area" direction={whenLargerThanMd ? 'row' : 'column'} spacing={0}>
-      <BoardArea>
-      {
-        topster.type === TopsterType.Grid ?
-        <Grid rows={topster.rows} cols={topster.cols} albums={topster.albums} /> 
-        :
-        <Top42 albums={topster.albums}/>  
-      }
-      </BoardArea>
-      {showAlbumTitles
-       ? 
-       <AlbumTitles
-          albums={topster.getAlbumsBetween(0,topster.rows * topster.cols)} 
-          borderRoundness={topster.borderRoundness}
-          shouldBeHorizontal={!whenLargerThanMd}
-        /> 
-       : 
-       null}
-    </Stack>
+      <Stack id="screenshot-area" direction={whenLargerThanMd ? 'row' : 'column'} spacing={0}>
+        <BoardArea>
+        {
+          topster.type === TopsterType.Grid ?
+          <Grid rows={topster.rows} cols={topster.cols} albums={topster.albums} /> 
+          :
+          <Top42 albums={topster.albums}/>  
+        }
+        </BoardArea>
+        {showAlbumTitles
+         ? 
+         <AlbumTitles
+            albums={topster.getAlbumsBetween(0,topster.rows * topster.cols)} 
+            borderRoundness={topster.borderRoundness}
+            shouldBeHorizontal={!whenLargerThanMd}
+          /> 
+         : 
+         null}
+      </Stack>
   );
 });
 
