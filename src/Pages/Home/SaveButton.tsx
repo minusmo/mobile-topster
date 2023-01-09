@@ -1,22 +1,21 @@
 import { SaveAlt } from "@mui/icons-material";
-import { Fab } from "@mui/material";
+import { useTheme } from "@mui/material";
+import ResponsiveFab from "../../components/ResponsiveFab";
 
 type ISaveImgButton = {
   imgSaveHandler: (imgType?: string) => void;
 };
 
 const SaveButton = ({ imgSaveHandler }: ISaveImgButton) => {
+  const theme = useTheme();
   return (
-      <Fab sx={{
-        position: 'fixed',
-        right: '10px',
-        bottom: 'calc(20vh - 128px)',
+      <ResponsiveFab sx={{
+        right: theme.spacing(16),
       }}
-      size={'large'}
       onClick={() => imgSaveHandler()}
       >
         <SaveAlt />
-      </Fab>
+      </ResponsiveFab>
   );
 };
 
