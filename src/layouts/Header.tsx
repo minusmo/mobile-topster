@@ -9,7 +9,7 @@ const Header = (): JSX.Element => {
           <Typography sx={{
             paddingLeft: '5px',
           }}>
-            Mobile Topster
+            The Topsters
           </Typography>
         </Toolbar>
       </AppBar>
