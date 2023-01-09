@@ -1,19 +1,18 @@
-import { Fab, FabProps } from "@mui/material";
+import { FabProps, useTheme } from "@mui/material";
 import HelpIcon from '@mui/icons-material/Help';
+import ResponsiveFab from "../../../components/ResponsiveFab";
 
 export const HelpFAB = (props: FabProps) => {
+  const theme = useTheme();
   const { onClick } = props;
   return (
-    <Fab
+    <ResponsiveFab
       sx={{
-        position: 'fixed',
-        right: '10px',
-        bottom: 'calc(20vh - 64px)',
+        right: theme.spacing(8),
       }}
       onClick={onClick} 
-      size={"large"}
     >
       <HelpIcon />
-    </Fab>
+    </ResponsiveFab>
   );
 }
