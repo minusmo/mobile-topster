@@ -53,8 +53,9 @@ const TopsterBoard = observer(({
          ? 
          <AlbumTitles
             albums={topster.getAlbumsBetween(0,topster.rows * topster.cols)} 
-            borderRoundness={topster.borderRoundness}
             shouldBeHorizontal={!whenLargerThanMd}
+            borderRoundness={topster.borderRoundness}
+            backgroundColor={topster.backgroundColor}
           /> 
          : 
          null}
