@@ -8,8 +8,8 @@ import { Box } from "@mui/system";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { TopsterStore } from "../../../data/datastores/TopsterStore";
 import { Album } from "../../../data/models/Album";
-import SearchForm from "./SearchForm";
-import { ImgList } from "./ImgList";
+import SearchForm from "./SearchForm/SearchForm";
+import { ImgList } from "./ImgList/ImgList";
 import { Topster } from "../../../data/models/Topster";
 import { useAlbumSearch } from './useAlbumSearch';
 
