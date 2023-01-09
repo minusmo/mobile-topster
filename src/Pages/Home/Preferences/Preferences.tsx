@@ -18,10 +18,6 @@ type IPreferences = {
   setShowAlbumTitle: (showAlbumTitles: boolean) => void;
 };
 
-const CancelButton = (props: ButtonProps) => (
-  <Button {...props}></Button>
-)
-
 const Preferences = observer(({
   showAlbumTitles,
   setShowAlbumTitle,
