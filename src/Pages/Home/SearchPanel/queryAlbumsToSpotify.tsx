@@ -1,14 +1,14 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
 import { Album } from "../../../data/models/Album";
-import { queryResponseData, SpotifyAlbumData, AuthResponse } from "./types";
-import { createAuthConfig, createQueryConfig } from "./utils";
-import WhiteSqure from '../../../assets/images/white_square.jpg';
+import { QueryResponseData, SpotifyAlbumData, AuthResponse } from "./ResponseTypes";
+import SpotifyQueryConfig from "./SpotifyQueryConfig";
+import WhiteSquare from '../../../assets/images/white_square.jpg';
 
-const DEFAULT_RESULT = {
+const DEFAULT_RESULT: SpotifyAlbumData = {
   artists: [{ name: "" }],
   name: "",
-  images: [{ url: WhiteSqure }],
+  images: [{ url: WhiteSquare }],
   id: "00000",
 };
 
@@ -18,14 +18,14 @@ export const queryAlbumsToSpotify = async (query: string, country: string): Prom
 
   try {
     // query spotify album get api
-    const authConfig: AxiosRequestConfig = createAuthConfig();
+    const authConfig: AxiosRequestConfig = SpotifyQueryConfig.createAuthConfig();
     const authResponse: AxiosResponse = await axios(authConfig);
     const getAlbumsFrom = getAlbumsByAlbumName(queryString, country);
     const { access_token }: AuthResponse = authResponse.data;
-    const queryConfig: AxiosRequestConfig = createQueryConfig(getAlbumsFrom,access_token);
+    const queryConfig: AxiosRequestConfig = SpotifyQueryConfig.createQueryConfig(getAlbumsFrom,access_token);
     const queryResponse: AxiosResponse = await axios(queryConfig);
 
-    const { albums: { items } }: queryResponseData = queryResponse.data;
+    const { albums: { items } }: QueryResponseData = queryResponse.data;
 
     return searchResult.concat(items).map(
       (spotifyAlbumData) => new Album(
