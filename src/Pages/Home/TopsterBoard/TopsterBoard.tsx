@@ -16,10 +16,12 @@ interface ITopsterBoard {
 
 const styleForSmallerView = `
     width: 100%;
+    height: fit-content;
 `;
 
 const styleForLargerView = `
-    width: calc(900px + (100vw - 900px) * 0.1);
+    width: calc(99vh - 114px);
+    height: 100%;
 `;
 
 const TopsterBoard = observer(({
@@ -33,7 +35,6 @@ const TopsterBoard = observer(({
   
   const BoardArea = styled.div`
     ${whenLargerThanMd ? styleForLargerView : styleForSmallerView}
-    height: fit-content;
     background-color: ${topster.backgroundColor};
   `
 
@@ -41,7 +42,8 @@ const TopsterBoard = observer(({
       <Stack id="screenshot-area" direction={whenLargerThanMd ? 'row' : 'column'} spacing={0}>
         <BoardArea>
         {
-          topster.type === TopsterType.Grid ?
+          topster.type === TopsterType.Grid 
+          ?
           <Grid rows={topster.rows} cols={topster.cols} albums={topster.albums} /> 
           :
           <Top42 albums={topster.albums}/>  
