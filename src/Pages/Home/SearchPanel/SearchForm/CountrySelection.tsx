@@ -20,7 +20,8 @@ export const CountrySelection = ({
           native: true
         }}
         sx={{
-          width: '100%'
+          width: '100%',
+          fontSize: '1rem',
         }}
         onChange={(e) => {setCountry(undefined, e.target.value)}}
       >
