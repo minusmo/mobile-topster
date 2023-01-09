@@ -18,10 +18,10 @@ const Home = () => {
           <Helmet>
             <meta charSet="utf-8" />
             <meta name="description" content="TopsterMaker for mobile first" />
-            <title>Topsters for Mobile</title>
+            <title>The Topsters</title>
           </Helmet>
+          <Header />
           <TopsterStoreContext.Provider value={topsterStore}>
-            <Header />
               <Main>
                 <TopsterMaker/>
               </Main>
