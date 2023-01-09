@@ -24,16 +24,16 @@ export const Cell = observer(({
     const handleClick = useClick(topsterStore, rowItemsPassed, colItemsPassed);
 
     const ImgContainer = styled.div`
-    width: 100%;
-    aspect-ratio: 1/1;
-    padding: 0 ${topster.gridGap}px;
+        width: 100%;
+        aspect-ratio: 1/1;
+        padding: 0 ${topster.gridGap}px;
     `
     
     const Img = styled.img`
-    width: 100%;
-    :hover {
-        cursor: pointer;
-    }
+        width: 100%;
+        :hover {
+            cursor: pointer;
+        }
     `;
     
     return (
