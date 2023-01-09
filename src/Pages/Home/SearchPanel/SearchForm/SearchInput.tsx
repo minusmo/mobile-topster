@@ -13,7 +13,8 @@ export const SearchInput = ({ setSearchInput }: ISearchInput): JSX.Element => {
       placeholder={'The Beatles'}
       onChange={(e) => { setSearchInput(e.currentTarget.value.toString()); }}
       sx={{
-        width: '100%'
+        width: '100%',
+        fontSize: '1rem'
       }} />
   );
 };
