@@ -1,4 +1,4 @@
-import { List } from "@mui/material";
+import { List, Skeleton } from "@mui/material";
 import { Album } from "../../../data/models/Album";
 import AlbumTitle from "./AlbumTitle/AlbumTitle";
 
@@ -17,9 +17,7 @@ export function AlbumList({
     <List>
       {albums
       .slice(start, end)
-      .map(
-        (album, idx) => album.isEmpty() ? null : <AlbumTitle key={idx} album={album} />
-        )
+      .map((album, idx) => <AlbumTitle key={idx} album={album} />)
       }
     </List>
   );
