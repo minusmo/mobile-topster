@@ -5,6 +5,8 @@ const StyledMain = styled.main`
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
+
+    height: calc(100% - 110px);
 `
 
 type IMain = {
