@@ -7,18 +7,22 @@ type IHorizontalAlbumTitles = {
   albums: Album[],
   sliceSize?: number;
   borderRoundness: boolean;
+  backgroundColor: string;
 };
 
 const HorizontalAlbumTitles = observer(({
   albums,
   sliceSize = 5,
   borderRoundness,
+  backgroundColor
 }: IHorizontalAlbumTitles): JSX.Element => {
   const columns = Math.ceil(albums.length / sliceSize);
-  const listInColumns = Array(columns).fill(0).map((val, idx) => <SlicedList albums={albums} idx={idx} size={sliceSize} />);
+  const listInColumns = Array(columns).fill(0).map((val, idx) => <SlicedList key={idx} albums={albums} idx={idx} size={sliceSize} />);
 
   return (
-    <Grid container>
+    <Grid container sx={{
+      backgroundColor: backgroundColor
+    }}>
       {listInColumns}
     </Grid>
   );
