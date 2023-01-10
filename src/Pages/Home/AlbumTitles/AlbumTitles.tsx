@@ -1,26 +1,23 @@
-import { observer } from "mobx-react-lite";
 import { Album } from "../../../data/models/Album";
-import AlbumTitle from "./AlbumTitle/AlbumTitle";
+import HorizontalAlbumTitles from "./HorizontalAlbumTitles";
+import VerticalAlbumTitles from "./VerticalAlbumTitles";
 
-type ITitleList = {
-  albums: Array<Album>,
-  borderRoundness: boolean;
-};
+interface IAlbumTitles {
+    albums: Album[];
+    shouldBeHorizontal: boolean;
+    borderRoundness: boolean;
+}
 
-const AlbumTitles = observer(({
-  albums,
-  borderRoundness,
-}: ITitleList): JSX.Element => {
-  const albumTitleClass = borderRoundness ? "titleList" + " border-rounded-lower" : "titleList";
-  return (
-    <div id="albumtitles" className={albumTitleClass}>
-      <ul
-        id="title-Unorderedlist"
-      >
-        {albums.map(album => <AlbumTitle album={album}/>)}
-      </ul>
-    </div>
-  );
-});
-
-export default AlbumTitles;
+export default function AlbumTitles({
+    albums,
+    shouldBeHorizontal,
+    borderRoundness
+}: IAlbumTitles):JSX.Element {
+    return (
+        shouldBeHorizontal
+        ?
+        <HorizontalAlbumTitles albums={albums} borderRoundness={borderRoundness}/>
+        :
+        <VerticalAlbumTitles albums={albums} borderRoundness={borderRoundness}/>
+    )
+}

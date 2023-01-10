@@ -1,6 +1,5 @@
+import { Paper, useTheme } from "@mui/material";
 import styled from "styled-components";
-
-// need to be refactored to base component "Row"
 
 const StyledFooter = styled.footer`
   display: flex;
@@ -8,26 +7,30 @@ const StyledFooter = styled.footer`
   align-items: center;
   justify-content: space-around;
 
-  width: 30%;
-  
-  position: fixed;
-  bottom: 0px;
-  right: 0px;
+  width: 100%;
+  height: 50px;
 
-  background-color: lightgrey;
-`
+  position: fixed;
+  bottom: 0;
+`;
 
 const SupportInfo = styled.span`
   font-weight: bold;
   padding: 1rem;
-`
+`;
+
 const Footer = () => {
+  const theme = useTheme();
   return (
-    <StyledFooter>
-      <SupportInfo>
-        Powered by Spotify.
-      </SupportInfo>
-    </StyledFooter>
+    <Paper elevation={5}>
+      <StyledFooter style={{
+        backgroundColor: `${theme.palette.primary.light}`
+      }}>
+        <SupportInfo>
+          Powered by Spotify
+        </SupportInfo>
+      </StyledFooter>
+    </Paper>
   );
 };
 

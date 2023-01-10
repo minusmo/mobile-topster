@@ -24,8 +24,12 @@ export class Album {
         this.art = art;
     }
     
-    info(): string {
+    getInfo(): string {
         return `${this.title} - ${this.artist}`;
+    }
+
+    isEmpty(): boolean {
+        return this.title === '';
     }
 
     toString(): string { 

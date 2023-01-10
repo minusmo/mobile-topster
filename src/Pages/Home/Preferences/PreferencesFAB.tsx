@@ -1,20 +1,18 @@
-import { Fab, FabProps } from "@mui/material";
+import { FabProps, useTheme } from "@mui/material";
 import TuneIcon from '@mui/icons-material/Tune';
-import styled from "styled-components";
+import ResponsiveFab from "../../../components/ResponsiveFab";
 
 export const PreferencesFAB = (props: FabProps) => {
+  const theme = useTheme();
   const { onClick } = props;
   return (
-    <Fab
+    <ResponsiveFab
       sx={{
-        position: 'fixed',
-        right: '10px',
-        bottom: '20vh',
+        right: theme.spacing(0),
       }}
       onClick={onClick} 
-      size={"large"}
     >
       <TuneIcon />
-    </Fab>
+    </ResponsiveFab>
   );
 };

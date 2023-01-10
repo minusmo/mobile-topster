@@ -1,23 +1,21 @@
+import { SaveAlt } from "@mui/icons-material";
+import { useTheme } from "@mui/material";
+import ResponsiveFab from "../../components/ResponsiveFab";
+
 type ISaveImgButton = {
-  save: (imgType: string) => void;
+  imgSaveHandler: (imgType?: string) => void;
 };
 
-const SaveButton = ({ save }: ISaveImgButton) => {
+const SaveButton = ({ imgSaveHandler }: ISaveImgButton) => {
+  const theme = useTheme();
   return (
-    <div className="">
-      <button
-        className=""
-        onClick={() => alert("준비중입니다.")}
+      <ResponsiveFab sx={{
+        right: theme.spacing(16),
+      }}
+      onClick={() => imgSaveHandler()}
       >
-        Save Png
-      </button>
-      <button
-        className=""
-        onClick={() => alert("준비중입니다.")}
-      >
-        Save Jpeg
-      </button>
-    </div>
+        <SaveAlt />
+      </ResponsiveFab>
   );
 };
 

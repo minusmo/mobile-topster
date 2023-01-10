@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { AppBar, Box, Grid, Toolbar, Typography } from "@mui/material";
+import { GridViewRounded } from "@mui/icons-material";
 
 const SHeader = styled.header`
   background-color: lightgrey;
@@ -13,9 +15,12 @@ const Title = styled.span`
 `
 const Header = (): JSX.Element => {
   return (
-    <SHeader>
-      <Title id="header-title">Mobile Topster</Title>
-    </SHeader>
+      <AppBar position={'static'}>
+        <Toolbar>
+          <GridViewRounded />
+          <Typography>Mobile Topster</Typography>
+        </Toolbar>
+      </AppBar>
   );
 };
 

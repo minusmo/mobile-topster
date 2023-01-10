@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { action } from "mobx";
+import { action, when } from "mobx";
 import { observer } from "mobx-react-lite";
 import { SwipeableDrawer, useMediaQuery } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
@@ -8,8 +8,8 @@ import { Box } from "@mui/system";
 import { TopsterStoreContext } from "../../../contexts/TopsterStoreContext";
 import { TopsterStore } from "../../../data/datastores/TopsterStore";
 import { Album } from "../../../data/models/Album";
-import SearchForm from "./SearchForm";
-import { ImgList } from "./ImgList";
+import SearchForm from "./SearchForm/SearchForm";
+import { ImgList } from "./ImgList/ImgList";
 import { Topster } from "../../../data/models/Topster";
 import { useAlbumSearch } from './useAlbumSearch';
 
@@ -33,13 +33,14 @@ const SearchPanel = observer((): JSX.Element => {
 
   return (
     <SwipeableDrawer
-      anchor={'left'}
+      anchor={whenLargerThanMd ? 'right' : 'bottom'}
       open={topsterStore.selectedIdx === -1 ? false : true}
       onClose={action('resetSelectedIdx', () => topsterStore.selectedIdx = -1)}
       onOpen={() => {}}
       PaperProps={{
         sx: {
-          width: whenLargerThanMd ? '60%' : '90%',
+          width: whenLargerThanMd ? '60%' : '100%',
+          height: whenLargerThanMd ? '100%' : '90%',
         }
       }}
     >
@@ -54,7 +55,13 @@ const SearchPanel = observer((): JSX.Element => {
         />
         {isLoading ?
           <Skeleton
-            variant={'rectangular'}
+            variant={'rounded'}
+            width={'100%'}
+            height={'100%'}
+            animation={'wave'}
+            sx={{
+              marginTop: '5px',
+            }}
           />
           :
           <ImgList 
