@@ -8,6 +8,7 @@ interface IAlbumTitles {
     shouldBeHorizontal: boolean;
     borderRoundness: boolean;
     backgroundColor: string;
+    textColor?: string;
 }
 
 const AlbumTitles = observer(({
@@ -15,13 +16,14 @@ const AlbumTitles = observer(({
     shouldBeHorizontal,
     borderRoundness,
     backgroundColor,
+    textColor = '#fff'
 }: IAlbumTitles):JSX.Element => {
     return (
         shouldBeHorizontal
         ?
-        <HorizontalAlbumTitles albums={albums} borderRoundness={borderRoundness} backgroundColor={backgroundColor}/>
+        <HorizontalAlbumTitles albums={albums} borderRoundness={borderRoundness} backgroundColor={backgroundColor} textColor={textColor}/>
         :
-        <VerticalAlbumTitles albums={albums} borderRoundness={borderRoundness} backgroundColor={backgroundColor}/>
+        <VerticalAlbumTitles albums={albums} borderRoundness={borderRoundness} backgroundColor={backgroundColor} textColor={textColor}/>
     )
 });
 

@@ -8,6 +8,7 @@ type IVerticalAlbumTitles = {
   sliceSize?: number;
   borderRoundness: boolean;
   backgroundColor: string;
+  textColor?: string;
 };
 
 const VerticalAlbumTitles = observer(({
@@ -15,6 +16,7 @@ const VerticalAlbumTitles = observer(({
   sliceSize = 20,
   borderRoundness,
   backgroundColor,
+  textColor = '#fff'
 }: IVerticalAlbumTitles): JSX.Element => {
   // const albumTitleClass = borderRoundness ? "titleList" + " border-rounded-lower" : "titleList";
   const columns = Math.ceil(albums.length / sliceSize);
@@ -22,7 +24,8 @@ const VerticalAlbumTitles = observer(({
 
   return (
     <Grid container sx={{
-      backgroundColor: backgroundColor
+      backgroundColor: backgroundColor,
+      color: textColor
     }}>
       {listInColumns}
     </Grid>
