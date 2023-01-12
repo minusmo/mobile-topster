@@ -24,7 +24,7 @@ export class Album {
     }
     
     getInfo(): string {
-        return `${this.title} - ${this.artist}`;
+        return this.isEmpty() ? '' : `${this.title} - ${this.artist}`;
     }
 
     isEmpty(): boolean {
