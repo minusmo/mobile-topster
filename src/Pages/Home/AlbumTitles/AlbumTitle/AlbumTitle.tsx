@@ -1,5 +1,4 @@
-import { ListItem, ListItemIcon, ListItemText } from "@mui/material";
-import { AlbumSharp } from "@mui/icons-material";
+import { ListItem, ListItemText, Skeleton } from "@mui/material";
 import { Album } from "../../../../data/models/Album";
 
 type IAlbumTitle = {
@@ -10,9 +9,17 @@ const AlbumTitle = ({
     album,
 }: IAlbumTitle): JSX.Element => (
     <ListItem>
-        <ListItemText inset>
+        {
+        album.isEmpty()
+        ?
+        <Skeleton animation={false} width={50} height={20}/>
+        :
+        (
+        <ListItemText>
             {album.getInfo()}
         </ListItemText>
+        )
+        }
     </ListItem>
 );
 
