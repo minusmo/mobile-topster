@@ -1,6 +1,6 @@
 import { SaveAlt } from "@mui/icons-material";
 import { useTheme } from "@mui/material";
-import ResponsiveFab from "../../components/ResponsiveFab";
+import ResponsiveFab from "../../../components/ResponsiveFab";
 
 type ISaveImgButton = {
   imgSaveHandler: (imgType?: string) => void;
