@@ -57,7 +57,7 @@ const SearchPanel = observer((): JSX.Element => {
           <Skeleton
             variant={'rounded'}
             width={'100%'}
-            height={'100%'}
+            height={'60vh'}
             animation={'wave'}
             sx={{
               marginTop: '5px',
