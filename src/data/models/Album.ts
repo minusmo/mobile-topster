@@ -1,6 +1,5 @@
-import { info } from 'console';
 import { observable, makeObservable } from 'mobx';
-import whitesquare from "../../assets/images/white_square.jpg";
+import WhiteSquare from '../../assets/images/white_square.jpg';
 
 interface JsonAlbum {
     title: string;
@@ -13,7 +12,7 @@ export class Album {
     artist: string;
     art: string;
 
-    constructor(title: string = "", artist: string = "", art: string = whitesquare) {
+    constructor(title: string = "", artist: string = "", art: string = WhiteSquare) {
         makeObservable(this, {
             title: observable,
             artist: observable,
@@ -25,7 +24,7 @@ export class Album {
     }
     
     getInfo(): string {
-        return `${this.title} - ${this.artist}`;
+        return this.isEmpty() ? '' : `${this.title} - ${this.artist}`;
     }
 
     isEmpty(): boolean {

@@ -18,10 +18,6 @@ type IPreferences = {
   setShowAlbumTitle: (showAlbumTitles: boolean) => void;
 };
 
-const CancelButton = (props: ButtonProps) => (
-  <Button {...props}></Button>
-)
-
 const Preferences = observer(({
   showAlbumTitles,
   setShowAlbumTitle,
@@ -36,27 +32,36 @@ const Preferences = observer(({
       <Dialog open={opened} onClose={() => {setOpened(false)}}>
         <DialogTitle>Preferences</DialogTitle>
         <DialogContent>
-        <Stack>
+        <Stack spacing={1}>
             <Box sx={{
               display: "flex",
             }}>
               <Toggle 
                 label={"Titles"}
-                value={showAlbumTitles}
-                control={<ToggleSwitch onChange={toggleTitles}/>}
+                checked={showAlbumTitles}
+                control={
+                  <ToggleSwitch 
+                    onChange={toggleTitles}
+                  />
+                }
                 />
               <Toggle
                 label={"Border"} 
-                value={topster.borderRoundness}
+                checked={topster.borderRoundness}
                 control={
-                  <ToggleSwitch 
+                  <ToggleSwitch
                     onChange={action('toggleBorderRoundness', () => {topster.borderRoundness = !topster.borderRoundness;})}
                   />
                 } 
                 />
             </Box>
             <ColorPicker
+              title={'Pick a Background Color'}
               onPick={action('setBackgroundColor', (color: string) => {topster.backgroundColor = color;})}
+              />
+            <ColorPicker
+              title={'Pick a Text Color'}
+              onPick={action('setTextColor', (color: string) => {topster.fontStyle.textColor = color;})}
               />
             <SelectSlider 
               label={"Row"} 
