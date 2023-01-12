@@ -57,6 +57,7 @@ const TopsterBoard = observer(({
             shouldBeHorizontal={!whenLargerThanMd}
             borderRoundness={topster.borderRoundness}
             backgroundColor={topster.backgroundColor}
+            textColor={topster.fontStyle.textColor}
           /> 
          : 
          null}

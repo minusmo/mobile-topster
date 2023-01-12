@@ -4,10 +4,12 @@ import { HexColorPicker, HexColorInput } from "react-colorful";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 
 interface IColorPicker {
+    title: string;
     onPick: (color: string) => void;
 }
 
 export const ColorPicker = ({
+    title,
     onPick,
 }: IColorPicker): JSX.Element => {
     const [color, setColor] = useState('#000');
@@ -19,7 +21,7 @@ export const ColorPicker = ({
                 variant={'contained'}
                 onClick={() => {setOpened(true)}}
             >
-                Pick a Background Color
+                {title}
             </Button>
             <Dialog open={opened} onClose={() => setOpened(false)}>
                 <DialogTitle>Pick a Color you want</DialogTitle>
