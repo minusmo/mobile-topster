@@ -6,8 +6,9 @@ export default function AdaptiveFab(fabProps: FabProps): JSX.Element {
     const whenLargerThanMd = useMediaQuery(largerThanMd);
     const { sx, ...restProps } = fabProps;
     return (
-        <Fab 
+        <Fab
         {...restProps}
+        color={'primary'}
         size={whenLargerThanMd ? 'large' : 'medium'} 
         sx={{
             position: 'fixed',
