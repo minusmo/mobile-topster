@@ -6,7 +6,7 @@ import { Topster } from "../../../../data/models/Topster";
 import { useClick } from "./useClick";
 import { ImgContainer, Img } from "./ImgContainer";
 
-type ICell = {
+interface ICell {
     rowItemsPassed: number;
     colItemsPassed: number;
     item: Album;
@@ -26,8 +26,9 @@ export const Cell = observer(({
             padding: `0 ${topster.gridGap}px`,
         }}>
             <Img
+                className={'cell'}
                 src={item.art} 
-                alt={`${item.title}-${item.artist}`} 
+                alt={item.getInfo()} 
                 onClick={handleClick}
             />
         </ImgContainer>
