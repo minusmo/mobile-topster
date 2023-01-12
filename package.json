@@ -1,6 +1,6 @@
 {
   "name": "mobile-topster",
-  "version": "2.6.10",
+  "version": "3.0.0",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.10.5",
