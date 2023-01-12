@@ -37,7 +37,7 @@ export class Topster {
   gridGap: number = 1;
   borderRoundness: boolean = false;
 
-  constructor(albums: Album[] = defaultAlbums, backgroundColor: string = defaultColor, type: TopsterType = TopsterType.Grid) {
+  constructor(albums: Album[] = defaultAlbums, backgroundColor: string = defaultColor, type: TopsterType = defaultType) {
     makeObservable(this, {
       albums: observable,
       backgroundColor: observable,
