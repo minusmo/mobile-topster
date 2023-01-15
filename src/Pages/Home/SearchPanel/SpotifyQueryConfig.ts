@@ -10,7 +10,7 @@ export default abstract class SpotifyQueryConfig {
   static createAuthConfig(): AxiosRequestConfig {
     return {
       method: "POST",
-      url: API.SPOTIFY_API,
+      url: API.SPOTIFY_AUTH_API,
       headers: {
         "Content-Type": SpotifyQueryConfig.CONTENT_TYPE,
       },

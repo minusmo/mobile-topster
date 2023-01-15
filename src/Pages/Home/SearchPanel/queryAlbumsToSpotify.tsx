@@ -1,9 +1,9 @@
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { getAlbumsByAlbumName } from "../../../utils/httpUtils";
 import { Album } from "../../../data/models/Album";
 import { QueryResponseData, SpotifyAlbumData, AuthResponse } from "./ResponseTypes";
 import SpotifyQueryConfig from "./SpotifyQueryConfig";
 import WhiteSquare from '../../../assets/images/white_square.jpg';
+import { API } from "../../../configs/credentials";
 
 const DEFAULT_RESULT: SpotifyAlbumData = {
   artists: [{ name: "" }],
@@ -20,9 +20,9 @@ export const queryAlbumsToSpotify = async (query: string, country: string): Prom
     // query spotify album get api
     const authConfig: AxiosRequestConfig = SpotifyQueryConfig.createAuthConfig();
     const authResponse: AxiosResponse = await axios(authConfig);
-    const getAlbumsFrom = getAlbumsByAlbumName(queryString, country);
+    const spotifyGetAPI = API.spotifyQueryApi(queryString, country);
     const { access_token }: AuthResponse = authResponse.data;
-    const queryConfig: AxiosRequestConfig = SpotifyQueryConfig.createQueryConfig(getAlbumsFrom,access_token);
+    const queryConfig: AxiosRequestConfig = SpotifyQueryConfig.createQueryConfig(spotifyGetAPI,access_token);
     const queryResponse: AxiosResponse = await axios(queryConfig);
 
     const { albums: { items } }: QueryResponseData = queryResponse.data;

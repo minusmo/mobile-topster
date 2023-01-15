@@ -4,7 +4,8 @@ export abstract class UserInfo {
 }
 
 export abstract class API {
-   static  SPOTIFY_API: string = "https://accounts.spotify.com/api/token";
+   static  SPOTIFY_AUTH_API: string = "https://accounts.spotify.com/api/token";
+   static  spotifyQueryApi(artist: string = "", country: string = "us" ): string { return `https://api.spotify.com/v1/search/?q=${artist}&type=album&market=${country}&limit=50`; }
 }
 
 export abstract class GoogleAnalytics {
