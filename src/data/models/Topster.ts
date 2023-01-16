@@ -32,8 +32,8 @@ export class Topster {
   type: TopsterType;
   fontStyle: FontStyle = new FontStyle();
   ordered: boolean = true;
-  rows: number = 10;
-  cols: number = 10;
+  rows: number = 6;
+  cols: number = 7;
   gridGap: number = 1;
   borderRoundness: boolean = false;
 
