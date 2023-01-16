@@ -31,16 +31,16 @@ const TopsterBoard = observer(({
   const topsterStore = useContext(TopsterStoreContext);
   const topster = topsterStore.topster;
   const theme = useTheme();
-  const largerThanMd = theme.breakpoints.up('md');
-  const whenLargerThanMd = useMediaQuery(largerThanMd);
+  const smallerThanLg = theme.breakpoints.down('lg')
+  const whenSmallerThanLg = useMediaQuery(smallerThanLg);
   
   const BoardArea = styled.div`
-    ${whenLargerThanMd ? styleForLargerView : styleForSmallerView}
+    ${!whenSmallerThanLg ? styleForLargerView : styleForSmallerView}
     background-color: ${topster.backgroundColor};
   `;
 
   return (
-      <Stack ref={capturedAreaRef} id="captured-area" direction={whenLargerThanMd ? 'row' : 'column'} spacing={0}>
+      <Stack ref={capturedAreaRef} id="captured-area" direction={!whenSmallerThanLg ? 'row' : 'column'} spacing={0}>
         <BoardArea>
         {
           topster.type === TopsterType.Grid 
@@ -54,7 +54,7 @@ const TopsterBoard = observer(({
          ? 
          <AlbumTitles
             albums={topster.getAlbumsBetween(0,topster.rows * topster.cols)} 
-            shouldBeHorizontal={!whenLargerThanMd}
+            shouldBeHorizontal={whenSmallerThanLg}
             borderRoundness={topster.borderRoundness}
             backgroundColor={topster.backgroundColor}
             textColor={topster.fontStyle.textColor}

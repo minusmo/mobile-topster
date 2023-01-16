@@ -8,18 +8,15 @@ type IAlbumTitle = {
 const AlbumTitle = ({
     album,
 }: IAlbumTitle): JSX.Element => (
-    <ListItem>
-        {
-        album.isEmpty()
-        ?
-        <Skeleton animation={false} width={50} height={20}/>
-        :
-        (
-        <ListItemText>
+    <ListItem disablePadding sx={{
+        margin: '3px auto'
+    }}>
+        <ListItemText disableTypography={true} sx={{
+            padding: 0,
+            margin: '0 auto',
+        }}>
             {album.getInfo()}
         </ListItemText>
-        )
-        }
     </ListItem>
 );
 
