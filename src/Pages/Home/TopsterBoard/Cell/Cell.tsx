@@ -5,6 +5,7 @@ import { TopsterStoreContext } from "../../../../contexts/TopsterStoreContext";
 import { Topster } from "../../../../data/models/Topster";
 import { useClick } from "./useClick";
 import { ImgContainer, Img } from "./ImgContainer";
+import { Paper } from "@mui/material";
 
 interface ICell {
     rowItemsPassed: number;
@@ -17,20 +18,24 @@ export const Cell = observer(({
     colItemsPassed,
     item,
 }: ICell): JSX.Element => {
-    const topsterStore = useContext(TopsterStoreContext);
-    const topster: Topster = topsterStore.topster;
-    const handleClick = useClick(topsterStore, rowItemsPassed, colItemsPassed);
-    
-    return (
-        <ImgContainer style={{
-            padding: `0 ${topster.gridGap}px`,
-        }}>
-            <Img
-                className={'cell'}
-                src={item.art} 
-                alt={item.getInfo()} 
-                onClick={handleClick}
-            />
-        </ImgContainer>
-    );
+  const topsterStore = useContext(TopsterStoreContext);
+  const topster: Topster = topsterStore.topster;
+  const handleClick = useClick(topsterStore, rowItemsPassed, colItemsPassed);
+  
+  return (
+      <ImgContainer style={{
+          padding: `0 ${topster.gridGap}px`,
+      }}>
+        <Paper 
+            elevation={20} 
+            sx={{backgroundColor: 'transparent'}}>
+        <Img
+            className={'cell'}
+            src={item.art} 
+            alt={item.getInfo()} 
+            onClick={handleClick}
+        />
+        </Paper>
+      </ImgContainer>
+  );
 })
