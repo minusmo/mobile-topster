@@ -12,7 +12,6 @@ const savedTitlesState = JSON.parse(LocalPersistency.retrieve("showAlbumTitles")
 
 const TopsterMaker = observer((): JSX.Element => {
   const [showAlbumTitles, setShowAlbumTitle] = useState(savedTitlesState);
-  // const [processingSave, setProcessingSave] = useState(false);
   const capturedArea = useRef<HTMLElement | null>(null);
   const {updateCapturedArea, captureArea} = useImgSave(capturedArea.current);
 

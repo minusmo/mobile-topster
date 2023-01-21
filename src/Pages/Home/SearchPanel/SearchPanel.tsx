@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { action, when } from "mobx";
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { SwipeableDrawer, useMediaQuery } from "@mui/material";
 import Skeleton from "@mui/material/Skeleton";
@@ -44,11 +44,7 @@ const SearchPanel = observer((): JSX.Element => {
         }
       }}
     >
-      <Box
-        sx={{
-          padding: '20px',
-        }}
-      >
+      <Box sx={{ padding: '20px' }}>
         <SearchForm
           onFormDataChange={updateSearchQuery}
           onSubmission={() => {updateSearchResult()}}

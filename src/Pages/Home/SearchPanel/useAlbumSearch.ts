@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Album } from "../../../data/models/Album";
 import { queryAlbumsToSpotify } from "./queryAlbumsToSpotify";
 

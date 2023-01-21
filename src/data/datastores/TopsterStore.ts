@@ -1,4 +1,4 @@
-import { makeAutoObservable, reaction } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 import { LocalPersistency } from "../../services/Persistency";
 import { Topster } from "../models/Topster";
 
@@ -8,7 +8,6 @@ export class TopsterStore {
 
     constructor() {
         makeAutoObservable(this);
-        // this.initializeTopster();
     }
 
     private saveLocally(): void {
@@ -29,12 +28,4 @@ export class TopsterStore {
         }
         this.topster = topster;
     }
-
-    // private effect = reaction(
-    //     () => (this.topster),
-    //     topster => {
-    //         this.saveLocally();
-    //     }
-    // )
-
 }
