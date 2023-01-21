@@ -7,13 +7,16 @@ import SaveButton from "./SaveButton/SaveButton";
 import HelpMessages from "./HelpMessages/HelpMessages";
 import { LocalPersistency } from "../../services/Persistency";
 import useImgSave from "./SaveButton/useImgSave";
+import { RenderingOverlay } from "./RenderingOverlay";
 
 const savedTitlesState = JSON.parse(LocalPersistency.retrieve("showAlbumTitles")) ? true : false;
-
 const TopsterMaker = observer((): JSX.Element => {
   const [showAlbumTitles, setShowAlbumTitle] = useState(savedTitlesState);
   const capturedArea = useRef<HTMLElement | null>(null);
-  const {updateCapturedArea, captureArea} = useImgSave(capturedArea.current);
+  const {
+    isRendering,
+    updateCapturedArea, 
+    captureArea} = useImgSave(capturedArea.current);
 
   useEffect(() => {
     updateCapturedArea(capturedArea.current!);
@@ -41,6 +44,7 @@ const TopsterMaker = observer((): JSX.Element => {
       <HelpMessages />
       {/* 저장 버튼 */}
       <SaveButton imgSaveHandler={captureArea} />
+      <RenderingOverlay isHidden={!isRendering} />
     </div>
   );
 });
