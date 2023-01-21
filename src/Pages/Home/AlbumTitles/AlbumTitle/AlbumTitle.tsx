@@ -9,7 +9,8 @@ const AlbumTitle = ({
     album,
 }: IAlbumTitle): JSX.Element => (
     <ListItem disablePadding sx={{
-        margin: '3px auto'
+        margin: '3px auto',
+        padding: '0 0 0 2%'
     }}>
         <ListItemText disableTypography={true} sx={{
             padding: 0,
