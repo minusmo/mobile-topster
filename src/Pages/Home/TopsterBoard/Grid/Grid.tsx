@@ -1,12 +1,11 @@
 import { observer } from "mobx-react-lite";
-import { useMemo } from "react";
 import { Stack } from "@mui/system";
 import { Album } from "../../../../data/models/Album";
 import { Row } from "../Row/Row";
 import { Container } from "../../../../components/Container";
 import { convertToGrid } from "./utils";
 
-type IGrid = {
+interface IGrid {
     rows: number;
     cols: number;
     albums: Array<Album>;

@@ -1,5 +1,4 @@
-import { FormControlLabel, FormControlLabelProps, Switch } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import { FormControlLabel, FormControlLabelProps } from "@mui/material";
 
 export const Toggle = (props: FormControlLabelProps): JSX.Element => {
   return (

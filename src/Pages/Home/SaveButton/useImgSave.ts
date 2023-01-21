@@ -1,6 +1,5 @@
-import { useRef } from "react";
-import { toBlob } from "html-to-image";
-import saveAs from "file-saver";
+import { useRef, useState } from "react";
+import { toJpeg } from "html-to-image";
 import { SaveOptions } from "./SaveOptions";
 
 type BrowserType = 'safari' | 'chrome' | 'firefox';
@@ -30,31 +29,39 @@ function displayCells() {
 }
 
 function useImgSave(capturedNode: HTMLElement | null) {
-    const capturedNodeRef = useRef(capturedNode);
-    const userAgent = window.navigator.userAgent!;
-    return {
-      updateCapturedArea(capturedArea: HTMLElement) {
-        capturedNodeRef.current = capturedArea;
-      },
-      async captureArea(imgType: string = 'jpeg'): Promise<void> {    
-        const options = new SaveOptions().build();
-        
-        try {
-          if (capturedNodeRef.current == null) throw Error('No HTML Node reference');
-          hideCells();
-          const blob: Blob | null = await toBlob(capturedNodeRef.current, options);
-          if (blob) {
-            saveAs(blob, `topsters.${imgType}`);
-          }
-        } catch (error) {
-          alert(DEFAULT_ERROR_MESSAGE);
-          console.warn(error);
-        }
-        finally {
-          displayCells();
-        }
+  const [isRendering, setIsRendering] = useState(false);
+  const capturedNodeRef = useRef(capturedNode);
+  const userAgent = window.navigator.userAgent!;
+  const options = new SaveOptions().pixelRatio(1.0).quality(1.0).build();
+  return {
+    isRendering,
+    updateCapturedArea(capturedArea: HTMLElement) {
+      capturedNodeRef.current = capturedArea;
+    },
+    async captureArea(imgType: string = 'jpeg'): Promise<void> {    
+      setIsRendering(prevState => true);
+      try {
+        if (capturedNodeRef.current == null) throw Error('No HTML Node reference');
+        hideCells();
+        const firstChildElem = capturedNodeRef.current.firstElementChild as HTMLElement;
+        const secondChildElem = capturedNodeRef.current.lastElementChild as HTMLElement;
+        await toJpeg(firstChildElem, options);
+        await toJpeg(secondChildElem, options);
+        const jpegImg = await toJpeg(capturedNodeRef.current, options);
+        const link = document.createElement('a');
+        link.download = 'yourtopster.jpeg';
+        link.href = jpegImg;
+        link.click();
+      } catch (error) {
+        alert(DEFAULT_ERROR_MESSAGE);
+        console.warn(error);
       }
-    }    
+      finally {
+        displayCells();
+        setIsRendering(prevState => false);
+      }
+    }
+  }    
 }
 
 export default useImgSave;

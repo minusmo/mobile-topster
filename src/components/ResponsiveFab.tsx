@@ -8,7 +8,7 @@ export default function AdaptiveFab(fabProps: FabProps): JSX.Element {
     return (
         <Fab
         {...restProps}
-        color={'primary'}
+        color={'secondary'}
         size={whenLargerThanMd ? 'large' : 'medium'} 
         sx={{
             position: 'fixed',

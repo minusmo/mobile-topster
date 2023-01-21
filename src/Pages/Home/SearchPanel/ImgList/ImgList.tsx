@@ -17,8 +17,8 @@ export const ImgList = ({
         <Box sx={{
             padding: '10px 0',
         }}>
-            <ImageList cols={3}>
-                <ImageListItem key={'Subheader'} cols={3}>
+            <ImageList cols={4}>
+                <ImageListItem key={'Subheader'} cols={4}>
                     <ListSubheader component={'div'}>All matches found</ListSubheader>
                 </ImageListItem>
                 {albums.map((album: Album) => (

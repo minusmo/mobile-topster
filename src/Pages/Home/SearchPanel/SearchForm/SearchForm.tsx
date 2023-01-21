@@ -13,6 +13,11 @@ const SearchForm = ({
   onSubmission,
   onFormDataChange,
 }: ISearchForm): JSX.Element => (
+  <form 
+    onSubmit={(e) => {
+      e.preventDefault();
+      onSubmission();
+      }}>
   <Grid container spacing={1} >
     <Grid xs={6}>
       <SearchInput setSearchInput={onFormDataChange} />
@@ -33,6 +38,7 @@ const SearchForm = ({
       </Button>
     </Grid>
   </Grid>
+  </form>
 );
 
 export default SearchForm;

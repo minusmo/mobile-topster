@@ -9,20 +9,20 @@ import { Grid } from "./Grid/Grid";
 import { Top42 } from "./Top42/Top42";
 import AlbumTitles from "../AlbumTitles/AlbumTitles";
 
+const styleForSmallerView = `
+  width: 100%;
+  height: fit-content;
+`;
+
+const styleForLargerView = `
+  width: calc(99vh - 114px);
+  height: 100%;
+`;
+
 interface ITopsterBoard {
   showAlbumTitles: boolean;
   capturedAreaRef: React.ForwardedRef<HTMLElement | null>;
 };
-
-const styleForSmallerView = `
-    width: 100%;
-    height: fit-content;
-`;
-
-const styleForLargerView = `
-    width: calc(99vh - 114px);
-    height: 100%;
-`;
 
 const TopsterBoard = observer(({
   showAlbumTitles,
@@ -40,7 +40,15 @@ const TopsterBoard = observer(({
   `;
 
   return (
-      <Stack ref={capturedAreaRef} id="captured-area" direction={!whenSmallerThanLg ? 'row' : 'column'} spacing={0}>
+      <Stack 
+        ref={capturedAreaRef} 
+        id="captured-area"
+        direction={!whenSmallerThanLg ? 'row' : 'column'} 
+        spacing={0}
+        sx={{
+          width: 'fit-content'
+        }}
+      >
         <BoardArea>
         {
           topster.type === TopsterType.Grid 
