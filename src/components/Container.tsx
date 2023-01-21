@@ -1,7 +1,19 @@
-import styled from "styled-components";
+import { useTheme } from "@mui/material/styles";
 
-export const Container = styled.div`
-    padding: ${props => props.theme.padding}%;
-    width: calc(${props => 100 - props.theme.padding * 2}%);
-    height: fit-content;
-`;
+interface IContainer {
+    children: JSX.Element[] | JSX.Element;
+}
+
+export const Container = ({ children }: IContainer): JSX.Element => {
+    const theme = useTheme();
+    return (
+        <div
+        style={{
+            padding: `${theme.padding.default}%`,
+            width: `calc(${100 - theme.padding.default * 2}%)`,
+            height: 'fit-content'
+        }}>
+            {children}
+        </div>
+    );
+}

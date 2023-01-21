@@ -1,12 +1,9 @@
 import Home from "./Pages/Home/Home";
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { theme } from "./theme";
 
 const queryClient = new QueryClient();
-
-const theme = {
-  padding: "1"
-}
 
 const App = (): JSX.Element => {
   // existing topster will be fetched 
