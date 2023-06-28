@@ -19,6 +19,17 @@ const Home = () => {
             <meta charSet="utf-8" />
             <meta name="description" content="TopsterMaker for mobile first" />
             <title>The Topsters</title>
+            {/* <!-- Google tag (gtag.js) --> */}
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-90376709-3"></script>
+            <script>
+              {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+
+              gtag('config', 'UA-90376709-3');
+              `}
+            </script>
           </Helmet>
           <Header />
           <TopsterStoreContext.Provider value={topsterStore}>
