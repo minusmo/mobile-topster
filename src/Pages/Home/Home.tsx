@@ -1,6 +1,3 @@
-import { useEffect }  from "react";
-import { GoogleAnalytics } from "../../configs/credentials";
-import ReactGA from "react-ga";
 import { Helmet } from "react-helmet";
 import TopsterMaker from "./TopsterMaker";
 import Header from "../../layouts/Header";
@@ -9,10 +6,6 @@ import Footer from "../../layouts/Footer";
 import { TopsterStoreContext, topsterStore } from "../../contexts/TopsterStoreContext";
 
 const Home = () => {
-    useEffect(() => {
-        ReactGA.initialize(GoogleAnalytics.GAID);
-        ReactGA.pageview(window.location.pathname);
-    }, []);
     return (
         <>
           <Helmet>
