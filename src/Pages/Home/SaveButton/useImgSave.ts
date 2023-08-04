@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { toJpeg } from "html-to-image";
+import { toJpeg } from "../../../es";
 import { SaveOptions } from "./SaveOptions";
 
 type BrowserType = 'safari' | 'chrome' | 'firefox';
